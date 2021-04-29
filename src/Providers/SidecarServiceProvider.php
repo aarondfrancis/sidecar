@@ -20,14 +20,21 @@ class SidecarServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../../config/sidecar.php', 'sidecar');
 
         $this->app->singleton(LambdaClient::class, function () {
-            return new LambdaClient([
+            $config = [
                 'version' => 'latest',
                 'region' => config('sidecar.aws_region'),
-                'credentials' => [
-                    'key' => config('sidecar.aws_key'),
-                    'secret' => config('sidecar.aws_secret'),
-                ]
+            ];
+
+            $credentials = array_filter([
+                'key' => config('sidecar.aws_key'),
+                'secret' => config('sidecar.aws_secret'),
             ]);
+
+            if ($credentials) {
+                $config['credentials'] = $credentials;
+            }
+
+            return new LambdaClient($config);
         });
     }
 
