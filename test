@@ -1,0 +1,21 @@
+#!/bin/bash
+
+declare -a laravel=("7.*" "8.*")
+declare -a testbench=("5.*" "6.*")
+
+for i in "${!laravel[@]}"
+do
+   echo "${laravel[i]}"
+   echo "${testbench[i]}"
+
+   composer remove --quiet illuminate/support orchestra/testbench
+   composer require --no-update --no-interaction --quiet "illuminate/support:${laravel[i]}" "orchestra/testbench:${testbench[i]}"
+   composer update --prefer-dist --no-interaction --quiet --prefer-lowest
+   ./vendor/bin/phpunit
+done
+
+
+## composer remove --quiet illuminate/support orchestra/testbench \
+## && composer require --no-update --no-interaction --quiet "illuminate/support:7" "orchestra/testbench:5" \
+## && composer update --prefer-lowest --prefer-dist --no-interaction \
+## && ./vendor/bin/phpunit

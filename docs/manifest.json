@@ -1,0 +1,13 @@
+{
+    "basePath": "/sidecar/docs/local",
+    "assetUrl": "/sidecar/docs/local",
+    "navigation": {
+        "Overview": "/overview",
+        "Drivers": {
+            "children": {
+                "Filesystem": "/drivers/filesystem",
+                "Custom": "/drivers/custom"
+            }
+        }
+    }
+}
