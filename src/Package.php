@@ -10,9 +10,7 @@ use Hammerstone\Sidecar\Exceptions\SidecarException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use ZipStream\Option\Archive;
 use ZipStream\ZipStream;
 use ZipStream\Option\File as FileOptions;
@@ -40,8 +38,7 @@ class Package
     protected $basePath;
 
     /**
-     * @param array $include
-     * @param array $exclude
+     * @param array $paths
      * @return static
      */
     public static function make($paths = [])
@@ -50,8 +47,7 @@ class Package
     }
 
     /**
-     * @param array $include
-     * @param array $exclude
+     * @param array $paths
      */
     public function __construct($paths = [])
     {
@@ -93,6 +89,22 @@ class Package
         $this->files = null;
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getIncludedPaths()
+    {
+        return $this->include;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExcludedPaths()
+    {
+        return $this->exclude;
     }
 
     /**

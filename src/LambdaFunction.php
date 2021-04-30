@@ -229,20 +229,12 @@ abstract class LambdaFunction
         return config('sidecar.timeout');
     }
 
-    /**
-     * @param int $index
-     * @param int $total
-     */
-    public function beforeDeployment($index, $total)
+    public function beforeDeployment()
     {
         //
     }
 
-    /**
-     * @param int $index
-     * @param int $total
-     */
-    public function afterDeployment($index, $total)
+    public function afterDeployment()
     {
         //
     }
@@ -266,7 +258,7 @@ abstract class LambdaFunction
         return [
             'FunctionName' => $this->nameWithPrefix(),
             'Runtime' => $this->runtime(),
-            'Role' => Sidecar::executionRole(),
+            'Role' => config('sidecar.role_arn'),
             'Handler' => $this->handler(),
             'Code' => $this->makePackage()->deploymentConfiguration(),
             'Description' => $this->description(),

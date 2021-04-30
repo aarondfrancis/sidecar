@@ -19,15 +19,12 @@ class PackageTest extends BaseTest
 {
     public function getEnvironmentSetUp($app)
     {
-        config()->set('filesystems.disks.s3', [
-            'driver' => 's3',
-            'key' => 'key',
-            'secret' => 'secret',
-            'region' => 'us-east-2',
-            'bucket' => 'sidecar-bucket',
+        config()->set('sidecar', [
+            'aws_key' => 'key',
+            'aws_secret' => 'secret',
+            'aws_region' => 'us-east-2',
+            'aws_bucket' => 'sidecar-bucket',
         ]);
-
-        config()->set('sidecar.deployment_disk', 's3');
     }
 
     public function makePackageClass()
@@ -43,6 +40,21 @@ class PackageTest extends BaseTest
         });
 
         return $package;
+    }
+
+    /** @test */
+    public function an_exclamation_excludes()
+    {
+        $package = Package::make([
+            'include',
+            '!exclude',
+        ]);
+
+        $this->assertCount(1, $package->getIncludedPaths());
+        $this->assertStringContainsString('include', $package->getIncludedPaths()[0]);
+
+        $this->assertCount(1, $package->getExcludedPaths());
+        $this->assertStringContainsString('exclude', $package->getExcludedPaths()[0]);
     }
 
     /** @test */

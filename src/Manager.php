@@ -5,7 +5,6 @@
 
 namespace Hammerstone\Sidecar;
 
-use Hammerstone\Sidecar\Exceptions\SidecarException;
 use Hammerstone\Sidecar\Results\Arbiter;
 use Hammerstone\Sidecar\Results\PendingResult;
 use Throwable;
@@ -44,33 +43,6 @@ class Manager
         foreach ($this->loggers as $logger) {
             $logger('[Sidecar] ' . $message);
         }
-    }
-
-    /**
-     * @return string
-     * @throws SidecarException
-     */
-    public function executionRole()
-    {
-        $arn = config('sidecar.role_arn');
-
-        if ($arn !== 'CONSTRUCT_FROM_VAPOR_VARIABLES') {
-            return $arn;
-        }
-
-        if (env('VAPOR_SSM_PATH')) {
-            throw new SidecarException('Not running in Vapor. Unable to determine Sidecar execution ARN.');
-        }
-
-        $sqs = env('SQS_PREFIX');
-
-        if (!$sqs) {
-            throw new SidecarException('Vapor SQS prefix is not available. Unable to determine Sidecar execution ARN.');
-        }
-
-        $account = last(explode('/', $sqs));
-
-        return "arn:aws:iam::$account:role/laravel-vapor-role";
     }
 
     /**

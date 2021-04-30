@@ -59,7 +59,7 @@ class Deployment
         event(new AfterFunctionsDeploy($this->functions));
     }
 
-    protected function deploySingle($function, $index, $total)
+    protected function deploySingle($function)
     {
         if (is_string($function)) {
             $function = app($function);
@@ -68,13 +68,13 @@ class Deployment
         Sidecar::log('---------');
         Sidecar::log('Deploying ' . get_class($function) . ' to Lambda. (Runtime ' . $function->runtime() . '.)');
 
-        $function->beforeDeployment($index, $total);
+        $function->beforeDeployment();
 
         $this->functionExists($function)
             ? $this->updateExistingFunction($function)
             : $this->createNewFunction($function);
 
-        $function->afterDeployment($index, $total);
+        $function->afterDeployment();
 
         Sidecar::log('---------');
     }
@@ -101,7 +101,7 @@ class Deployment
 
         $config = $function->toDeploymentArray();
 
-        $check = '[' . substr(md5(json_encode($config)), 0, 16) . ']';
+        $check = '[' . substr(md5(json_encode($config)), 0, 8) . ']';
 
         if ($this->functionExists($function, $check)) {
             return Sidecar::log('Function code and configuration are unchanged! Not updating anything.');
@@ -110,7 +110,7 @@ class Deployment
         // Add the checksum to the description, so we can look for it next time.
         $config['Description'] .= " $check";
 
-        $result = $this->lambda->updateFunctionConfiguration(Arr::only($config, [
+        $this->lambda->updateFunctionConfiguration(Arr::only($config, [
             'FunctionName',
             'Role',
             'Handler',
@@ -132,7 +132,7 @@ class Deployment
 
         unset($config['Code']);
 
-        $result = $this->lambda->updateFunctionCode($config);
+        $this->lambda->updateFunctionCode($config);
     }
 
     /**

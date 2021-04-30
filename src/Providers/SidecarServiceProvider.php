@@ -6,6 +6,7 @@
 namespace Hammerstone\Sidecar\Providers;
 
 use Hammerstone\Sidecar\Commands\Deploy;
+use Hammerstone\Sidecar\Commands\Configure;
 use Hammerstone\Sidecar\Commands\Install;
 use Hammerstone\Sidecar\LambdaClient;
 use Hammerstone\Sidecar\Manager;
@@ -44,6 +45,7 @@ class SidecarServiceProvider extends ServiceProvider
             $this->commands([
                 Install::class,
                 Deploy::class,
+                Configure::class,
             ]);
         }
 
