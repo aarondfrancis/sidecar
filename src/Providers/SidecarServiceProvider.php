@@ -5,6 +5,7 @@
 
 namespace Hammerstone\Sidecar\Providers;
 
+use Hammerstone\Sidecar\Commands\Activate;
 use Hammerstone\Sidecar\Commands\Deploy;
 use Hammerstone\Sidecar\Commands\Configure;
 use Hammerstone\Sidecar\Commands\Install;
@@ -43,9 +44,10 @@ class SidecarServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                Install::class,
-                Deploy::class,
+                Activate::class,
                 Configure::class,
+                Deploy::class,
+                Install::class,
             ]);
         }
 

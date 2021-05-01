@@ -17,12 +17,9 @@ class Manager
     protected $loggers = [];
 
     /**
-     * @param null $function
+     * @var string
      */
-    public function deploy($function = null)
-    {
-        Deployment::make($function)->deploy();
-    }
+    protected $environment;
 
     /**
      * @param $closure
@@ -46,6 +43,30 @@ class Manager
     }
 
     /**
+     * @param string $environment
+     */
+    public function overrideEnvironment($environment)
+    {
+        $this->environment = $environment;
+    }
+
+    /**
+     * Clear the environment override.
+     */
+    public function clearEnvironment()
+    {
+        $this->environment = null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEnvironment()
+    {
+        return $this->environment ?? config('app.env');
+    }
+
+    /**
      * @param string|LambdaFunction $function
      * @param array $payload
      * @param false $async
@@ -62,7 +83,8 @@ class Manager
         $method = $async ? 'invokeAsync' : 'invoke';
 
         $result = app(LambdaClient::class)->{$method}([
-            'FunctionName' => $function->nameWithPrefix(),
+            // Function name plus our alias name.
+            'FunctionName' => $function->nameWithPrefix() . ':active',
 
             // `RequestResponse` is a synchronous call, vs `Event` which
             // is a fire-and-forget, we can make it async by using the

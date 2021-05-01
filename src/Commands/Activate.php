@@ -9,19 +9,19 @@ use Hammerstone\Sidecar\Deployment;
 use Hammerstone\Sidecar\Sidecar;
 use Illuminate\Console\Command;
 
-class Deploy extends Command
+class Activate extends Command
 {
     /**
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'sidecar:deploy {--do-not-activate}';
+    protected $signature = 'sidecar:activate';
 
     /**
      * The console command description.
      * @var string
      */
-    protected $description = 'Deploy Sidecar functions.';
+    protected $description = 'Activate Sidecar functions that have already been deployed.';
 
     /**
      * @throws Exception
@@ -32,9 +32,7 @@ class Deploy extends Command
             $this->info($message);
         });
 
-        $activate = !$this->option('do-not-activate');
-
-        Deployment::make()->deploy($activate);
+        Deployment::make()->activate();
     }
 
 }

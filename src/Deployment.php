@@ -6,7 +6,9 @@
 namespace Hammerstone\Sidecar;
 
 use Aws\Lambda\Exception\LambdaException;
+use Hammerstone\Sidecar\Events\AfterFunctionsActivated;
 use Hammerstone\Sidecar\Events\AfterFunctionsDeploy;
+use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
 use Hammerstone\Sidecar\Events\BeforeFunctionsDeploy;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -27,7 +29,7 @@ class Deployment
      * @param $functions
      * @return static
      */
-    public static function make($functions)
+    public static function make($functions = null)
     {
         return new static($functions);
     }
@@ -35,7 +37,7 @@ class Deployment
     /**
      * @param $functions
      */
-    public function __construct($functions)
+    public function __construct($functions = null)
     {
         $this->lambda = app(LambdaClient::class);
 
@@ -45,28 +47,54 @@ class Deployment
             $functions = config('sidecar.functions');
         }
 
-        $this->functions = Arr::wrap($functions);
+        $this->functions = array_map(function ($function) {
+            return is_string($function) ? app($function) : $function;
+        }, Arr::wrap($functions));
     }
 
-    public function deploy()
+    /**
+     * Deploy the code to Lambda. Create or updating
+     * functions where necessary.
+     *
+     * @param $activate
+     */
+    public function deploy($activate)
     {
         event(new BeforeFunctionsDeploy($this->functions));
 
-        for ($i = 0; $i < count($this->functions); $i++) {
-            $this->deploySingle($this->functions[$i], $i + 1, count($this->functions));
+        foreach ($this->functions as $function) {
+            $this->deploySingle($function, $activate);
         }
 
         event(new AfterFunctionsDeploy($this->functions));
+
+        if ($activate) {
+            $this->activate();
+        }
+    }
+
+    /**
+     * Activate the latest versions of each function.
+     */
+    public function activate()
+    {
+        event(new BeforeFunctionsActivated($this->functions));
+
+        foreach ($this->functions as $function) {
+            $function->beforeActivation();
+
+            $this->aliasLatestVersion($function);
+
+            $function->afterActivation();
+        }
+
+        event(new AfterFunctionsActivated($this->functions));
     }
 
     protected function deploySingle($function)
     {
-        if (is_string($function)) {
-            $function = app($function);
-        }
-
         Sidecar::log('---------');
-        Sidecar::log('Deploying ' . get_class($function) . ' to Lambda. (Runtime ' . $function->runtime() . '.)');
+        Sidecar::log('Deploying ' . get_class($function) . ' to Lambda. (Runtime ' . $function->runtime() . ')');
 
         $function->beforeDeployment();
 
@@ -101,14 +129,14 @@ class Deployment
 
         $config = $function->toDeploymentArray();
 
-        $check = '[' . substr(md5(json_encode($config)), 0, 8) . ']';
+        $checksum = substr(md5(json_encode($config)), 0, 8);
 
-        if ($this->functionExists($function, $check)) {
+        if ($this->functionExists($function, $checksum)) {
             return Sidecar::log('Function code and configuration are unchanged! Not updating anything.');
         }
 
         // Add the checksum to the description, so we can look for it next time.
-        $config['Description'] .= " $check";
+        $config['Description'] .= " [$checksum]";
 
         $this->lambda->updateFunctionConfiguration(Arr::only($config, [
             'FunctionName',
@@ -118,6 +146,8 @@ class Deployment
             'Timeout',
             'MemorySize',
         ]));
+
+        Sidecar::log('Configuration updated.');
 
         $config = Arr::only($config, [
             'FunctionName',
@@ -133,14 +163,57 @@ class Deployment
         unset($config['Code']);
 
         $this->lambda->updateFunctionCode($config);
+
+        Sidecar::log('Code updated.');
     }
 
     /**
-     * @param $function
+     * @param LambdaFunction $function
+     */
+    protected function aliasLatestVersion(LambdaFunction $function)
+    {
+        $last = last($this->getLastVersionPage($function)['Versions'])['Version'];
+
+        Sidecar::log("Activating the latest version ($last) of " . $function->nameWithPrefix() . ".");
+
+        $this->lambda->deleteAlias([
+            'FunctionName' => $function->nameWithPrefix(),
+            'Name' => 'active',
+        ]);
+
+        $this->lambda->createAlias([
+            'FunctionName' => $function->nameWithPrefix(),
+            'FunctionVersion' => $last,
+            'Name' => 'active',
+        ]);
+    }
+
+    /**
+     * @param LambdaFunction $function
+     * @param null|string $marker
+     * @return \Aws\Result
+     */
+    protected function getLastVersionPage(LambdaFunction $function, $marker = null)
+    {
+        $result = $this->lambda->listVersionsByFunction([
+            'FunctionName' => $function->nameWithPrefix(),
+            'MaxItems' => 100,
+            'Marker' => $marker,
+        ]);
+
+        if ($marker = $result['NextMarker']) {
+            $result = $this->getLastVersionPage($function, $marker);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param LambdaFunction $function
      * @param null $checksum
      * @return bool
      */
-    protected function functionExists($function, $checksum = null)
+    protected function functionExists(LambdaFunction $function, $checksum = null)
     {
         try {
             $response = $this->lambda->getFunction([

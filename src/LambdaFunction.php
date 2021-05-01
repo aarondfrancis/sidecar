@@ -63,10 +63,11 @@ abstract class LambdaFunction
 
     /**
      * Deploy this function only.
+     * @param bool $activate
      */
-    public static function deploy()
+    public static function deploy($activate = true)
     {
-        return Sidecar::deploy(static::class);
+        Sidecar::deploy($activate, static::class);
     }
 
     /**
@@ -80,14 +81,23 @@ abstract class LambdaFunction
     }
 
     /**
+     * Used by Sidecar to differentiate between apps and environments.
+     *
+     * @return string
+     */
+    public function prefix()
+    {
+        return 'SC-' . config('app.name') . '-' . Sidecar::getEnvironment() . '-';
+    }
+
+    /**
      * Function name, including a prefix to differentiate between apps.
      *
      * @return string
      */
     public function nameWithPrefix()
     {
-        // Differentiate between apps and environments.
-        $prefix = 'SC-' . config('app.name') . '-' . config('app.env') . '-';
+        $prefix = $this->prefix();
 
         // Names can only be 64 characters long.
         return $prefix . substr($this->name(), -(64 - strlen($prefix)));
@@ -235,6 +245,16 @@ abstract class LambdaFunction
     }
 
     public function afterDeployment()
+    {
+        //
+    }
+
+    public function beforeActivation()
+    {
+        //
+    }
+
+    public function afterActivation()
     {
         //
     }
