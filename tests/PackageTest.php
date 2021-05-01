@@ -177,11 +177,7 @@ class PackageTest extends BaseTest
         // file_put_contents('contents.zip', $contents);
 
         // This hash has been manually verified to be the correct zip file.
-        // $this->assertEquals('43b32cfd745d749e538cdc83fce2a966', md5($contents));
-
-        $expected = 'UEsDBBQAAAAIAAAAIVIAAAAAAgAAAAAAAAAXAAAAU3VwcG9ydC9GaWxlcy9maWxlMi50eHQDAFBLAwQUAAAACAAAACFSAAAAAAIAAAAAAAAAFwAAAFN1cHBvcnQvRmlsZXMvZmlsZTMudHh0AwBQSwMEFAAAAAgAAAAhUgAAAAACAAAAAAAAABcAAABTdXBwb3J0L0ZpbGVzL2ZpbGUxLnR4dAMAUEsBAgMGFAAAAAgAAAAhUgAAAAACAAAAAAAAABcAAAAAAAAAAAAgAAAAAAAAAFN1cHBvcnQvRmlsZXMvZmlsZTIudHh0UEsBAgMGFAAAAAgAAAAhUgAAAAACAAAAAAAAABcAAAAAAAAAAAAgAAAANwAAAFN1cHBvcnQvRmlsZXMvZmlsZTMudHh0UEsBAgMGFAAAAAgAAAAhUgAAAAACAAAAAAAAABcAAAAAAAAAAAAgAAAAbgAAAFN1cHBvcnQvRmlsZXMvZmlsZTEudHh0UEsFBgAAAAADAAMAzwAAAKUAAAAAAA==';
-
-        $this->assertEquals($expected, base64_encode($contents));
+        $this->assertEquals('d9826f2d35243727a4a5e3fe2e1d8ad4', md5($contents));
     }
 
     /** @test */

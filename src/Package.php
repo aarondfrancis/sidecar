@@ -132,6 +132,7 @@ class Package
         return $this->files = collect($selected)
             ->diff($this->exclude)
             ->unique()
+            ->sort()
             ->values();
     }
 
@@ -141,7 +142,7 @@ class Package
      */
     public function hash()
     {
-        return $this->files()->sort()->values()->reduce(function ($carry, $file) {
+        return $this->files()->reduce(function ($carry, $file) {
             return md5($carry . md5_file($file));
         });
     }
