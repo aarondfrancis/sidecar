@@ -149,7 +149,7 @@ class PackageTest extends BaseTest
 
         file_put_contents(__DIR__ . '/Support/Files/file3.txt', 'Some new data');
 
-        $this->assertEquals('38b2a567f1bce0336c7911fb579c4adb', $package->hash());
+        $this->assertEquals('f88e608b4831d7231af71f63c1839b05', $package->hash());
 
         file_put_contents(__DIR__ . '/Support/Files/file3.txt', '');
 
