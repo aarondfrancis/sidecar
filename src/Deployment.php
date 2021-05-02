@@ -53,7 +53,7 @@ class Deployment
     }
 
     /**
-     * Deploy the code to Lambda. Create or updating
+     * Deploy the code to Lambda. Creating or updating
      * functions where necessary.
      *
      * @param $activate

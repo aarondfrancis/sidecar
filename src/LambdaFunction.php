@@ -218,8 +218,6 @@ abstract class LambdaFunction
      * memory size to infer the amount of CPU and memory allocated to your function.
      * Your function use-case determines your CPU and memory requirements.
      *
-     * The value must be a multiple of 64 MB.
-     *
      * @return int
      */
     public function memory()
@@ -278,15 +276,14 @@ abstract class LambdaFunction
         return [
             'FunctionName' => $this->nameWithPrefix(),
             'Runtime' => $this->runtime(),
-            'Role' => config('sidecar.role_arn'),
+            'Role' => config('sidecar.execution_role'),
             'Handler' => $this->handler(),
             'Code' => $this->makePackage()->deploymentConfiguration(),
             'Description' => $this->description(),
             'Timeout' => $this->timeout(),
-            'MemorySize' => 64 * round($this->memory() / 64),
+            'MemorySize' => $this->memory(),
             'Layers' => $this->layers(),
             'Publish' => true,
         ];
     }
-
 }
