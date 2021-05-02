@@ -2,7 +2,7 @@
 
 [![Tests](https://github.com/hammerstonedev/sidecar/actions/workflows/tests.yml/badge.svg)](https://github.com/hammerstonedev/sidecar/actions/workflows/tests.yml)
 
-Deploy and execute non-PHP AWS Lambda functions from your Laravel application.
+### Deploy and execute non-PHP AWS Lambda functions from your Laravel application.
 
 > Read the full docs at [hammerstone.dev/sidecar/docs](https://hammerstone.dev/sidecar/docs/main/overview).
 
@@ -75,19 +75,15 @@ Here's a simple JS file that could serve as our handler:
 const {createCanvas} = require('canvas')
 
 exports.handler = async function (event) {
-    // Read the text out of the event passed in from PHP.
-    const text = event.text;
-
-    const width = 1200
-    const height = 630
-
-    const canvas = createCanvas(width, height)
+    const canvas = createCanvas(1200, 630)
     const context = canvas.getContext('2d')
 
     context.font = 'bold 70pt Helvetica'
     context.textAlign = 'center'
     context.fillStyle = '#3574d4'
-    context.fillText(text, 600, 170);
+
+    // Read the text out of the event passed in from PHP.
+    context.fillText(event.text, 600, 170);
     
     // Return an image.
     return canvas.toDataURL('image/jpeg');
@@ -97,7 +93,7 @@ exports.handler = async function (event) {
 With those files created, you can deploy this function to Lambda:
 
 ```
-php artisan sidecar:deploy
+php artisan sidecar:deploy --activate
 ```
 
 And then execute it straight from your Laravel app!
