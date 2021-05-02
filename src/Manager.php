@@ -5,6 +5,7 @@
 
 namespace Hammerstone\Sidecar;
 
+use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Results\Arbiter;
 use Hammerstone\Sidecar\Results\PendingResult;
 use Throwable;
@@ -100,6 +101,17 @@ class Manager
 
         // Let the calling function determine what to do with the result.
         return $function->toResult($result);
+    }
+
+    /**
+     * @param $function
+     * @param array $payload
+     * @return PendingResult|Results\SettledResult
+     * @throws Exceptions\SidecarException
+     */
+    public function executeAsync($function, $payload = [])
+    {
+        return $this->execute($function, $payload, $async = true);
     }
 
     /**

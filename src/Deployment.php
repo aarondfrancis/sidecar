@@ -6,6 +6,7 @@
 namespace Hammerstone\Sidecar;
 
 use Aws\Lambda\Exception\LambdaException;
+use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Events\AfterFunctionsActivated;
 use Hammerstone\Sidecar\Events\AfterFunctionsDeploy;
 use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;

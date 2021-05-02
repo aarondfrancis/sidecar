@@ -15,7 +15,7 @@ class Activate extends Command
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'sidecar:activate';
+    protected $signature = 'sidecar:activate {--env=}';
 
     /**
      * The console command description.
@@ -31,6 +31,10 @@ class Activate extends Command
         Sidecar::addLogger(function ($message) {
             $this->info($message);
         });
+
+        if ($environment = $this->option('env')) {
+            Sidecar::overrideEnvironment($environment);
+        }
 
         Deployment::make()->activate();
     }

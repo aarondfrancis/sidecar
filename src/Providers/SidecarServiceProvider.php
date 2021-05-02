@@ -5,11 +5,12 @@
 
 namespace Hammerstone\Sidecar\Providers;
 
+use Hammerstone\Sidecar\Clients\CloudWatchLogsClient;
 use Hammerstone\Sidecar\Commands\Activate;
 use Hammerstone\Sidecar\Commands\Deploy;
 use Hammerstone\Sidecar\Commands\Configure;
 use Hammerstone\Sidecar\Commands\Install;
-use Hammerstone\Sidecar\LambdaClient;
+use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Manager;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,22 +23,31 @@ class SidecarServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../../config/sidecar.php', 'sidecar');
 
         $this->app->singleton(LambdaClient::class, function () {
-            $config = [
-                'version' => 'latest',
-                'region' => config('sidecar.aws_region'),
-            ];
-
-            $credentials = array_filter([
-                'key' => config('sidecar.aws_key'),
-                'secret' => config('sidecar.aws_secret'),
-            ]);
-
-            if ($credentials) {
-                $config['credentials'] = $credentials;
-            }
-
-            return new LambdaClient($config);
+            return new LambdaClient($this->getAwsClientConfiguration());
         });
+
+        $this->app->singleton(CloudWatchLogsClient::class, function () {
+            return new CloudWatchLogsClient($this->getAwsClientConfiguration());
+        });
+    }
+
+    protected function getAwsClientConfiguration()
+    {
+        $config = [
+            'version' => 'latest',
+            'region' => config('sidecar.aws_region'),
+        ];
+
+        $credentials = array_filter([
+            'key' => config('sidecar.aws_key'),
+            'secret' => config('sidecar.aws_secret'),
+        ]);
+
+        if ($credentials) {
+            $config['credentials'] = $credentials;
+        }
+
+        return $config;
     }
 
     public function boot()

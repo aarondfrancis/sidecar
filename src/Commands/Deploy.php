@@ -15,7 +15,7 @@ class Deploy extends Command
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'sidecar:deploy {--do-not-activate}';
+    protected $signature = 'sidecar:deploy {--activate} {--env=}';
 
     /**
      * The console command description.
@@ -32,9 +32,11 @@ class Deploy extends Command
             $this->info($message);
         });
 
-        $activate = !$this->option('do-not-activate');
+        if ($environment = $this->option('env')) {
+            Sidecar::overrideEnvironment($environment);
+        }
 
-        Deployment::make()->deploy($activate);
+        Deployment::make()->deploy($this->option('activate'));
     }
 
 }

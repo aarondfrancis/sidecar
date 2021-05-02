@@ -3,10 +3,15 @@
     "assetUrl": "/sidecar/docs/local",
     "navigation": {
         "Overview": "/overview",
-        "Drivers": {
+        "Installation": "/installation",
+        "Configuration": "/configuration",
+        "Commands": "/commands",
+        "Events": "/events",
+        "Functions": {
             "children": {
-                "Filesystem": "/drivers/filesystem",
-                "Custom": "/drivers/custom"
+                "Creating": "/functions/creating",
+                "Deploying": "/functions/deploying",
+                "Executing": "/functions/executing"
             }
         }
     }

@@ -1,14 +1,7 @@
+
 # Sidecar for Laravel
 
-[![Tests](https://github.com/hammerstonedev/sidecar/actions/workflows/tests.yml/badge.svg)](https://github.com/hammerstonedev/sidecar/actions/workflows/tests.yml)
-
-Deploy and execute non-PHP AWS Lambda functions from your Laravel application.
-
-> Read the full docs at [hammerstone.dev/sidecar/docs](https://hammerstone.dev/sidecar/docs/main/overview).
-
-## What Sidecar Does
-
-Sidecar packages, creates, deploys, and executes Lambda functions from your Laravel application. 
+Sidecar packages, deploys, and executes AWS Lambda functions from your Laravel application. {.text-xl .font-bold} 
 
 You can write functions in any of the following runtimes and execute them straight from PHP:
 
@@ -29,17 +22,16 @@ You can write functions in any of the following runtimes and execute them straig
 
 Any runtime that [Lambda supports](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html), you can use!
 
-### What It Looks Like
+## What A Sidecar Function Looks Like
 
 Every Sidecar Function requires two things:
 
-- A PHP Class
+- A PHP class
 - Files that you want deployed to Lambda
 
-For example, if we were wanting to use Node on Lambda to generate an og:image for all of our blog posts, we would first set up a simple class in PHP called `OgImage`.
+For example, if you want to use Node on Lambda to generate an og:image for all of your blog posts, you would first set up a simple class in PHP called e.g. `OgImage`.
 
-`App\Sidecar\OgImage.php`
-
+App\Sidecar\OgImage.php {.filename}
 ```php
 namespace App\Sidecar;
 
@@ -50,6 +42,7 @@ class OgImage extends LambdaFunction
     public function handler()
     {
         // Define your handler function. 
+        // (Javascript file + export name.) 
         return 'lambda/image.handler';
     }
 
@@ -69,25 +62,20 @@ The second thing you'd need is your function's "handler", in this case a javascr
 
 Here's a simple JS file that could serve as our handler:
 
-`resources/lambda/image.js`
-
+resources/lambda/image.js {.filename}
 ```js
 const {createCanvas} = require('canvas')
 
 exports.handler = async function (event) {
-    // Read the text out of the event passed in from PHP.
-    const text = event.text;
-
-    const width = 1200
-    const height = 630
-
-    const canvas = createCanvas(width, height)
+    const canvas = createCanvas(1200, 630)
     const context = canvas.getContext('2d')
 
     context.font = 'bold 70pt Helvetica'
     context.textAlign = 'center'
     context.fillStyle = '#3574d4'
-    context.fillText(text, 600, 170);
+    
+    // Read the text out of the event passed in from PHP.
+    context.fillText(event.text, 600, 170);
     
     // Return an image.
     return canvas.toDataURL('image/jpeg');
@@ -96,14 +84,13 @@ exports.handler = async function (event) {
 
 With those files created, you can deploy this function to Lambda:
 
-```
-php artisan sidecar:deploy
+```text
+php artisan sidecar:deploy --activate
 ```
 
 And then execute it straight from your Laravel app!
 
-`web.php`
-
+web.php {.filename}
 ```php
 Route::get('/ogimage', function () {
     return OgImage::execute([
@@ -116,8 +103,7 @@ Sidecar passes the payload from `execute` over to your Javascript function. Your
 
 Sidecar reduces the complexity of deploying small bits of code to Lambda. 
 
-
-### Why Sidecar Exists
+## Why Sidecar Exists
 
 [AWS Lambda](https://aws.amazon.com/lambda/) is a powerful service that allows you to run code without provisioning or thinking about servers.
 
@@ -127,14 +113,17 @@ Using Lambda through Vapor is a wonderful developer experience, but there are ti
 
 Or maybe you want to run a Python script without configuring a server? Or a single Ruby script. Or even Java!
 
-When running on a serverless platform, it's not quite as easy as installing Node and running your functions. You don't have access to the server! So you end up deploying a single Vercel or Netlify function and calling it over HTTP or just forgetting the thing altogether.
+When running on a serverless platform, it's not quite as easy as installing Node and running your functions. You don't have access to the server! So you end up deploying a single Vercel or Netlify function and calling it over HTTP, or just forgetting the thing altogether.
 
 Sidecar brings the ease of Vapor to those non-PHP functions. 
 
+
 ## What Sidecar Doesn't Do
 
-Sidecar does _not_ handle any API Gateway, Databases, Caches, etc. The _only_ thing Sidecar concerns itself with is packaging, creating, deploying, and executing Lambda functions.
+Sidecar does _not_ handle any API Gateway, Databases, Caches, etc. The _only_ thing Sidecar concerns itself with is packaging, deploying, and executing Lambda functions.
 
-Sidecar does not provide a way to execute a function via HTTP. You must execute it from your Laravel app through the provided methods.  
+Sidecar does not provide a way to execute a function via HTTP. You must execute it from your Laravel app through the provided methods. {.font-bold}
 
-If you need those other services, you are encouraged to use the instances that Vapor has set up for you, or set them up yourself. 
+If you need those other services, you are encouraged to use the instances that Vapor has set up for you, or set them up yourself.
+
+Finally, Sidecar doesn't replace Vapor in any way. In fact, PHP is not even one of the AWS supported runtimes! 
