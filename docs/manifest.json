@@ -5,14 +5,14 @@
         "Overview": "/overview",
         "Installation": "/installation",
         "Configuration": "/configuration",
-        "Commands": "/commands",
-        "Events": "/events",
         "Functions": {
             "children": {
                 "Creating": "/functions/creating",
                 "Deploying": "/functions/deploying",
                 "Executing": "/functions/executing"
             }
-        }
+        },
+        "Commands": "/commands",
+        "Events": "/events"
     }
 }

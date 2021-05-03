@@ -22,7 +22,7 @@ class ExampleFunction extends LambdaFunction
 }
 ```
 
-## Code Handler
+## Function Handler
 
 What you define for your handler depends on what runtime you're using.
 

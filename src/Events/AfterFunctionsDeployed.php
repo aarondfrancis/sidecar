@@ -5,7 +5,7 @@
 
 namespace Hammerstone\Sidecar\Events;
 
-class BeforeFunctionsDeploy
+class AfterFunctionsDeployed
 {
     public $functions = [];
 

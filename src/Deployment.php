@@ -8,9 +8,9 @@ namespace Hammerstone\Sidecar;
 use Aws\Lambda\Exception\LambdaException;
 use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Events\AfterFunctionsActivated;
-use Hammerstone\Sidecar\Events\AfterFunctionsDeploy;
+use Hammerstone\Sidecar\Events\AfterFunctionsDeployed;
 use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
-use Hammerstone\Sidecar\Events\BeforeFunctionsDeploy;
+use Hammerstone\Sidecar\Events\BeforeFunctionsDeployed;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -61,13 +61,13 @@ class Deployment
      */
     public function deploy($activate)
     {
-        event(new BeforeFunctionsDeploy($this->functions));
+        event(new BeforeFunctionsDeployed($this->functions));
 
         foreach ($this->functions as $function) {
             $this->deploySingle($function, $activate);
         }
 
-        event(new AfterFunctionsDeploy($this->functions));
+        event(new AfterFunctionsDeployed($this->functions));
 
         if ($activate) {
             $this->activate();
