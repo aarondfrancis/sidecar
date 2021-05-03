@@ -176,10 +176,10 @@ class ExampleFunction extends LambdaFunction
             // Change the default base path.
             ->setBasePath(resource_path())
             ->include([
-                'resources/lambda'
+                'lambda'
             ])
             ->exclude([
-                'resources/lambda/ignore.js'
+                'lambda/ignore.js'
             ]);
     }
 }

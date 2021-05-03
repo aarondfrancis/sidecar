@@ -56,7 +56,7 @@ $result = OgImage::executeAsync();
 $result = OgImage::execute($payload = [], $async = true);
 
 // Async execution using the facade.
-$result = Sidecar::executeAsync(OgImage::class, $payload = []);
+$result = Sidecar::executeAsync(OgImage::class);
 $result = Sidecar::execute(OgImage::class, $payload = [], $async = true);
 
 echo 'Image may or may not have finished generating yet!';
