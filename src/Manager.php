@@ -116,11 +116,11 @@ class Manager
 
     /**
      * @param $params
-     * @param bool $wait
+     * @param bool $async
      * @return array
-     * @throws Throwable
+     * @throws Exceptions\SidecarException
      */
-    public function executeMany($params, $wait = true)
+    public function executeMany($params, $async = false)
     {
         $results = array_map(function ($param) {
             // A function with no payload.
@@ -134,11 +134,24 @@ class Manager
             return $this->execute($param['function'], $param['payload'], $async = true);
         }, $params);
 
-        if ($wait) {
-            // Wait for all the requests to finish.
-            $results = array_map('settled', $results);
+        if ($async) {
+            // Return all the Pending Results.
+            return $results;
         }
 
-        return $results;
+        // Wait for all the requests to finish.
+        return array_map(function($result) {
+            return $result->settled();
+        }, $results);
+    }
+
+    /**
+     * @param $params
+     * @return array
+     * @throws Throwable
+     */
+    public function executeManyAsync($params)
+    {
+        return $this->executeMany($params, $async = true);
     }
 }

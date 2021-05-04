@@ -41,11 +41,11 @@ abstract class LambdaFunction
      * Execute the current function and return the response.
      *
      * @param $payloads
-     * @param bool $wait
+     * @param bool $async
      * @return array
      * @throws \Throwable
      */
-    public static function executeMany($payloads, $wait = true)
+    public static function executeMany($payloads, $async = false)
     {
         if (is_int($payloads)) {
             $params = array_fill(0, $payloads, static::class);
@@ -58,8 +58,21 @@ abstract class LambdaFunction
             }, $payloads);
         }
 
-        return Sidecar::executeMany($params, $wait);
+        return Sidecar::executeMany($params, $async);
     }
+
+    /**
+     * Execute the current function and return the response.
+     *
+     * @param $payloads
+     * @return array
+     * @throws \Throwable
+     */
+    public static function executeManyAsync($payloads)
+    {
+        return static::executeMany($payloads, $async = true);
+    }
+
 
     /**
      * Deploy this function only.

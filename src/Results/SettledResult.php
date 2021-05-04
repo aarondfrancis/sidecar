@@ -95,7 +95,7 @@ class SettledResult implements Responsable, ResultContract
     public function throw()
     {
         if (!$this->isError()) {
-            return;
+            return $this;
         }
 
         throw new LambdaExecutionException(sprintf('Lambda Execution Exception for %s: "%s".', ...[

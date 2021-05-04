@@ -343,7 +343,7 @@ $results = OgImage::executeMany([[
 
 By default the executions are all run in parallel, but then Sidecar waits until they are _all settled_ to return anything.
  
-To execute many functions without waiting for anything, pass `false` as the second parameter. This will return an array full of `PendingResults` to you.
+To execute many functions without waiting for anything, pass `true` as the second parameter. This will return an array full of `PendingResults` to you.
 
 
 ```php
@@ -354,9 +354,86 @@ $results = OgImage::executeMany([[
     'text' => 'Deploying Functions'
 ], [
     'text' => 'Executing Functions'
-]], $wait = false);
+]], $async = true);
 ```
 
+You can also call `executeManyAsync`:
+
+```php
+// $results will be an array of PendingResults
+$results = OgImage::executeManyAsync([[
+    'text' => 'Creating Functions'
+], [
+    'text' => 'Deploying Functions'
+], [
+    'text' => 'Executing Functions'
+]]);
+```
 
 ## Execution Exceptions
+
+If your Lambda throws an exception or otherwise errors out, you'll need to be able to act on that back in your Laravel application.
+
+We'll take a very basic example of a Node function that simply throws an error:
+
+errors.js {.filename}
+```js
+exports.handler = async function (event) {
+    throw new Error('Error from Lambda!');
+}
+```
+
+When executing that function from PHP, Sidecar will not throw an exception unless explicitly asked to.
+ 
+```php
+// Execute synchronously. No error thrown yet.
+$result = ErrorFunction::execute();
+
+// When asked to, Sidecar will throw a PHP Exception 
+// if there was a runtime error.
+$result->throw();
+
+// > Hammerstone\Sidecar\Exceptions\LambdaExecutionException
+// > Lambda Execution Exception for App\Sidecar\FooFunction: "Error from Lambda!. 
+// > [TRACE] Error: Error from Lambda! 
+// > at Runtime.exports.handler (/var/task/lambda/error.js:2:11) 
+// > at Runtime.handleOnce (/var/runtime/Runtime.js:66:25)".
+```
+
+When you call `throw`, Sidecar will throw a `LambdaExecutionException` _if there is one_. If there isn't, nothing will happen.
+
+```php
+// Execute synchronously.
+$result = NonErrorFunction::execute();
+
+// No error? No problem. Call it just in case.
+return $result->throw()->body();
+```
+
+If you don't want to throw an exception, but want to handle it in another way, you may check the `isError` method.
+
+```php
+// Execute synchronously. No error thrown yet.
+$result = ErrorFunction::execute();
+
+if ($result->isError()) { // [tl! ~~]
+    // Do something, anything!
+}
+```
+
+Sidecar also provides the `trace` to you:
+
+```php
+// Execute synchronously. Nothing will happen.
+$result = ErrorFunction::execute();
+
+// Dump the error trace.
+dd($result->trace()); // [tl! ~~]
+
+// [
+//   "Error: Error from Lambda!"
+//   "    at Runtime.exports.handler (/var/task/lambda/error.js:2:11)"
+//   "    at Runtime.handleOnce (/var/runtime/Runtime.js:66:25)"
+// ]
+```
 
