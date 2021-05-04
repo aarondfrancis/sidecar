@@ -3,12 +3,8 @@
  * @author Aaron Francis <aaron@hammerstone.dev>
  */
 
-namespace Hammerstone\Airdrop\Tests\Triggers;
+namespace Hammerstone\Sidecar\Tests;
 
-use App\Imports\CsvImport;
-use Hammerstone\Airdrop\Tests\BaseTest;
-use Hammerstone\Airdrop\Triggers\ConfigTrigger;
-use Hammerstone\Airdrop\Triggers\FileTrigger;
 use Hammerstone\Sidecar\Package;
 use Hammerstone\Sidecar\Tests\Support\FakeStreamWrapper;
 use Illuminate\Support\Carbon;

@@ -81,6 +81,8 @@ class Manager
             $function = app($function);
         }
 
+        $payload = $function->preparePayload($payload);
+
         $method = $async ? 'invokeAsync' : 'invoke';
 
         $result = app(LambdaClient::class)->{$method}([
@@ -115,24 +117,21 @@ class Manager
     }
 
     /**
-     * @param $params
+     * @param $function
+     * @param $payloads
      * @param bool $async
      * @return array
      * @throws Exceptions\SidecarException
      */
-    public function executeMany($params, $async = false)
+    public function executeMany($function, $payloads, $async = false)
     {
-        $results = array_map(function ($param) {
-            // A function with no payload.
-            if (!is_array($param)) {
-                $param = [
-                    'function' => $param,
-                    'payload' => null
-                ];
-            }
+        if (is_int($payloads)) {
+            $payloads = array_fill(0, $payloads, []);
+        }
 
-            return $this->execute($param['function'], $param['payload'], $async = true);
-        }, $params);
+        $results = array_map(function ($payload) use ($function) {
+            return $this->execute($function, $payload, $async = true);
+        }, $payloads);
 
         if ($async) {
             // Return all the Pending Results.
@@ -140,7 +139,7 @@ class Manager
         }
 
         // Wait for all the requests to finish.
-        return array_map(function($result) {
+        return array_map(function ($result) {
             return $result->settled();
         }, $results);
     }

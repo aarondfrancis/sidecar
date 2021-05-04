@@ -47,18 +47,7 @@ abstract class LambdaFunction
      */
     public static function executeMany($payloads, $async = false)
     {
-        if (is_int($payloads)) {
-            $params = array_fill(0, $payloads, static::class);
-        } else {
-            $params = array_map(function ($payload) {
-                return [
-                    'function' => static::class,
-                    'payload' => $payload
-                ];
-            }, $payloads);
-        }
-
-        return Sidecar::executeMany($params, $async);
+        return Sidecar::executeMany(static::class, $payloads, $async);
     }
 
     /**
@@ -248,6 +237,11 @@ abstract class LambdaFunction
     public function timeout()
     {
         return config('sidecar.timeout');
+    }
+
+    public function preparePayload($payload)
+    {
+        return $payload;
     }
 
     public function beforeDeployment()

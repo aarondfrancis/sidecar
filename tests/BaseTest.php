@@ -3,7 +3,7 @@
  * @author Aaron Francis <aaron@hammerstone.dev|https://twitter.com/aarondfrancis>
  */
 
-namespace Hammerstone\Airdrop\Tests;
+namespace Hammerstone\Sidecar\Tests;
 
 use Hammerstone\Sidecar\Providers\SidecarServiceProvider;
 use Illuminate\Support\Facades\File;
