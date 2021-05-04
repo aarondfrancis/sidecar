@@ -1,12 +1,11 @@
-php:
-  preset: laravel
+preset: laravel
 
-  disabled:
-    - concat_without_spaces
-    - not_operator_with_successor_space
-    - cast_spaces
-    - trailing_comma_in_multiline_array
-    - heredoc_to_nowdoc
-    - phpdoc_summary
+disabled:
+  - concat_without_spaces
+  - not_operator_with_successor_space
+  - cast_spaces
+  - trailing_comma_in_multiline_array
+  - heredoc_to_nowdoc
+  - phpdoc_summary
 
-  risky: false
+risky: false
