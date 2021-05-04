@@ -6,7 +6,6 @@
 namespace Hammerstone\Sidecar\Tests;
 
 use Hammerstone\Sidecar\Providers\SidecarServiceProvider;
-use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\TestCase;
 
 abstract class BaseTest extends TestCase
@@ -17,5 +16,4 @@ abstract class BaseTest extends TestCase
             SidecarServiceProvider::class
         ];
     }
-
 }

@@ -22,5 +22,4 @@ class EnvironmentTest extends BaseTest
 
         $this->assertEquals('testing', Sidecar::getEnvironment());
     }
-
 }

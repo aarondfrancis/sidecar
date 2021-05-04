@@ -5,7 +5,6 @@
 
 namespace Hammerstone\Sidecar\Commands\Actions;
 
-
 use Aws\S3\S3Client;
 use Illuminate\Support\Str;
 

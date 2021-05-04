@@ -16,5 +16,4 @@ class AfterFunctionsDeployed
     {
         $this->functions = $functions;
     }
-
 }

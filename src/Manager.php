@@ -6,7 +6,6 @@
 namespace Hammerstone\Sidecar;
 
 use Hammerstone\Sidecar\Clients\LambdaClient;
-use Hammerstone\Sidecar\Results\Arbiter;
 use Hammerstone\Sidecar\Results\PendingResult;
 use Throwable;
 

@@ -8,8 +8,8 @@ namespace Hammerstone\Sidecar;
 use Aws\Result;
 use GuzzleHttp\Promise\PromiseInterface;
 use Hammerstone\Sidecar\Exceptions\SidecarException;
-use Hammerstone\Sidecar\Results\SettledResult;
 use Hammerstone\Sidecar\Results\PendingResult;
+use Hammerstone\Sidecar\Results\SettledResult;
 use Illuminate\Support\Str;
 
 abstract class LambdaFunction
@@ -61,7 +61,6 @@ abstract class LambdaFunction
     {
         return static::executeMany($payloads, $async = true);
     }
-
 
     /**
      * Deploy this function only.

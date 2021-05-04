@@ -6,11 +6,11 @@
 namespace Hammerstone\Sidecar\Providers;
 
 use Hammerstone\Sidecar\Clients\CloudWatchLogsClient;
-use Hammerstone\Sidecar\Commands\Activate;
-use Hammerstone\Sidecar\Commands\Deploy;
-use Hammerstone\Sidecar\Commands\Configure;
-use Hammerstone\Sidecar\Commands\Install;
 use Hammerstone\Sidecar\Clients\LambdaClient;
+use Hammerstone\Sidecar\Commands\Activate;
+use Hammerstone\Sidecar\Commands\Configure;
+use Hammerstone\Sidecar\Commands\Deploy;
+use Hammerstone\Sidecar\Commands\Install;
 use Hammerstone\Sidecar\Manager;
 use Illuminate\Support\ServiceProvider;
 
@@ -65,5 +65,4 @@ class SidecarServiceProvider extends ServiceProvider
             __DIR__ . '/../../config/sidecar.php' => config_path('sidecar.php')
         ], 'config');
     }
-
 }

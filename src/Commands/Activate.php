@@ -38,5 +38,4 @@ class Activate extends Command
 
         Deployment::make()->activate();
     }
-
 }

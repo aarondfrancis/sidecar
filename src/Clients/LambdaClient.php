@@ -9,5 +9,4 @@ use Aws\Lambda\LambdaClient as BaseClient;
 
 class LambdaClient extends BaseClient
 {
-
 }

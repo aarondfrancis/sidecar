@@ -5,12 +5,10 @@
 
 namespace Hammerstone\Sidecar\Results;
 
-
 use Hammerstone\Sidecar\LambdaFunction;
 
 interface ResultContract
 {
-
     /**
      * @param $raw
      * @param LambdaFunction $function

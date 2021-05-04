@@ -5,7 +5,6 @@
 
 namespace Hammerstone\Sidecar\Commands\Actions;
 
-
 use Aws\Iam\IamClient;
 
 class CreateDeploymentUser extends BaseAction
@@ -118,10 +117,10 @@ class CreateDeploymentUser extends BaseAction
             return $this->createAccessKey();
         }
 
-        $question = "" .
+        $question = '' .
             "Sidecar AWS key and secret are not present in the .env file. \n" .
             " Generating a new set of credentials, which will invalidate any outstanding credentials. \n" .
-            " Continue?";
+            ' Continue?';
 
         if (!$this->command->confirm($question, $default = true)) {
             $this->command->error('Not creating new keys, make sure you populate your keys.');
@@ -154,5 +153,4 @@ class CreateDeploymentUser extends BaseAction
             'secret' => $result->search('AccessKey.SecretAccessKey'),
         ];
     }
-
 }

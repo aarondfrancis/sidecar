@@ -16,5 +16,4 @@ class BeforeFunctionsActivated
     {
         $this->functions = $functions;
     }
-
 }

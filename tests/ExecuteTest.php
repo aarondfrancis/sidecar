@@ -12,7 +12,6 @@ use Hammerstone\Sidecar\Tests\Support\EmptyTestFunction;
 
 class ExecuteTest extends BaseTest
 {
-
     protected function mockMethod($method, $with, $return)
     {
         if (is_null($return)) {
@@ -143,6 +142,4 @@ class ExecuteTest extends BaseTest
             'foo' => 'bar'
         ], $async = true);
     }
-
 }
-

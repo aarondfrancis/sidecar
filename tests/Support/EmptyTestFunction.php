@@ -9,7 +9,6 @@ use Hammerstone\Sidecar\LambdaFunction;
 
 class EmptyTestFunction extends LambdaFunction
 {
-
     public function handler()
     {
         //

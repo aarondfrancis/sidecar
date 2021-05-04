@@ -12,7 +12,6 @@ use Hammerstone\Sidecar\Sidecar;
 
 class ExecuteMultipleTest extends BaseTest
 {
-
     protected function expectedArgs($args = [])
     {
         return array_merge([
@@ -135,7 +134,6 @@ class ExecuteMultipleTest extends BaseTest
 
 class TestFunction extends LambdaFunction
 {
-
     public function handler()
     {
         //

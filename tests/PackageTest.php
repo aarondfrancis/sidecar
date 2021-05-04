@@ -75,9 +75,9 @@ class PackageTest extends BaseTest
             ->toArray();
 
         $this->assertEquals([
-            "file1.txt",
-            "file2.txt",
-            "file3.txt",
+            'file1.txt',
+            'file2.txt',
+            'file3.txt',
         ], $files);
     }
 

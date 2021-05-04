@@ -38,5 +38,4 @@ class Deploy extends Command
 
         Deployment::make()->deploy($this->option('activate'));
     }
-
 }

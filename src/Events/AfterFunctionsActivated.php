@@ -16,5 +16,4 @@ class AfterFunctionsActivated
     {
         $this->functions = $functions;
     }
-
 }

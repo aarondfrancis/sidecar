@@ -5,7 +5,6 @@
 
 namespace Hammerstone\Sidecar\Commands\Actions;
 
-
 use Aws\Iam\IamClient;
 
 class DestroyAdminKeys extends BaseAction
@@ -22,9 +21,9 @@ class DestroyAdminKeys extends BaseAction
 
         $name = $user['User']['UserName'];
 
-        $question = "" .
+        $question = '' .
             "Now that everything is setup, would you like to remove the admin access keys for user `$name` from AWS? \n" .
-            " Sidecar no longer needs them.";
+            ' Sidecar no longer needs them.';
 
         if (!$this->confirm($question, $default = true)) {
             return;
@@ -42,6 +41,5 @@ class DestroyAdminKeys extends BaseAction
         }
 
         $this->progress('Admin keys deleted');
-
     }
 }

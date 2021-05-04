@@ -54,7 +54,7 @@ class SettledResult implements Responsable, ResultContract
      */
     public function isError()
     {
-        return $this->raw->get('FunctionError') !== "";
+        return $this->raw->get('FunctionError') !== '';
     }
 
     /**
@@ -224,10 +224,11 @@ class SettledResult implements Responsable, ResultContract
 
             if (Str::startsWith($line, 'REPORT RequestId')) {
                 $reportLineReached = true;
+
                 return $this->parseReportLine($line);
             }
 
-            if ($line === "") {
+            if ($line === '') {
                 return null;
             }
 
@@ -276,7 +277,7 @@ class SettledResult implements Responsable, ResultContract
         array_shift($parts);
 
         $this->report = collect($parts)->mapWithKeys(function ($part) {
-            list($key, $value) = explode(': ', $part);
+            [$key, $value] = explode(': ', $part);
 
             return [$key => $value];
         })->toArray();

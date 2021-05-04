@@ -52,13 +52,13 @@ class CreateExecutionRole extends BaseAction
         return $this->client->createRole([
             'RoleName' => $this->roleName(),
             'AssumeRolePolicyDocument' => json_encode([
-                "Version" => "2012-10-17",
-                "Statement" => [[
-                    "Effect" => "Allow",
-                    "Principal" => [
-                        "Service" => "lambda.amazonaws.com"
+                'Version' => '2012-10-17',
+                'Statement' => [[
+                    'Effect' => 'Allow',
+                    'Principal' => [
+                        'Service' => 'lambda.amazonaws.com'
                     ],
-                    "Action" => "sts:AssumeRole"
+                    'Action' => 'sts:AssumeRole'
                 ]]
             ]),
         ]);
@@ -80,18 +80,18 @@ class CreateExecutionRole extends BaseAction
         return [
             'Version' => '2012-10-17',
             'Statement' => [[
-                "Effect" => "Allow",
-                "Resource" => "*",
-                "Action" => [
-                    "logs:CreateLogGroup",
-                    "logs:CreateLogStream",
-                    "logs:FilterLogEvents",
-                    "logs:PutLogEvents",
-                    "lambda:invokeFunction",
-                    "s3:*",
-                    "ses:*",
-                    "sqs:*",
-                    "dynamodb:*"
+                'Effect' => 'Allow',
+                'Resource' => '*',
+                'Action' => [
+                    'logs:CreateLogGroup',
+                    'logs:CreateLogStream',
+                    'logs:FilterLogEvents',
+                    'logs:PutLogEvents',
+                    'lambda:invokeFunction',
+                    's3:*',
+                    'ses:*',
+                    'sqs:*',
+                    'dynamodb:*'
                 ],
             ]]
         ];

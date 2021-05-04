@@ -43,5 +43,4 @@ class Install extends Command
 
         $this->info('Config file published!');
     }
-
 }

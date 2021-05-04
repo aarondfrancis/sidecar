@@ -5,7 +5,6 @@
 
 namespace Hammerstone\Sidecar\Commands\Actions;
 
-
 use Hammerstone\Sidecar\Commands\Configure;
 
 abstract class BaseAction
@@ -40,5 +39,4 @@ abstract class BaseAction
     {
         $this->command->text("==> $message");
     }
-
 }

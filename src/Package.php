@@ -12,8 +12,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use ZipStream\Option\Archive;
-use ZipStream\ZipStream;
 use ZipStream\Option\File as FileOptions;
+use ZipStream\ZipStream;
 
 class Package
 {
@@ -194,6 +194,7 @@ class Package
         // If it already exists we can bail early.
         if (file_exists($path)) {
             Sidecar::log("Package unchanged, reusing previous code package at $path.");
+
             return $filename;
         }
 
@@ -308,5 +309,4 @@ class Package
 
         $client->registerStreamWrapper();
     }
-
 }

@@ -175,7 +175,7 @@ class Deployment
     {
         $last = last($this->getLastVersionPage($function)['Versions'])['Version'];
 
-        Sidecar::log("Activating the latest version ($last) of " . $function->nameWithPrefix() . ".");
+        Sidecar::log("Activating the latest version ($last) of " . $function->nameWithPrefix() . '.');
 
         $this->lambda->deleteAlias([
             'FunctionName' => $function->nameWithPrefix(),

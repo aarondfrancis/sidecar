@@ -83,7 +83,7 @@ class FakeStreamWrapper
         $right = substr(static::$paths[$this->path], $this->position + strlen($data));
         static::$paths[$this->path] = $left . $data . $right;
         $this->position += strlen($data);
+
         return strlen($data);
     }
-
 }

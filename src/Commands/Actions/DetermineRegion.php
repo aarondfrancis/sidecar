@@ -5,7 +5,6 @@
 
 namespace Hammerstone\Sidecar\Commands\Actions;
 
-
 use Aws\S3\S3Client;
 use Illuminate\Support\Facades\File;
 
@@ -61,7 +60,7 @@ class DetermineRegion extends BaseAction
 
         $question = implode("\n", [
             "This Vapor project deploys to the AWS `$region` region.",
-            " Would you like to use the same region for your Sidecar functions?"
+            ' Would you like to use the same region for your Sidecar functions?'
         ]);
 
         if ($this->command->confirm($question, $default = true)) {
