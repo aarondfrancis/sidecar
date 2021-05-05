@@ -202,7 +202,7 @@ class Deployment
             'Marker' => $marker,
         ]);
 
-        if ($marker = $result['NextMarker']) {
+        if ($marker = Arr::get($result, 'NextMarker')) {
             $result = $this->getLastVersionPage($function, $marker);
         }
 

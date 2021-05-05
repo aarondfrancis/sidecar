@@ -236,6 +236,14 @@ class Package
     }
 
     /**
+     * @return string
+     */
+    public function getBasePath()
+    {
+        return $this->basePath ?? config('sidecar.package_base_path') ?? base_path();
+    }
+
+    /**
      * @param $paths
      * @return array
      */
@@ -245,14 +253,6 @@ class Package
             // Make every path relative to the base directory.
             return $this->prependBasePath($path);
         }, Arr::wrap($paths));
-    }
-
-    /**
-     * @return string
-     */
-    protected function getBasePath()
-    {
-        return $this->basePath ?? base_path();
     }
 
     /**

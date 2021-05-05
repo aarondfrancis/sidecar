@@ -68,7 +68,7 @@ abstract class LambdaFunction
      */
     public static function deploy($activate = true)
     {
-        Sidecar::deploy($activate, static::class);
+        Deployment::make(static::class)->deploy($activate);
     }
 
     /**
@@ -262,6 +262,17 @@ abstract class LambdaFunction
     {
         //
     }
+
+    public function beforeExecution($payload)
+    {
+        //
+    }
+
+    public function afterExecution($payload, $result)
+    {
+        //
+    }
+
 
     /**
      * @return Package

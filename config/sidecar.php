@@ -58,4 +58,11 @@ return [
      * This can be overridden per function.
      */
     'memory' => env('SIDECAR_MEMORY', 512),
+
+    /*
+     * The base path for your package files. If you e.g. keep
+     * all your Lambda package files in your resource path,
+     * you may change the base path here.
+     */
+    'package_base_path' => env('SIDECAR_PACKAGE_BASE_PATH', base_path()),
 ];

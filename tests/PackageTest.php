@@ -15,6 +15,8 @@ class PackageTest extends BaseTest
 {
     public function getEnvironmentSetUp($app)
     {
+        Carbon::setTestNow('2021-01-01 00:00:00');
+
         config()->set('sidecar', [
             'aws_key' => 'key',
             'aws_secret' => 'secret',
@@ -98,6 +100,25 @@ class PackageTest extends BaseTest
     }
 
     /** @test */
+    public function base_path_order()
+    {
+        // base_path by default.
+        $package = new Package;
+        $this->assertEquals(base_path(), $package->getBasePath());
+
+        config(['sidecar.package_base_path' => base_path('by-config')]);
+
+        // Config overrules default.
+        $package = new Package;
+        $this->assertEquals(base_path('by-config'), $package->getBasePath());
+
+        // Direct set overrules everything
+        $package = new Package;
+        $package->setBasePath(base_path('direct-set'));
+        $this->assertEquals(base_path('direct-set'), $package->getBasePath());
+    }
+
+    /** @test */
     public function it_excludes_files()
     {
         $package = $this->makePackageClass();
@@ -155,8 +176,6 @@ class PackageTest extends BaseTest
     /** @test */
     public function it_writes_to_the_s3_stream()
     {
-        Carbon::setTestNow('2021-01-01 00:00:00');
-
         $package = $this->makePackageClass();
 
         $package->include([
@@ -194,5 +213,20 @@ class PackageTest extends BaseTest
         // Only 1 call to S3, to see if it exists. No calls to write anything.
         $this->assertCount(1, FakeStreamWrapper::$calls);
         $this->assertEquals('url_stat', FakeStreamWrapper::$calls[0][0]);
+    }
+
+    /** @test */
+    public function it_creates_the_correct_deployment_configuration()
+    {
+        $package = $this->makePackageClass();
+
+        $package->include([
+            'Support/Files'
+        ]);
+
+        $this->assertEquals([
+            "S3Bucket" => "sidecar-bucket",
+            "S3Key" => "sidecar/001-55ba7f7885ab81a55dd6ddda087b280b.zip",
+        ], $package->deploymentConfiguration());
     }
 }

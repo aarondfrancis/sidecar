@@ -43,14 +43,14 @@ class OgImage extends LambdaFunction
     {
         // Define your handler function. 
         // (Javascript file + export name.) 
-        return 'lambda/image.handler';
+        return 'resources/lambda/image.handler';
     }
 
     public function package()
     {
         // All files and folders needed for the function.
         return [
-            'lambda',
+            'resources/lambda',
         ];
     }
 }

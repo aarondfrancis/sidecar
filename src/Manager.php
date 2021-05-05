@@ -6,11 +6,16 @@
 namespace Hammerstone\Sidecar;
 
 use Hammerstone\Sidecar\Clients\LambdaClient;
+use Hammerstone\Sidecar\Events\AfterFunctionExecuted;
+use Hammerstone\Sidecar\Events\BeforeFunctionExecuted;
 use Hammerstone\Sidecar\Results\PendingResult;
+use Illuminate\Support\Traits\Macroable;
 use Throwable;
 
 class Manager
 {
+    use Macroable;
+
     /**
      * @var array
      */
@@ -84,6 +89,10 @@ class Manager
 
         $method = $async ? 'invokeAsync' : 'invoke';
 
+        event(new BeforeFunctionExecuted($function, $payload));
+
+        $function->beforeExecution($payload);
+
         $result = app(LambdaClient::class)->{$method}([
             // Function name plus our alias name.
             'FunctionName' => $function->nameWithPrefix() . ':active',
@@ -101,7 +110,13 @@ class Manager
         ]);
 
         // Let the calling function determine what to do with the result.
-        return $function->toResult($result);
+        $result = $function->toResult($result);
+
+        event(new AfterFunctionExecuted($function, $payload, $result));
+
+        $function->afterExecution($payload, $result);
+
+        return $result;
     }
 
     /**
