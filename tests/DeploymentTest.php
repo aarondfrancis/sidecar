@@ -76,14 +76,14 @@ class DeploymentTest extends BaseTest
             ])
             ->andReturn([
                 'Versions' => [[
-                    "FunctionName" => 'test-FunctionName',
-                    "Version" => '10',
+                    'FunctionName' => 'test-FunctionName',
+                    'Version' => '10',
                 ], [
-                    "FunctionName" => 'test-FunctionName',
-                    "Version" => '11',
+                    'FunctionName' => 'test-FunctionName',
+                    'Version' => '11',
                 ], [
-                    "FunctionName" => 'test-FunctionName',
-                    "Version" => '12',
+                    'FunctionName' => 'test-FunctionName',
+                    'Version' => '12',
                 ]]
             ]);
     }
@@ -92,8 +92,8 @@ class DeploymentTest extends BaseTest
     {
         $this->lambda->shouldReceive('getFunction')->andReturn([
             'Configuration' => [
-                "FunctionName" => 'test-FunctionName',
-                "Description" => 'test-Description',
+                'FunctionName' => 'test-FunctionName',
+                'Description' => 'test-Description',
             ]
         ]);
 
@@ -157,7 +157,6 @@ class DeploymentTest extends BaseTest
 
         Event::assertDispatched(BeforeFunctionsActivated::class);
         Event::assertDispatched(AfterFunctionsActivated::class);
-
     }
 
     /** @test */
@@ -189,7 +188,6 @@ class DeploymentTest extends BaseTest
         Event::assertDispatched(AfterFunctionsActivated::class);
     }
 
-
     /** @test */
     public function it_doesnt_update_if_nothing_has_changed()
     {
@@ -197,8 +195,8 @@ class DeploymentTest extends BaseTest
 
         $this->lambda->shouldReceive('getFunction')->twice()->andReturn([
             'Configuration' => [
-                "FunctionName" => 'test-FunctionName',
-                "Description" => 'test-Description [5000a525]',
+                'FunctionName' => 'test-FunctionName',
+                'Description' => 'test-Description [5000a525]',
             ]
         ]);
 

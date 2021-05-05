@@ -225,8 +225,8 @@ class PackageTest extends BaseTest
         ]);
 
         $this->assertEquals([
-            "S3Bucket" => "sidecar-bucket",
-            "S3Key" => "sidecar/001-55ba7f7885ab81a55dd6ddda087b280b.zip",
+            'S3Bucket' => 'sidecar-bucket',
+            'S3Key' => 'sidecar/001-55ba7f7885ab81a55dd6ddda087b280b.zip',
         ], $package->deploymentConfiguration());
     }
 }

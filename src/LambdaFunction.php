@@ -273,7 +273,6 @@ abstract class LambdaFunction
         //
     }
 
-
     /**
      * @return Package
      */

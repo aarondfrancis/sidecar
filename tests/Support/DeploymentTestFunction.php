@@ -42,5 +42,4 @@ class DeploymentTestFunction extends LambdaFunction
             'Publish' => 'test-Publish',
         ];
     }
-
 }
