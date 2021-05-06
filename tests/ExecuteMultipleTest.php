@@ -8,13 +8,23 @@ namespace Hammerstone\Sidecar\Tests;
 use Aws\Result;
 use GuzzleHttp\Promise\PromiseInterface;
 use Hammerstone\Sidecar\Clients\LambdaClient;
+use Hammerstone\Sidecar\Events\AfterFunctionExecuted;
+use Hammerstone\Sidecar\Events\BeforeFunctionExecuted;
 use Hammerstone\Sidecar\Results\PendingResult;
 use Hammerstone\Sidecar\Sidecar;
 use Hammerstone\Sidecar\Tests\Support\EmptyTestFunction;
+use Illuminate\Support\Facades\Event;
 use Mockery;
 
 class ExecuteMultipleTest extends BaseTest
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Event::fake();
+    }
+
     protected function expectedArgs($args = [])
     {
         return array_merge([
@@ -23,6 +33,17 @@ class ExecuteMultipleTest extends BaseTest
             'LogType' => 'Tail',
             'Payload' => '[]'
         ], $args);
+    }
+
+    public function assertEvents($executed = 1)
+    {
+        if ($executed) {
+            Event::assertDispatched(BeforeFunctionExecuted::class, $executed);
+            Event::assertDispatched(AfterFunctionExecuted::class, $executed);
+        } else {
+            Event::assertNotDispatched(BeforeFunctionExecuted::class);
+            Event::assertNotDispatched(AfterFunctionExecuted::class);
+        }
     }
 
     protected function mockMultiple()
@@ -68,6 +89,8 @@ class ExecuteMultipleTest extends BaseTest
         ], [
             'C' => 3
         ]]);
+
+        $this->assertEvents(3);
     }
 
     /** @test */
@@ -82,6 +105,8 @@ class ExecuteMultipleTest extends BaseTest
         ], [
             'C' => 3
         ]]);
+
+        $this->assertEvents(3);
     }
 
     /** @test */
@@ -96,6 +121,8 @@ class ExecuteMultipleTest extends BaseTest
         ], [
             'C' => 3
         ]]);
+
+        $this->assertEvents(3);
     }
 
     /** @test */
@@ -112,6 +139,8 @@ class ExecuteMultipleTest extends BaseTest
             ->andReturn($result);
 
         EmptyTestFunction::executeMany(5);
+
+        $this->assertEvents(5);
     }
 
     /** @test */
@@ -128,6 +157,8 @@ class ExecuteMultipleTest extends BaseTest
             ->andReturn($result);
 
         Sidecar::executeMany(EmptyTestFunction::class, 5);
+
+        $this->assertEvents(5);
     }
 
     /** @test */
@@ -144,6 +175,8 @@ class ExecuteMultipleTest extends BaseTest
             ->andReturn($result);
 
         Sidecar::executeMany(new EmptyTestFunction, 5);
+
+        $this->assertEvents(5);
     }
 
     /** @test */
@@ -161,5 +194,7 @@ class ExecuteMultipleTest extends BaseTest
         $results = EmptyTestFunction::executeMany(2, $async = true);
 
         $this->assertInstanceOf(PendingResult::class, $results[0]);
+
+        $this->assertEvents(2);
     }
 }

@@ -7,11 +7,21 @@ namespace Hammerstone\Sidecar\Tests;
 
 use Aws\Result;
 use Hammerstone\Sidecar\Clients\LambdaClient;
+use Hammerstone\Sidecar\Events\AfterFunctionExecuted;
+use Hammerstone\Sidecar\Events\BeforeFunctionExecuted;
 use Hammerstone\Sidecar\Sidecar;
 use Hammerstone\Sidecar\Tests\Support\EmptyTestFunction;
+use Illuminate\Support\Facades\Event;
 
 class ExecuteTest extends BaseTest
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Event::fake();
+    }
+
     protected function mockMethod($method, $with, $return)
     {
         if (is_null($return)) {
@@ -47,12 +57,25 @@ class ExecuteTest extends BaseTest
         return $this->mockMethod('invokeAsync', $with, $return);
     }
 
+    public function assertEvents($executed = 1)
+    {
+        if ($executed) {
+            Event::assertDispatched(BeforeFunctionExecuted::class, $executed);
+            Event::assertDispatched(AfterFunctionExecuted::class, $executed);
+        } else {
+            Event::assertNotDispatched(BeforeFunctionExecuted::class);
+            Event::assertNotDispatched(AfterFunctionExecuted::class);
+        }
+    }
+
     /** @test */
     public function basic_execution_by_function()
     {
         $this->mockInvoke();
 
         EmptyTestFunction::execute();
+
+        $this->assertEvents();
     }
 
     /** @test */
@@ -61,6 +84,8 @@ class ExecuteTest extends BaseTest
         $this->mockInvoke();
 
         Sidecar::execute(EmptyTestFunction::class);
+
+        $this->assertEvents();
     }
 
     /** @test */
@@ -69,6 +94,8 @@ class ExecuteTest extends BaseTest
         $this->mockInvoke();
 
         Sidecar::execute(new EmptyTestFunction);
+
+        $this->assertEvents();
     }
 
     /** @test */
@@ -81,6 +108,8 @@ class ExecuteTest extends BaseTest
         EmptyTestFunction::execute([
             'foo' => 'bar'
         ]);
+
+        $this->assertEvents();
     }
 
     /** @test */
@@ -93,6 +122,8 @@ class ExecuteTest extends BaseTest
         Sidecar::execute(EmptyTestFunction::class, [
             'foo' => 'bar'
         ]);
+
+        $this->assertEvents();
     }
 
     /** @test */
@@ -105,6 +136,8 @@ class ExecuteTest extends BaseTest
         Sidecar::execute(new EmptyTestFunction, [
             'foo' => 'bar'
         ]);
+
+        $this->assertEvents();
     }
 
     /** @test */
@@ -117,6 +150,8 @@ class ExecuteTest extends BaseTest
         EmptyTestFunction::execute([
             'foo' => 'bar'
         ], $async = true);
+
+        $this->assertEvents();
     }
 
     /** @test */
@@ -129,6 +164,8 @@ class ExecuteTest extends BaseTest
         Sidecar::execute(EmptyTestFunction::class, [
             'foo' => 'bar'
         ], $async = true);
+
+        $this->assertEvents();
     }
 
     /** @test */
@@ -141,5 +178,7 @@ class ExecuteTest extends BaseTest
         Sidecar::execute(new EmptyTestFunction, [
             'foo' => 'bar'
         ], $async = true);
+
+        $this->assertEvents();
     }
 }
