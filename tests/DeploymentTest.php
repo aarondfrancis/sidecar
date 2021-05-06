@@ -7,6 +7,7 @@ namespace Hammerstone\Sidecar\Tests;
 
 use Aws\Lambda\Exception\LambdaException;
 use Hammerstone\Sidecar\Clients\LambdaClient;
+use Hammerstone\Sidecar\Deployment;
 use Hammerstone\Sidecar\Events\AfterFunctionsActivated;
 use Hammerstone\Sidecar\Events\AfterFunctionsDeployed;
 use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
@@ -130,6 +131,25 @@ class DeploymentTest extends BaseTest
         ]);
     }
 
+    public function assertEvents($deployed = true, $activated = true)
+    {
+        if ($deployed) {
+            Event::assertDispatched(BeforeFunctionsDeployed::class);
+            Event::assertDispatched(AfterFunctionsDeployed::class);
+        } else {
+            Event::assertNotDispatched(BeforeFunctionsDeployed::class);
+            Event::assertNotDispatched(AfterFunctionsDeployed::class);
+        }
+
+        if ($activated) {
+            Event::assertDispatched(BeforeFunctionsActivated::class);
+            Event::assertDispatched(AfterFunctionsActivated::class);
+        } else {
+            Event::assertNotDispatched(BeforeFunctionsActivated::class);
+            Event::assertNotDispatched(AfterFunctionsActivated::class);
+        }
+    }
+
     /** @test */
     public function it_deploys_a_function_that_doesnt_exist()
     {
@@ -137,11 +157,41 @@ class DeploymentTest extends BaseTest
 
         DeploymentTestFunction::deploy($activate = false);
 
-        Event::assertDispatched(BeforeFunctionsDeployed::class);
-        Event::assertDispatched(AfterFunctionsDeployed::class);
+        $this->assertEvents($deployed = true, $activated = false);
+    }
 
-        Event::assertNotDispatched(BeforeFunctionsActivated::class);
-        Event::assertNotDispatched(AfterFunctionsActivated::class);
+    /** @test */
+    public function it_deploys_a_function_that_doesnt_exist_from_the_deployment_class()
+    {
+        $this->mockCreatingFunction();
+
+        Deployment::make(DeploymentTestFunction::class)->deploy($activate = false);
+
+        $this->assertEvents($deployed = true, $activated = false);
+    }
+
+    /** @test */
+    public function it_deploys_an_array_of_functions()
+    {
+        $this->mockCreatingFunction();
+
+        Deployment::make([DeploymentTestFunction::class])->deploy($activate = false);
+
+        $this->assertEvents($deployed = true, $activated = false);
+    }
+
+    /** @test */
+    public function it_deploys_the_functions_in_the_config()
+    {
+        config()->set('sidecar.functions', [
+            DeploymentTestFunction::class
+        ]);
+
+        $this->mockCreatingFunction();
+
+        Deployment::make()->deploy($activate = false);
+
+        $this->assertEvents($deployed = true, $activated = false);
     }
 
     /** @test */
@@ -152,11 +202,7 @@ class DeploymentTest extends BaseTest
 
         DeploymentTestFunction::deploy($activate = true);
 
-        Event::assertDispatched(BeforeFunctionsDeployed::class);
-        Event::assertDispatched(AfterFunctionsDeployed::class);
-
-        Event::assertDispatched(BeforeFunctionsActivated::class);
-        Event::assertDispatched(AfterFunctionsActivated::class);
+        $this->assertEvents($deployed = true, $activated = true);
     }
 
     /** @test */
@@ -166,11 +212,7 @@ class DeploymentTest extends BaseTest
 
         DeploymentTestFunction::deploy($activate = false);
 
-        Event::assertDispatched(BeforeFunctionsDeployed::class);
-        Event::assertDispatched(AfterFunctionsDeployed::class);
-
-        Event::assertNotDispatched(BeforeFunctionsActivated::class);
-        Event::assertNotDispatched(AfterFunctionsActivated::class);
+        $this->assertEvents($deployed = true, $activated = false);
     }
 
     /** @test */
@@ -181,11 +223,7 @@ class DeploymentTest extends BaseTest
 
         DeploymentTestFunction::deploy($activate = true);
 
-        Event::assertDispatched(BeforeFunctionsDeployed::class);
-        Event::assertDispatched(AfterFunctionsDeployed::class);
-
-        Event::assertDispatched(BeforeFunctionsActivated::class);
-        Event::assertDispatched(AfterFunctionsActivated::class);
+        $this->assertEvents($deployed = true, $activated = true);
     }
 
     /** @test */
@@ -205,10 +243,6 @@ class DeploymentTest extends BaseTest
 
         DeploymentTestFunction::deploy($activate = true);
 
-        Event::assertDispatched(BeforeFunctionsDeployed::class);
-        Event::assertDispatched(AfterFunctionsDeployed::class);
-
-        Event::assertDispatched(BeforeFunctionsActivated::class);
-        Event::assertDispatched(AfterFunctionsActivated::class);
+        $this->assertEvents($deployed = true, $activated = true);
     }
 }
