@@ -180,7 +180,6 @@ class DeploymentTest extends BaseTest
         $this->assertEvents($deployed = true, $activated = false);
     }
 
-
     /** @test */
     public function it_deploys_the_functions_in_the_config()
     {
