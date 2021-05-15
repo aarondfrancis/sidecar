@@ -6,9 +6,7 @@
 
 > Read the full docs at [hammerstone.dev/sidecar/docs](https://hammerstone.dev/sidecar/docs/main/overview).
 
-
-## 🚨 This package is still under development, please open issues for anything you run into. We will tag a release in the next few days! 🚨
-
+This package is still under development, please open issues for anything you run into.
 
 ## What Sidecar Does
 
