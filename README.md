@@ -1,6 +1,6 @@
 # Sidecar for Laravel
 
-[![Tests](https://github.com/hammerstonedev/sidecar/actions/workflows/tests.yml/badge.svg)](https://github.com/hammerstonedev/sidecar/actions/workflows/tests.yml)
+[![Tests](https://github.com/hammerstonedev/sidecar/actions/workflows/tests.yml/badge.svg)](https://github.com/hammerstonedev/sidecar/actions/workflows/tests.yml) [![Latest Stable Version](https://poser.pugx.org/hammerstone/sidecar/v)](//packagist.org/packages/hammerstone/sidecar) [![Total Downloads](https://poser.pugx.org/hammerstone/sidecar/downloads)](//packagist.org/packages/hammerstone/sidecar) [![License](https://poser.pugx.org/hammerstone/sidecar/license)](//packagist.org/packages/hammerstone/sidecar)
 
 ### Deploy and execute non-PHP AWS Lambda functions from your Laravel application.
 
