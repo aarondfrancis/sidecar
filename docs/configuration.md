@@ -84,13 +84,26 @@ return [
      * The default memory for your functions, in megabytes.
      * This can be overridden per function.
      */
-    'memory' => env('SIDECAR_MEMORY', 512), // [tl! collapse-end]
+    'memory' => env('SIDECAR_MEMORY', 512), 
+
+    /*
+     * The base path for your package files. If you e.g. keep
+     * all your Lambda package files in your resource path,
+     * you may change the base path here.
+     */
+    'package_base_path' => env('SIDECAR_PACKAGE_BASE_PATH', base_path()), // [tl! collapse-end]
 ];
 ```
 
 ## Default Settings
 
 The timeout and memory can be customized on a per-function basis, but if they aren't, the defaults from your `sidecar.php` file will be used.
+
+### Package Base Path
+
+By default, all of your Lambda resources are going to be relative to the `base_path()` of your application. That means when you're defining your code packages, you'll use the root of your application as the starting point. 
+
+If all of your Lambda code lives in e.g. `resources/lambda`, then you can update your `package_base_path` to reflect that.
 
 sidecar.php {.filename}
 ```php
@@ -153,5 +166,12 @@ return [
      * This can be overridden per function.
      */
     'memory' => env('SIDECAR_MEMORY', 512), 
+
+    /*
+     * The base path for your package files. If you e.g. keep
+     * all your Lambda package files in your resource path,
+     * you may change the base path here.
+     */
+    'package_base_path' => env('SIDECAR_PACKAGE_BASE_PATH', base_path()),
 ];
 ```
