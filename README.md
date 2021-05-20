@@ -6,6 +6,8 @@
 
 > Read the full docs at [hammerstone.dev/sidecar/docs](https://hammerstone.dev/sidecar/docs/main/overview).
 
+To install, simply require the package from composer: `composer require hammerstone/sidecar`
+
 This package is still under development, please open issues for anything you run into.
 
 ## What Sidecar Does
