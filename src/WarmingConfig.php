@@ -5,7 +5,6 @@
 
 namespace Hammerstone\Sidecar;
 
-
 class WarmingConfig
 {
     public $instances = 0;
@@ -34,5 +33,4 @@ class WarmingConfig
 
         return $this;
     }
-
 }

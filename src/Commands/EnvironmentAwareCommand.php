@@ -5,14 +5,12 @@
 
 namespace Hammerstone\Sidecar\Commands;
 
-
 use Hammerstone\Sidecar\Sidecar;
 use Illuminate\Console\Command;
 use Illuminate\Console\Parser;
 
 abstract class EnvironmentAwareCommand extends Command
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -29,5 +27,4 @@ abstract class EnvironmentAwareCommand extends Command
             Sidecar::overrideEnvironment($environment);
         }
     }
-
 }

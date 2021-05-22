@@ -5,7 +5,6 @@
 
 namespace Hammerstone\Sidecar\Commands;
 
-use Hammerstone\Sidecar\Deployment;
 use Hammerstone\Sidecar\Sidecar;
 use Illuminate\Console\Command;
 

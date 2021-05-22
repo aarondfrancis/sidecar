@@ -10,8 +10,8 @@ use Hammerstone\Sidecar\Events\AfterFunctionExecuted;
 use Hammerstone\Sidecar\Events\BeforeFunctionExecuted;
 use Hammerstone\Sidecar\Results\PendingResult;
 use Illuminate\Console\Command;
-use Illuminate\Support\Traits\Macroable;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Traits\Macroable;
 use Throwable;
 
 class Manager
@@ -216,5 +216,4 @@ class Manager
             $function::executeManyAsync($payloads);
         });
     }
-
 }
