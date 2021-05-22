@@ -42,15 +42,7 @@ class Deployment
     {
         $this->lambda = app(LambdaClient::class);
 
-        // If the developer hasn't passed a single
-        // function, then deploy all of them.
-        if (is_null($functions)) {
-            $functions = config('sidecar.functions');
-        }
-
-        $this->functions = array_map(function ($function) {
-            return is_string($function) ? app($function) : $function;
-        }, Arr::wrap($functions));
+        $this->functions = Sidecar::instantiatedFunctions($functions);
     }
 
     /**

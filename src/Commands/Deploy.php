@@ -7,15 +7,14 @@ namespace Hammerstone\Sidecar\Commands;
 
 use Hammerstone\Sidecar\Deployment;
 use Hammerstone\Sidecar\Sidecar;
-use Illuminate\Console\Command;
 
-class Deploy extends Command
+class Deploy extends EnvironmentAwareCommand
 {
     /**
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'sidecar:deploy {--activate} {--env=}';
+    protected $signature = 'sidecar:deploy {--activate}';
 
     /**
      * The console command description.
@@ -28,13 +27,8 @@ class Deploy extends Command
      */
     public function handle()
     {
-        Sidecar::addLogger(function ($message) {
-            $this->info($message);
-        });
-
-        if ($environment = $this->option('env')) {
-            Sidecar::overrideEnvironment($environment);
-        }
+        $this->overrideEnvironment();
+        Sidecar::addCommandLogger($this);
 
         Deployment::make()->deploy($this->option('activate'));
     }

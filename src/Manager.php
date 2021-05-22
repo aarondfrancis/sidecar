@@ -9,7 +9,9 @@ use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Events\AfterFunctionExecuted;
 use Hammerstone\Sidecar\Events\BeforeFunctionExecuted;
 use Hammerstone\Sidecar\Results\PendingResult;
+use Illuminate\Console\Command;
 use Illuminate\Support\Traits\Macroable;
+use Illuminate\Support\Arr;
 use Throwable;
 
 class Manager
@@ -35,6 +37,16 @@ class Manager
         $this->loggers[] = $closure;
 
         return $this;
+    }
+
+    /**
+     * @param Command $command
+     */
+    public function addCommandLogger(Command $command)
+    {
+        $this->addLogger(function ($message) use ($command) {
+            $command->info($message);
+        });
     }
 
     /**
@@ -167,4 +179,42 @@ class Manager
     {
         return $this->executeMany($params, $async = true);
     }
+
+    /**
+     * Get an array of instantiated functions.
+     *
+     * @param null $functions
+     * @return array
+     */
+    public function instantiatedFunctions($functions = null)
+    {
+        $functions = Arr::wrap($functions ?? config('sidecar.functions'));
+
+        return array_map(function ($function) {
+            return is_string($function) ? app($function) : $function;
+        }, $functions);
+    }
+
+    /**
+     * Warm functions by firing a set of async requests at them.
+     *
+     * @param null|array $functions
+     */
+    public function warm($functions = null)
+    {
+        $functions = $this->instantiatedFunctions($functions);
+
+        collect($functions)->each(function ($function) {
+            $config = $function->warmingConfig();
+
+            if (!$config instanceof WarmingConfig || !$config->instances) {
+                return;
+            }
+
+            $payloads = array_fill(0, $config->instances, $config->payload);
+
+            $function::executeManyAsync($payloads);
+        });
+    }
+
 }

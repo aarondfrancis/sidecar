@@ -119,6 +119,17 @@ abstract class LambdaFunction
     }
 
     /**
+     * A warming configuration that can help mitigate against
+     * the Lambda "Cold Boot" problem.
+     *
+     * @return WarmingConfig
+     */
+    public function warmingConfig()
+    {
+        return new WarmingConfig;
+    }
+
+    /**
      * The default representation of this function as an HTTP response.
      *
      * @param $request
