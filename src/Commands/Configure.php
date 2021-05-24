@@ -64,7 +64,7 @@ class Configure extends Command
 
         $credentials = $this->action(CreateDeploymentUser::class)->invoke();
 
-        $this->action(DestroyAdminKeys::class)->invoke($this->key);
+        $this->action(DestroyAdminKeys::class)->setKey($this->key)->invoke();
 
         $this->line(' ');
         $this->info('Done! Here are your environment variables:');
@@ -84,12 +84,14 @@ class Configure extends Command
 
     public function client($class)
     {
-        return new $class([
-            'region' => $this->region,
-            'version' => 'latest',
-            'credentials' => [
-                'key' => $this->key,
-                'secret' => $this->secret
+        return app()->make($class, [
+            'args' => [
+                'region' => $this->region,
+                'version' => 'latest',
+                'credentials' => [
+                    'key' => $this->key,
+                    'secret' => $this->secret
+                ]
             ]
         ]);
     }

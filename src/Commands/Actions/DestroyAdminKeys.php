@@ -6,10 +6,20 @@
 namespace Hammerstone\Sidecar\Commands\Actions;
 
 use Aws\Iam\IamClient;
+use Throwable;
 
 class DestroyAdminKeys extends BaseAction
 {
-    public function invoke($key)
+    public $key;
+
+    public function setKey($key)
+    {
+        $this->key = $key;
+
+        return $this;
+    }
+
+    public function invoke()
     {
         $client = $this->command->client(IamClient::class);
 
@@ -25,7 +35,7 @@ class DestroyAdminKeys extends BaseAction
             "Now that everything is setup, would you like to remove the admin access keys for user `$name` from AWS? \n" .
             ' Sidecar no longer needs them.';
 
-        if (!$this->confirm($question, $default = true)) {
+        if (!$this->command->confirm($question, $default = true)) {
             return;
         }
 
@@ -33,7 +43,7 @@ class DestroyAdminKeys extends BaseAction
 
         try {
             $client->deleteAccessKey([
-                'AccessKeyId' => $key,
+                'AccessKeyId' => $this->key,
                 'UserName' => $name,
             ]);
         } catch (Throwable $e) {
