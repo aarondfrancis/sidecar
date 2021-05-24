@@ -34,7 +34,7 @@ class DetermineRegion extends BaseAction
         }
 
         if (!$region) {
-            $region = $this->choice('What AWS region would you like your functions to be deployed in?', $this->awsRegions(), 'us-east-2');
+            $region = $this->command->choice('What AWS region would you like your functions to be deployed in?', $this->awsRegions(), 'us-east-2');
         }
 
         $this->progress("Using region `$region`");
