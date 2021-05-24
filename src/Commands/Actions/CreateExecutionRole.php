@@ -6,6 +6,8 @@
 namespace Hammerstone\Sidecar\Commands\Actions;
 
 use Aws\Iam\IamClient;
+use Illuminate\Support\Arr;
+use Throwable;
 
 class CreateExecutionRole extends BaseAction
 {
@@ -20,7 +22,7 @@ class CreateExecutionRole extends BaseAction
 
         $this->client = $this->command->client(IamClient::class);
 
-        $role = $this->findOrCreateRole()->search('Role.Arn');
+        $role = Arr::get($this->findOrCreateRole(), 'Role.Arn');
 
         $this->attachPolicy();
 
