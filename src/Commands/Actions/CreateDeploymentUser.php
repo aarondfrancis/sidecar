@@ -133,11 +133,14 @@ class CreateDeploymentUser extends BaseAction
             ];
         }
 
-        $this->progress('Deleting old keys...');
-        $this->client->deleteAccessKey([
-            'AccessKeyId' => $keys['AccessKeyMetadata'][0]['AccessKeyId'],
-            'UserName' => 'sidecar-deployment-user',
-        ]);
+        if ($accessKeyId = Arr::get($keys, 'AccessKeyMetadata.0.AccessKeyId')) {
+            $this->progress('Deleting old keys...');
+
+            $this->client->deleteAccessKey([
+                'AccessKeyId' => $accessKeyId,
+                'UserName' => 'sidecar-deployment-user',
+            ]);
+        }
 
         return $this->createAccessKey();
     }
