@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.4 - 2021-06-05
+
+- Added `*` option to include the entire base directory in the package. 
+
 ## 0.1.3 - 2021-05-24
 
 - Fix more `sidecar:configure` AWS errors.
