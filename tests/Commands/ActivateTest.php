@@ -11,6 +11,7 @@ use Hammerstone\Sidecar\Events\AfterFunctionsDeployed;
 use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
 use Hammerstone\Sidecar\Events\BeforeFunctionsDeployed;
 use Hammerstone\Sidecar\Sidecar;
+use Hammerstone\Sidecar\Tests\Support\DeploymentTestFunction;
 use Illuminate\Support\Facades\Event;
 
 class ActivateTest extends BaseTest
@@ -87,6 +88,12 @@ class ActivateTest extends BaseTest
     /** @test */
     public function it_should_activate_functions()
     {
+        $this->mockActivating();
+
+        config()->set('sidecar.functions', [
+            DeploymentTestFunction::class
+        ]);
+
         $this->artisan('sidecar:activate');
 
         $this->assertEvents($deployed = false, $activated = true);
@@ -95,6 +102,12 @@ class ActivateTest extends BaseTest
     /** @test */
     public function it_should_activate_functions_with_env()
     {
+        $this->mockActivating();
+
+        config()->set('sidecar.functions', [
+            DeploymentTestFunction::class
+        ]);
+
         $this->artisan('sidecar:activate', [
             '--env' => 'faked'
         ]);
