@@ -43,7 +43,6 @@ class Deployment
     {
         $this->lambda = app(LambdaClient::class);
 
-
         $this->functions = Sidecar::instantiatedFunctions($functions);
 
         if (empty($this->functions)) {
