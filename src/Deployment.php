@@ -43,23 +43,15 @@ class Deployment
     {
         $this->lambda = app(LambdaClient::class);
 
-        // If the developer hasn't passed a single
-        // function, then deploy all of them.
-        if (is_null($functions)) {
-            $functions = config('sidecar.functions');
-        }
+        $this->functions = Sidecar::instantiatedFunctions($functions);
 
-        if (empty($functions)) {
+        if (empty($this->functions)) {
             throw new ConfigurationException(
                 "Cannot deploy, no Sidecar functions have been configured. \n" .
                 "Please check your config/sidecar.php file to ensure you have properly registered your functions. \n" .
                 'Read more at https://hammerstone.dev/sidecar/docs/main/configuration#registering-functions'
             );
         }
-
-        $this->functions = array_map(function ($function) {
-            return is_string($function) ? app($function) : $function;
-        }, Arr::wrap($functions));
     }
 
     /**
