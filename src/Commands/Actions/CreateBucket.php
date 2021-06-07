@@ -42,9 +42,13 @@ class CreateBucket extends BaseAction
             return $this->bucket;
         }
 
-        $this->progress('Bucket doesn\'t exist. Creating...');
+        $this->progress('Bucket doesn\'t exist.');
 
-        $this->createBucket();
+        // Sometimes it takes a second for the AWS credentials to populate, so we will try a couple times.
+        retry(3, function () {
+            $this->progress('Trying to create bucket...');
+            $this->createBucket();
+        }, 4000);
 
         $this->progress('Bucket created');
 

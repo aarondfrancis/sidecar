@@ -185,7 +185,8 @@ class ConfigureTest extends BaseTest
         $artisan->expectsQuestion('Enter the Secret access key', 'secret');
         $artisan->expectsQuestion('What AWS region would you like your functions to be deployed in?', 'us-east-1');
 
-        $artisan->expectsOutput('==> Bucket doesn\'t exist. Creating...');
+        $artisan->expectsOutput('==> Bucket doesn\'t exist.');
+        $artisan->expectsOutput('==> Trying to create bucket...');
         $artisan->expectsOutput('==> Bucket created');
         $artisan->expectsOutput('==> Creating an execution role for your functions...');
         $artisan->expectsOutput('==> Attaching policy to execution role...');
