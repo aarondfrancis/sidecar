@@ -21,6 +21,5 @@ See https://hammerstone.dev/sidecar/docs/main/functions/deploying#faking-the-env
 EOT;
 
         return new static($message);
-
     }
 }

@@ -53,7 +53,7 @@ class Deployment
             throw new ConfigurationException(
                 "Cannot deploy, no Sidecar functions have been configured. \n" .
                 "Please check your config/sidecar.php file to ensure you have properly registered your functions. \n" .
-                "Read more at https://hammerstone.dev/sidecar/docs/main/configuration#registering-functions"
+                'Read more at https://hammerstone.dev/sidecar/docs/main/configuration#registering-functions'
             );
         }
 

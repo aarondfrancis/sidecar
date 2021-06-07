@@ -255,7 +255,7 @@ class DeploymentTest extends BaseTest
         ]);
 
         $this->expectException(ConfigurationException::class);
-        $this->expectExceptionMessage("Cannot deploy, no Sidecar functions have been configured");
+        $this->expectExceptionMessage('Cannot deploy, no Sidecar functions have been configured');
 
         Deployment::make()->deploy();
     }

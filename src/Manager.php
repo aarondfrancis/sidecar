@@ -9,7 +9,6 @@ use Aws\Lambda\Exception\LambdaException;
 use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Events\AfterFunctionExecuted;
 use Hammerstone\Sidecar\Events\BeforeFunctionExecuted;
-use Hammerstone\Sidecar\Exceptions\EnvironmentMismatchException;
 use Hammerstone\Sidecar\Exceptions\FunctionNotFoundException;
 use Hammerstone\Sidecar\Results\PendingResult;
 use Illuminate\Support\Traits\Macroable;
@@ -178,5 +177,4 @@ class Manager
     {
         return $this->executeMany($params, $async = true);
     }
-
 }

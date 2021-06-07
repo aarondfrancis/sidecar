@@ -49,5 +49,4 @@ class EnvironmentMismatchTest extends BaseTest
         $this->expectExceptionMessage('not found in environment `testing`');
         EmptyTestFunction::execute();
     }
-
 }
