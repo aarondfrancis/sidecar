@@ -5,6 +5,7 @@
 - Added `sidecar.env` config option to separate Sidecar environment from application environment. Useful mostly for teams who have multiple developers that all have an app env of `local` and don't want to be constantly overwriting each other's functions.
 - Added better error reporting when `sidecar:deploy` is called and there are no functions.
 - Added better error reporting when a function is not found. 
+- Added `sidecar:warm` function
 
 ## 0.1.4 - 2021-06-05
 
