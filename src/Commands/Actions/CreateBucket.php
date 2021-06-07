@@ -7,6 +7,7 @@ namespace Hammerstone\Sidecar\Commands\Actions;
 
 use Aws\S3\S3Client;
 use Illuminate\Support\Str;
+use Throwable;
 
 class CreateBucket extends BaseAction
 {
@@ -27,7 +28,7 @@ class CreateBucket extends BaseAction
     {
         $this->client = $this->command->client(S3Client::class);
 
-        $this->bucket = config('sidecar.aws_bucket', $this->defaultBucketName());
+        $this->bucket = config('sidecar.aws_bucket') ?? $this->defaultBucketName();
 
         $this->ensureBucketIsPrefixed();
 

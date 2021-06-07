@@ -11,6 +11,7 @@ use Hammerstone\Sidecar\Events\AfterFunctionsActivated;
 use Hammerstone\Sidecar\Events\AfterFunctionsDeployed;
 use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
 use Hammerstone\Sidecar\Events\BeforeFunctionsDeployed;
+use Hammerstone\Sidecar\Exceptions\ConfigurationException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -42,7 +43,16 @@ class Deployment
     {
         $this->lambda = app(LambdaClient::class);
 
+
         $this->functions = Sidecar::instantiatedFunctions($functions);
+
+        if (empty($this->functions)) {
+            throw new ConfigurationException(
+                "Cannot deploy, no Sidecar functions have been configured. \n" .
+                "Please check your config/sidecar.php file to ensure you have properly registered your functions. \n" .
+                'Read more at https://hammerstone.dev/sidecar/docs/main/configuration#registering-functions'
+            );
+        }
     }
 
     /**

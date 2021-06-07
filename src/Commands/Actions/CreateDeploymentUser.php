@@ -6,6 +6,8 @@
 namespace Hammerstone\Sidecar\Commands\Actions;
 
 use Aws\Iam\IamClient;
+use Illuminate\Support\Arr;
+use Throwable;
 
 class CreateDeploymentUser extends BaseAction
 {
@@ -113,7 +115,7 @@ class CreateDeploymentUser extends BaseAction
             'UserName' => 'sidecar-deployment-user',
         ]);
 
-        if (!$keys->count()) {
+        if (!count($keys)) {
             return $this->createAccessKey();
         }
 
@@ -131,11 +133,14 @@ class CreateDeploymentUser extends BaseAction
             ];
         }
 
-        $this->progress('Deleting old keys...');
-        $this->client->deleteAccessKey([
-            'AccessKeyId' => $keys['AccessKeyMetadata'][0]['AccessKeyId'],
-            'UserName' => 'sidecar-deployment-user',
-        ]);
+        if ($accessKeyId = Arr::get($keys, 'AccessKeyMetadata.0.AccessKeyId')) {
+            $this->progress('Deleting old keys...');
+
+            $this->client->deleteAccessKey([
+                'AccessKeyId' => $accessKeyId,
+                'UserName' => 'sidecar-deployment-user',
+            ]);
+        }
 
         return $this->createAccessKey();
     }
@@ -149,8 +154,8 @@ class CreateDeploymentUser extends BaseAction
         ]);
 
         return [
-            'key' => $result->search('AccessKey.AccessKeyId'),
-            'secret' => $result->search('AccessKey.SecretAccessKey'),
+            'key' => Arr::get($result, 'AccessKey.AccessKeyId'),
+            'secret' => Arr::get($result, 'AccessKey.SecretAccessKey'),
         ];
     }
 }

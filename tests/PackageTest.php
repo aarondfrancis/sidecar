@@ -100,6 +100,17 @@ class PackageTest extends BaseTest
     }
 
     /** @test */
+    public function start_includes_everything_in_base_path()
+    {
+        $package = $this->makePackageClass();
+
+        $package->setBasePath(__DIR__ . '/Support/Files');
+        $package->include('*');
+
+        $this->assertCount(3, $package->files());
+    }
+
+    /** @test */
     public function base_path_order()
     {
         // base_path by default.

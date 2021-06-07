@@ -72,12 +72,14 @@ environments:
     memory: 512
     cli-memory: 512
     build: # [tl! ~~]
-      - 'php artisan sidecar:deploy' # [tl! ~~]
+      - 'php artisan sidecar:deploy --env=production' # [tl! ~~]
     deploy: # [tl! ~~]
       - 'php artisan sidecar:activate' # [tl! ~~]
 ```  
 
 Your functions would be built and deployed on whatever machine is handling the Vapor deploy process, and then would be activated as Vapor activates your newest application code.
+
+> Note that in this example we're setting the environment to "production" in the build, because it's likely that your "build" step is running in an environment that doesn't have it's ENV set to "production." See below for more details.
 
 ## Faking the Environment
  

@@ -250,6 +250,13 @@ class Package
     protected function pathsForMerging($paths)
     {
         return array_map(function ($path) {
+            // `*` means everything in the base directory, whatever
+            // that may be. By resetting it to an empty string and
+            // prepending the base path, everything is included.
+            if ($path === '*') {
+                $path = '';
+            }
+
             // Make every path relative to the base directory.
             return $this->prependBasePath($path);
         }, Arr::wrap($paths));

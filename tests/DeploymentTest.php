@@ -12,6 +12,7 @@ use Hammerstone\Sidecar\Events\AfterFunctionsActivated;
 use Hammerstone\Sidecar\Events\AfterFunctionsDeployed;
 use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
 use Hammerstone\Sidecar\Events\BeforeFunctionsDeployed;
+use Hammerstone\Sidecar\Exceptions\ConfigurationException;
 use Hammerstone\Sidecar\Tests\Support\DeploymentTestFunction;
 use Illuminate\Support\Facades\Event;
 use Mockery;
@@ -244,5 +245,18 @@ class DeploymentTest extends BaseTest
         DeploymentTestFunction::deploy($activate = true);
 
         $this->assertEvents($deployed = true, $activated = true);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_if_there_are_no_functions()
+    {
+        config()->set('sidecar.functions', [
+
+        ]);
+
+        $this->expectException(ConfigurationException::class);
+        $this->expectExceptionMessage('Cannot deploy, no Sidecar functions have been configured');
+
+        Deployment::make()->deploy();
     }
 }

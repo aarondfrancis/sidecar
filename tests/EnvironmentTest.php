@@ -22,4 +22,20 @@ class EnvironmentTest extends BaseTest
 
         $this->assertEquals('testing', Sidecar::getEnvironment());
     }
+
+    /** @test */
+    public function precedence_is_correct()
+    {
+        config(['app.env' => 'app_env']);
+
+        $this->assertEquals('app_env', Sidecar::getEnvironment());
+
+        config(['sidecar.env' => 'sidecar_env']);
+
+        $this->assertEquals('sidecar_env', Sidecar::getEnvironment());
+
+        Sidecar::overrideEnvironment('overridden');
+
+        $this->assertEquals('overridden', Sidecar::getEnvironment());
+    }
 }

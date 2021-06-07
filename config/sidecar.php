@@ -9,6 +9,13 @@ return [
         // \App\Sidecar\ProcessThumbnail::class,
     ],
 
+    /*
+     * Sidecar separates functions by environment. If you'd like to change
+     * your Sidecar environment without changing your entire application
+     * environment, you may do so here.
+     */
+    'env' => env('SIDECAR_ENV', env('APP_ENV')),
+
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *                                                                       *
      *  You are welcome to edit this configuration directly, or you can run  *

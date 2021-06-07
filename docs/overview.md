@@ -3,6 +3,8 @@
 
 Sidecar packages, deploys, and executes AWS Lambda functions from your Laravel application. {.text-xl .font-bold} 
 
+It works with _any_ Laravel 7 or Laravel 8 application, hosted _anywhere_, including your local machine. {.font-bold} 
+
 You can write functions in any of the following runtimes and execute them straight from PHP:
 
 - Node.js 14
