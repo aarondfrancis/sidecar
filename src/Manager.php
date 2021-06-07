@@ -71,7 +71,7 @@ class Manager
      */
     public function getEnvironment()
     {
-        return $this->environment ?? config('app.env');
+        return $this->environment ?? config('sidecar.env') ?? config('app.env');
     }
 
     /**
