@@ -5,9 +5,12 @@
 
 namespace Hammerstone\Sidecar;
 
+use Aws\Lambda\Exception\LambdaException;
 use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Events\AfterFunctionExecuted;
 use Hammerstone\Sidecar\Events\BeforeFunctionExecuted;
+use Hammerstone\Sidecar\Exceptions\EnvironmentMismatchException;
+use Hammerstone\Sidecar\Exceptions\FunctionNotFoundException;
 use Hammerstone\Sidecar\Results\PendingResult;
 use Illuminate\Support\Traits\Macroable;
 use Throwable;
@@ -93,21 +96,29 @@ class Manager
 
         $function->beforeExecution($payload);
 
-        $result = app(LambdaClient::class)->{$method}([
-            // Function name plus our alias name.
-            'FunctionName' => $function->nameWithPrefix() . ':active',
+        try {
+            $result = app(LambdaClient::class)->{$method}([
+                // Function name plus our alias name.
+                'FunctionName' => $function->nameWithPrefix() . ':active',
 
-            // `RequestResponse` is a synchronous call, vs `Event` which
-            // is a fire-and-forget, we can make it async by using the
-            // invokeAsync method.
-            'InvocationType' => 'RequestResponse',
+                // `RequestResponse` is a synchronous call, vs `Event` which
+                // is a fire-and-forget, we can make it async by using the
+                // invokeAsync method.
+                'InvocationType' => 'RequestResponse',
 
-            // Include the execution log in the response.
-            'LogType' => 'Tail',
+                // Include the execution log in the response.
+                'LogType' => 'Tail',
 
-            // Pass the payload to the function.
-            'Payload' => json_encode($payload)
-        ]);
+                // Pass the payload to the function.
+                'Payload' => json_encode($payload)
+            ]);
+        } catch (LambdaException $e) {
+            if ($e->getStatusCode() === 404) {
+                throw FunctionNotFoundException::make($function);
+            }
+
+            throw $e;
+        }
 
         // Let the calling function determine what to do with the result.
         $result = $function->toResult($result);
@@ -167,4 +178,5 @@ class Manager
     {
         return $this->executeMany($params, $async = true);
     }
+
 }
