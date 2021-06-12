@@ -3,7 +3,7 @@
  * @author Aaron Francis <aaron@hammerstone.dev>
  */
 
-namespace Hammerstone\Sidecar\Tests;
+namespace Hammerstone\Sidecar\Tests\Unit;
 
 use Aws\Command;
 use Aws\Iam\Exception\IamException;

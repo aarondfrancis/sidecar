@@ -3,14 +3,14 @@
  * @author Aaron Francis <aaron@hammerstone.dev>
  */
 
-namespace Hammerstone\Sidecar\Tests;
+namespace Hammerstone\Sidecar\Tests\Unit;
 
 use Aws\Result;
 use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Events\AfterFunctionExecuted;
 use Hammerstone\Sidecar\Events\BeforeFunctionExecuted;
 use Hammerstone\Sidecar\Sidecar;
-use Hammerstone\Sidecar\Tests\Support\EmptyTestFunction;
+use Hammerstone\Sidecar\Tests\Unit\Support\EmptyTestFunction;
 use Illuminate\Support\Facades\Event;
 
 class ExecuteTest extends BaseTest
@@ -40,7 +40,7 @@ class ExecuteTest extends BaseTest
     protected function expectedArgs($args = [])
     {
         return array_merge([
-            'FunctionName' => 'SC-Laravel-testing-stone-Sidecar-Tests-Support-EmptyTestFunction:active',
+            'FunctionName' => 'SC-Laravel-testing--Sidecar-Tests-Unit-Support-EmptyTestFunction:active',
             'InvocationType' => 'RequestResponse',
             'LogType' => 'Tail',
             'Payload' => '[]'

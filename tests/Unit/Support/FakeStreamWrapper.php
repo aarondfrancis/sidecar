@@ -1,6 +1,6 @@
 <?php
 
-namespace Hammerstone\Sidecar\Tests\Support;
+namespace Hammerstone\Sidecar\Tests\Unit\Support;
 
 class FakeStreamWrapper
 {

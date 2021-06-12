@@ -3,12 +3,12 @@
  * @author Aaron Francis <aaron@hammerstone.dev>
  */
 
-namespace Hammerstone\Sidecar\Tests;
+namespace Hammerstone\Sidecar\Tests\Unit;
 
 use Aws\Lambda\Exception\LambdaException;
 use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Exceptions\FunctionNotFoundException;
-use Hammerstone\Sidecar\Tests\Support\EmptyTestFunction;
+use Hammerstone\Sidecar\Tests\Unit\Support\EmptyTestFunction;
 use Illuminate\Support\Facades\Event;
 use Mockery;
 

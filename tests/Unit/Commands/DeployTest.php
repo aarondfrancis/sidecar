@@ -3,51 +3,13 @@
  * @author Aaron Francis <aaron@hammerstone.dev>
  */
 
-namespace Hammerstone\Sidecar\Tests;
+namespace Hammerstone\Sidecar\Tests\Unit;
 
-use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Sidecar;
-use Hammerstone\Sidecar\Tests\Support\DeploymentTestFunction;
+use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunction;
 
 class DeployTest extends DeploymentTest
 {
-    public function mockCreatingFunction()
-    {
-        $this->lambda->shouldReceive('createFunction')->once()->with([
-            'FunctionName' => 'test-FunctionName',
-            'Runtime' => 'test-Runtime',
-            'Role' => 'test-Role',
-            'Handler' => 'test-Handler',
-            'Code' => [
-                'S3Bucket' => 'test-bucket',
-                'S3Key' => 'test-key',
-            ],
-            'Description' => 'test-Description',
-            'Timeout' => 'test-Timeout',
-            'MemorySize' => 'test-MemorySize',
-            'Layers' => 'test-Layers',
-            'Publish' => 'test-Publish',
-        ]);
-    }
-
-    public function mockActivating()
-    {
-        $this->lambda->shouldReceive('getLatestVersion')
-            ->once()
-            ->withArgs(function ($function) {
-                return $function instanceof DeploymentTestFunction;
-            })
-            ->andReturn('10');
-
-        $this->lambda->shouldReceive('aliasVersion')
-            ->once()
-            ->withArgs(function ($function, $alias, $version) {
-                return $function instanceof DeploymentTestFunction
-                    && $alias === 'active'
-                    && $version === '10';
-            })
-            ->andReturn(LambdaClient::CREATED);
-    }
 
     /** @test */
     public function it_deploys_the_functions_in_the_config()

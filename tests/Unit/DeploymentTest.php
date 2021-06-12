@@ -3,7 +3,7 @@
  * @author Aaron Francis <aaron@hammerstone.dev>
  */
 
-namespace Hammerstone\Sidecar\Tests;
+namespace Hammerstone\Sidecar\Tests\Unit;
 
 use Aws\Lambda\Exception\LambdaException;
 use Hammerstone\Sidecar\Clients\LambdaClient;
@@ -14,7 +14,7 @@ use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
 use Hammerstone\Sidecar\Events\BeforeFunctionsDeployed;
 use Hammerstone\Sidecar\Exceptions\ConfigurationException;
 use Hammerstone\Sidecar\Exceptions\NoFunctionsRegisteredException;
-use Hammerstone\Sidecar\Tests\Support\DeploymentTestFunction;
+use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunction;
 use Illuminate\Support\Facades\Event;
 use Mockery;
 
@@ -64,55 +64,6 @@ class DeploymentTest extends BaseTest
 
         $this->lambda->shouldNotReceive('updateFunctionConfiguration');
         $this->lambda->shouldNotReceive('updateFunctionCode');
-    }
-
-    public function mockListingVersions()
-    {
-        $this->lambda->shouldReceive('listVersionsByFunction')
-            ->once()
-            ->with([
-                'FunctionName' => 'test-FunctionName',
-                'MaxItems' => 100,
-                'Marker' => null
-            ])
-            ->andReturn([
-                'Versions' => [[
-                    'FunctionName' => 'test-FunctionName',
-                    'Version' => '10',
-                ], [
-                    'FunctionName' => 'test-FunctionName',
-                    'Version' => '11',
-                ], [
-                    'FunctionName' => 'test-FunctionName',
-                    'Version' => '12',
-                ]]
-            ]);
-    }
-
-    public function mockUpdating()
-    {
-        $this->lambda->shouldReceive('getFunction')->andReturn([
-            'Configuration' => [
-                'FunctionName' => 'test-FunctionName',
-                'Description' => 'test-Description',
-            ]
-        ]);
-
-        $this->lambda->shouldReceive('updateFunctionConfiguration')->with([
-            'FunctionName' => 'test-FunctionName',
-            'Role' => 'test-Role',
-            'Handler' => 'test-Handler',
-            'Description' => 'test-Description [5000a525]',
-            'Timeout' => 'test-Timeout',
-            'MemorySize' => 'test-MemorySize'
-        ]);
-
-        $this->lambda->shouldReceive('updateFunctionCode')->with([
-            'FunctionName' => 'test-FunctionName',
-            'Publish' => 'test-Publish',
-            'S3Bucket' => 'test-bucket',
-            'S3Key' => 'test-key'
-        ]);
     }
 
     public function mockActivating()
