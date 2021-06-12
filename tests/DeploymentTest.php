@@ -13,6 +13,7 @@ use Hammerstone\Sidecar\Events\AfterFunctionsDeployed;
 use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
 use Hammerstone\Sidecar\Events\BeforeFunctionsDeployed;
 use Hammerstone\Sidecar\Exceptions\ConfigurationException;
+use Hammerstone\Sidecar\Exceptions\NoFunctionsRegisteredException;
 use Hammerstone\Sidecar\Tests\Support\DeploymentTestFunction;
 use Illuminate\Support\Facades\Event;
 use Mockery;
@@ -45,8 +46,6 @@ class DeploymentTest extends BaseTest
 
     public function mockCreatingFunction()
     {
-        $this->mockFunctionNotExisting();
-
         $this->lambda->shouldReceive('createFunction')->once()->with([
             'FunctionName' => 'test-FunctionName',
             'Runtime' => 'test-Runtime',
@@ -118,18 +117,21 @@ class DeploymentTest extends BaseTest
 
     public function mockActivating()
     {
-        $this->mockListingVersions();
+        $this->lambda->shouldReceive('getLatestVersion')
+            ->once()
+            ->withArgs(function ($function) {
+                return $function instanceof DeploymentTestFunction;
+            })
+            ->andReturn('10');
 
-        $this->lambda->shouldReceive('deleteAlias')->once()->with([
-            'FunctionName' => 'test-FunctionName',
-            'Name' => 'active',
-        ]);
-
-        $this->lambda->shouldReceive('createAlias')->once()->with([
-            'FunctionName' => 'test-FunctionName',
-            'FunctionVersion' => '12',
-            'Name' => 'active',
-        ]);
+        $this->lambda->shouldReceive('aliasVersion')
+            ->once()
+            ->withArgs(function ($function, $alias, $version) {
+                return $function instanceof DeploymentTestFunction
+                    && $alias === 'active'
+                    && $version === '10';
+            })
+            ->andReturn(LambdaClient::CREATED);
     }
 
     public function assertEvents($deployed = true, $activated = true)
@@ -154,6 +156,8 @@ class DeploymentTest extends BaseTest
     /** @test */
     public function it_deploys_a_function_that_doesnt_exist()
     {
+        $this->lambda->shouldReceive('functionExists')->andReturn(false);
+        $this->lambda->shouldReceive('getVersions')->andReturn([]);
         $this->mockCreatingFunction();
 
         DeploymentTestFunction::deploy($activate = false);
@@ -164,6 +168,8 @@ class DeploymentTest extends BaseTest
     /** @test */
     public function it_deploys_a_function_that_doesnt_exist_from_the_deployment_class()
     {
+        $this->lambda->shouldReceive('functionExists')->andReturn(false);
+        $this->lambda->shouldReceive('getVersions')->andReturn([]);
         $this->mockCreatingFunction();
 
         Deployment::make(DeploymentTestFunction::class)->deploy($activate = false);
@@ -174,6 +180,8 @@ class DeploymentTest extends BaseTest
     /** @test */
     public function it_deploys_an_array_of_functions()
     {
+        $this->lambda->shouldReceive('functionExists')->andReturn(false);
+        $this->lambda->shouldReceive('getVersions')->andReturn([]);
         $this->mockCreatingFunction();
 
         Deployment::make([DeploymentTestFunction::class])->deploy($activate = false);
@@ -184,11 +192,13 @@ class DeploymentTest extends BaseTest
     /** @test */
     public function it_deploys_the_functions_in_the_config()
     {
+        $this->lambda->shouldReceive('functionExists')->andReturn(false);
+        $this->lambda->shouldReceive('getVersions')->andReturn([]);
+        $this->mockCreatingFunction();
+
         config()->set('sidecar.functions', [
             DeploymentTestFunction::class
         ]);
-
-        $this->mockCreatingFunction();
 
         Deployment::make()->deploy($activate = false);
 
@@ -198,6 +208,8 @@ class DeploymentTest extends BaseTest
     /** @test */
     public function it_deploys_and_activates_a_function_that_doesnt_exist()
     {
+        $this->lambda->shouldReceive('functionExists')->andReturn(false);
+        $this->lambda->shouldReceive('getVersions')->andReturn([]);
         $this->mockCreatingFunction();
         $this->mockActivating();
 
@@ -209,7 +221,11 @@ class DeploymentTest extends BaseTest
     /** @test */
     public function it_updates_an_existing_function()
     {
-        $this->mockUpdating();
+        $this->lambda->shouldReceive('functionExists')->andReturn(true);
+        $this->lambda->shouldReceive('getVersions')->andReturn([]);
+        $this->lambda->shouldReceive('updateExistingFunction')->once()->withArgs(function ($function) {
+            return $function instanceof DeploymentTestFunction;
+        });
 
         DeploymentTestFunction::deploy($activate = false);
 
@@ -219,28 +235,12 @@ class DeploymentTest extends BaseTest
     /** @test */
     public function it_updates_and_activates_an_existing_function()
     {
-        $this->mockUpdating();
+        $this->lambda->shouldReceive('functionExists')->andReturn(true);
+        $this->lambda->shouldReceive('getVersions')->andReturn([]);
+        $this->lambda->shouldReceive('updateExistingFunction')->once()->withArgs(function ($function) {
+            return $function instanceof DeploymentTestFunction;
+        });
         $this->mockActivating();
-
-        DeploymentTestFunction::deploy($activate = true);
-
-        $this->assertEvents($deployed = true, $activated = true);
-    }
-
-    /** @test */
-    public function it_doesnt_update_if_nothing_has_changed()
-    {
-        $this->mockActivating();
-
-        $this->lambda->shouldReceive('getFunction')->twice()->andReturn([
-            'Configuration' => [
-                'FunctionName' => 'test-FunctionName',
-                'Description' => 'test-Description [5000a525]',
-            ]
-        ]);
-
-        $this->lambda->shouldNotReceive('updateFunctionConfiguration');
-        $this->lambda->shouldNotReceive('updateFunctionCode');
 
         DeploymentTestFunction::deploy($activate = true);
 
@@ -254,8 +254,7 @@ class DeploymentTest extends BaseTest
 
         ]);
 
-        $this->expectException(ConfigurationException::class);
-        $this->expectExceptionMessage('Cannot deploy, no Sidecar functions have been configured');
+        $this->expectException(NoFunctionsRegisteredException::class);
 
         Deployment::make()->deploy();
     }
