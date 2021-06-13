@@ -89,6 +89,7 @@ abstract class LambdaFunction
     public function prefix()
     {
         $appName = str_replace(' ', '-', config('app.name'));
+
         return 'SC-' . $appName . '-' . Sidecar::getEnvironment() . '-';
     }
 
