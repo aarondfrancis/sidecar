@@ -2,12 +2,15 @@
 
 ## Unreleased 
 
-- Added `sidecar.env` config option to separate Sidecar environment from application environment. Useful mostly for teams who have multiple developers that all have an app env of `local` and don't want to be constantly overwriting each other's functions.
-- Added better error reporting when `sidecar:deploy` is called and there are no functions.
-- Added better error reporting when a function is not found. 
-- Added `sidecar:warm` function
-- Added sweeping to remove old, unused functions
-- Changed: moved some methods into the Sidecar\LambdaClient  
+- Add: `sidecar.env` config option to separate Sidecar environment from application environment. Useful mostly for teams who have multiple developers that all have an app env of `local` and don't want to be constantly overwriting each other's functions.
+- Add: Better error reporting when `sidecar:deploy` is called and there are no functions.
+- Add: Better error reporting when a function is not found. 
+- Add: `sidecar:warm` function [#6](https://github.com/hammerstonedev/sidecar/pull/6)
+- Add: Sweeping to remove old, unused functions [#15](https://github.com/hammerstonedev/sidecar/pull/15)
+
+- Change: Moved some methods into the Sidecar\LambdaClient [#15](https://github.com/hammerstonedev/sidecar/pull/15)
+
+- Fix: Allow spacing in `APP_NAME` [#17](https://github.com/hammerstonedev/sidecar/pull/17)  
 
 ## 0.1.4 - 2021-06-05
 
