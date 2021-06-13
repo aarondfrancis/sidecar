@@ -88,7 +88,8 @@ abstract class LambdaFunction
      */
     public function prefix()
     {
-        return 'SC-' . config('app.name') . '-' . Sidecar::getEnvironment() . '-';
+        $appName = str_replace(' ', '-', config('app.name'));
+        return 'SC-' . $appName . '-' . Sidecar::getEnvironment() . '-';
     }
 
     /**
