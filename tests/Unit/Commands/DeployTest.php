@@ -10,7 +10,6 @@ use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunction;
 
 class DeployTest extends DeploymentTest
 {
-
     /** @test */
     public function it_deploys_the_functions_in_the_config()
     {

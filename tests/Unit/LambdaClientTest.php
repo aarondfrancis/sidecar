@@ -7,17 +7,8 @@ namespace Hammerstone\Sidecar\Tests\Unit;
 
 use Aws\Lambda\Exception\LambdaException;
 use Hammerstone\Sidecar\Clients\LambdaClient;
-use Hammerstone\Sidecar\Deployment;
-use Hammerstone\Sidecar\Events\AfterFunctionsActivated;
-use Hammerstone\Sidecar\Events\AfterFunctionsDeployed;
-use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
-use Hammerstone\Sidecar\Events\BeforeFunctionsDeployed;
-use Hammerstone\Sidecar\Exceptions\ConfigurationException;
-use Hammerstone\Sidecar\Exceptions\NoFunctionsRegisteredException;
-use Hammerstone\Sidecar\LambdaFunction;
 use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunction;
 use Hammerstone\Sidecar\Tests\Unit\Support\EmptyTestFunction;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Event;
 use Mockery;
 
@@ -211,9 +202,9 @@ class LambdaClientTest extends BaseTest
         $this->lambda->shouldReceive('createAlias')
             ->once()
             ->with([
-                "FunctionName" => "SC-Laravel-testing--Sidecar-Tests-Unit-Support-EmptyTestFunction",
-                "Name" => "active",
-                "FunctionVersion" => "82",
+                'FunctionName' => 'SC-Laravel-testing--Sidecar-Tests-Unit-Support-EmptyTestFunction',
+                'Name' => 'active',
+                'FunctionVersion' => '82',
             ]);
 
         $response = $this->lambda->aliasVersion(new EmptyTestFunction, 'active');
@@ -231,9 +222,9 @@ class LambdaClientTest extends BaseTest
         $this->lambda->shouldReceive('updateAlias')
             ->once()
             ->with([
-                "FunctionName" => "SC-Laravel-testing--Sidecar-Tests-Unit-Support-EmptyTestFunction",
-                "Name" => "active",
-                "FunctionVersion" => "82",
+                'FunctionName' => 'SC-Laravel-testing--Sidecar-Tests-Unit-Support-EmptyTestFunction',
+                'Name' => 'active',
+                'FunctionVersion' => '82',
             ]);
 
         $response = $this->lambda->aliasVersion(new EmptyTestFunction, 'active');
@@ -251,9 +242,9 @@ class LambdaClientTest extends BaseTest
         $this->lambda->shouldReceive('updateAlias')
             ->once()
             ->with([
-                "FunctionName" => "SC-Laravel-testing--Sidecar-Tests-Unit-Support-EmptyTestFunction",
-                "Name" => "foo",
-                "FunctionVersion" => "100",
+                'FunctionName' => 'SC-Laravel-testing--Sidecar-Tests-Unit-Support-EmptyTestFunction',
+                'Name' => 'foo',
+                'FunctionVersion' => '100',
             ]);
 
         $response = $this->lambda->aliasVersion(new EmptyTestFunction, 'foo', '100');
@@ -275,6 +266,4 @@ class LambdaClientTest extends BaseTest
 
         $this->assertSame(LambdaClient::NOOP, $response);
     }
-
-
 }

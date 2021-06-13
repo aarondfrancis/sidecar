@@ -74,10 +74,12 @@ class LambdaClient extends BaseClient
 
         if ($aliased) {
             $this->updateAlias($args);
+
             return self::UPDATED;
         }
 
         $this->createAlias($args);
+
         return self::CREATED;
     }
 
@@ -163,7 +165,6 @@ class LambdaClient extends BaseClient
             $response = $this->getFunction([
                 'FunctionName' => $function->nameWithPrefix(),
             ]);
-
         } catch (LambdaException $e) {
             // If it's a 404, then that means the function doesn't
             // exist, which is what we're trying to figure out.
