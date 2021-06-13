@@ -1,0 +1,55 @@
+{
+    "NextMarker": "8S+Ody4laq0rHBfV3pB88xh7YV9FpwNeTtSSkMuJOK4Q5kLNpv3donI3szgkKau+bzr5365+jP7xsaVqiGda8wBwVWscjGKD9SWwmOfZUKiiIyRSJPUtQQq\/xhSP18oP51P1ly8LdnDAjTaC6X\/dI9tmJIhPUHPKRkRQd9HXJjMjY7XcbSP2PqQeG8eikXLtzynsF9CSKKr5AZGsv2wAN8UX84R+gNG4qSG4UQz3uFTrNM7wjxBr1h+DbWI3NfAR1hiMODba1jJup8RG2MsrBW2I9RxDz2YhJb2F0EKZS9PDZhrv3ui\/5CYVmYoHOKZdzI2dtagTsen6dk4pyvYGJAr1JK4EKLZj\/CLV1DRLkXS79y\/jaFMf5qTn2Zho0lA65mKL7XF6Jd0K9YxFYnElDX7Cg++F6R24rA1YHPd4WPg4w6RU8t0swtp2hI2Wb7njo+pmGamjmjOatE0GmJWNfTTkfXitUxVQNInSm9eG946Awy2xzpF4wGEjFRjIvrY1+YwaLgwCfVm0Jtq+UuvmswBGKHiUqw\/hVjPmHQ0jP686cVvSAmBrKVEdtAzHROaivow8IdH2YG8FxvGmI5HkwSTf60OBM3jFrxw7v5OjCoId\/ao6LBGYkuSAPF6YvgvwBdpgZeRmXfx9Iop3eaCNyLeGtKzLqVSOUwazScYgfAk=",
+    "Versions": [
+        {
+            "FunctionName": "SC-Laravel-local-Sidecar-OgImage",
+            "FunctionArn": "arn:aws:lambda:us-east-2:XXXXXX:function:SC-Laravel-local-Sidecar-OgImage:$LATEST",
+            "Runtime": "nodejs12.x",
+            "Role": "arn:aws:iam::XXXXXX:role\/sidecar-execution-role",
+            "Handler": "lambda\/image.handler",
+            "CodeSize": 1963857,
+            "Description": "Laravel [local]: Sidecar function `App\\Sidecar\\OgImage`. [ab0f64a5]",
+            "Timeout": 300,
+            "MemorySize": 512,
+            "LastModified": "2021-06-12T14:04:51.802+0000",
+            "CodeSha256": "hHe3JC+E9cHvgZjRgf39adwq2yzNOftvN0qA\/1kaukU=",
+            "Version": "$LATEST",
+            "Environment": {
+                "Variables": {
+                    "BAZ": "buzz"
+                }
+            },
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "f1e279fa-08c3-45a4-9ae3-a041029aae65",
+            "Layers": [
+                {
+                    "Arn": "arn:aws:lambda:us-east-2:XXXXXX:layer:node_canvas:1",
+                    "CodeSize": 31165483
+                },
+                {
+                    "Arn": "arn:aws:lambda:us-east-2:XXXXXX:layer:node_canvas_64:1",
+                    "CodeSize": 721111
+                }
+            ],
+            "PackageType": "Zip"
+        }
+    ],
+    "@metadata": {
+        "statusCode": 200,
+        "effectiveUri": "https:\/\/lambda.us-east-2.amazonaws.com\/2015-03-31\/functions\/SC-Laravel-local-Sidecar-OgImage\/versions?MaxItems=1",
+        "headers": {
+            "date": "Sat, 12 Jun 2021 21:58:24 GMT",
+            "content-type": "application\/json",
+            "content-length": "2099",
+            "connection": "keep-alive",
+            "x-amzn-requestid": "c4c80305-7b2b-463a-a1e1-4e244cd38152"
+        },
+        "transferStats": {
+            "http": [
+                []
+            ]
+        }
+    }
+}

@@ -5,15 +5,13 @@
 
 namespace Hammerstone\Sidecar;
 
-use Aws\Lambda\Exception\LambdaException;
+use Exception;
 use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Events\AfterFunctionsActivated;
 use Hammerstone\Sidecar\Events\AfterFunctionsDeployed;
 use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
 use Hammerstone\Sidecar\Events\BeforeFunctionsDeployed;
-use Hammerstone\Sidecar\Exceptions\ConfigurationException;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
+use Hammerstone\Sidecar\Exceptions\NoFunctionsRegisteredException;
 
 class Deployment
 {
@@ -46,11 +44,7 @@ class Deployment
         $this->functions = Sidecar::instantiatedFunctions($functions);
 
         if (empty($this->functions)) {
-            throw new ConfigurationException(
-                "Cannot deploy, no Sidecar functions have been configured. \n" .
-                "Please check your config/sidecar.php file to ensure you have properly registered your functions. \n" .
-                'Read more at https://hammerstone.dev/sidecar/docs/main/configuration#registering-functions'
-            );
+            throw new NoFunctionsRegisteredException;
         }
     }
 
@@ -65,7 +59,13 @@ class Deployment
         event(new BeforeFunctionsDeployed($this->functions));
 
         foreach ($this->functions as $function) {
+            Sidecar::log('Deploying ' . get_class($function) . ' to Lambda as "' . $function->nameWithPrefix(). '."');
+            $undo = Sidecar::sublog();
+
             $this->deploySingle($function, $activate);
+            $this->sweep($function);
+
+            $undo();
         }
 
         event(new AfterFunctionsDeployed($this->functions));
@@ -93,159 +93,100 @@ class Deployment
         event(new AfterFunctionsActivated($this->functions));
     }
 
-    protected function deploySingle($function)
+    /**
+     * @param LambdaFunction $function
+     * @throws Exception
+     */
+    protected function deploySingle(LambdaFunction $function)
     {
-        Sidecar::log('---------');
-        Sidecar::log('Deploying ' . get_class($function) . ' to Lambda. (Runtime ' . $function->runtime() . ')');
+        Sidecar::log('Environment: ' . Sidecar::getEnvironment());
+        Sidecar::log('Runtime: ' . $function->runtime());
 
         $function->beforeDeployment();
 
-        $this->functionExists($function)
+        $this->lambda->functionExists($function)
             ? $this->updateExistingFunction($function)
             : $this->createNewFunction($function);
 
         $function->afterDeployment();
-
-        Sidecar::log('---------');
     }
 
     /**
      * @param LambdaFunction $function
-     * @return \Aws\Result
-     * @throws \Exception
+     * @throws Exception
      */
     protected function createNewFunction(LambdaFunction $function)
     {
         Sidecar::log('Creating new lambda function.');
 
-        return $this->lambda->createFunction($function->toDeploymentArray());
+        $this->lambda->createFunction($function->toDeploymentArray());
     }
 
     /**
      * @param LambdaFunction $function
-     * @throws \Exception
+     * @throws Exception
      */
     protected function updateExistingFunction(LambdaFunction $function)
     {
         Sidecar::log('Function already exists, potentially updating code and configuration.');
 
-        $config = $function->toDeploymentArray();
-
-        $checksum = substr(md5(json_encode($config)), 0, 8);
-
-        if ($this->functionExists($function, $checksum)) {
-            return Sidecar::log('Function code and configuration are unchanged! Not updating anything.');
+        if ($this->lambda->updateExistingFunction($function) === LambdaClient::NOOP) {
+            Sidecar::log('Function code and configuration are unchanged. Not updating anything.');
+        } else {
+            Sidecar::log('Function code and configuration updated.');
         }
-
-        // Add the checksum to the description, so we can look for it next time.
-        $config['Description'] .= " [$checksum]";
-
-        $this->lambda->updateFunctionConfiguration(Arr::only($config, [
-            'FunctionName',
-            'Role',
-            'Handler',
-            'Description',
-            'Timeout',
-            'MemorySize',
-        ]));
-
-        Sidecar::log('Configuration updated.');
-
-        $config = Arr::only($config, [
-            'FunctionName',
-            'Code',
-            'Publish',
-        ]);
-
-        // For the updateFunctionCode call, AWS requires that the S3Bucket
-        // and S3Key be top level instead of nested under `Code`.
-        $config['S3Bucket'] = $config['Code']['S3Bucket'];
-        $config['S3Key'] = $config['Code']['S3Key'];
-
-        unset($config['Code']);
-
-        $this->lambda->updateFunctionCode($config);
-
-        Sidecar::log('Code updated.');
     }
 
     /**
+     * Alias the latest version of a function as the "active" one.
+     *
      * @param LambdaFunction $function
      */
     protected function aliasLatestVersion(LambdaFunction $function)
     {
-        $last = last($this->getLastVersionPage($function)['Versions'])['Version'];
+        $version = $this->lambda->getLatestVersion($function);
+        $result = $this->lambda->aliasVersion($function, 'active', $version);
 
-        Sidecar::log("Activating the latest version ($last) of " . $function->nameWithPrefix() . '.');
+        $messages = [
+            LambdaClient::CREATED => "Creating alias for latest version ($version) of {$function->nameWithPrefix()}.",
+            LambdaClient::UPDATED => "Activating latest version ($version) of {$function->nameWithPrefix()}.",
+            LambdaClient::NOOP => "Version $version of {$function->nameWithPrefix()} is already active.",
+        ];
 
-        $this->lambda->deleteAlias([
-            'FunctionName' => $function->nameWithPrefix(),
-            'Name' => 'active',
-        ]);
-
-        $this->lambda->createAlias([
-            'FunctionName' => $function->nameWithPrefix(),
-            'FunctionVersion' => $last,
-            'Name' => 'active',
-        ]);
+        Sidecar::log($messages[$result]);
     }
 
     /**
+     * Remove old, outdated versions of a function.
+     *
      * @param LambdaFunction $function
-     * @param null|string $marker
-     * @return \Aws\Result
      */
-    protected function getLastVersionPage(LambdaFunction $function, $marker = null)
+    protected function sweep(LambdaFunction $function)
     {
-        $result = $this->lambda->listVersionsByFunction([
-            'FunctionName' => $function->nameWithPrefix(),
-            'MaxItems' => 100,
-            'Marker' => $marker,
-        ]);
+        $versions = $this->lambda->getVersions($function);
 
-        if ($marker = Arr::get($result, 'NextMarker')) {
-            $result = $this->getLastVersionPage($function, $marker);
+        $keep = 20;
+
+        // We want to leave `$keep` real versions and the $LATEST
+        // version that AWS creates. The $LATEST version isn't a
+        // unique one, but it always comes back from the API.
+        if (count($versions) < ($keep + 1)) {
+            return;
         }
 
-        return $result;
-    }
+        // Skip the $LATEST at the beginning and remove the
+        // ten good ones at the end.
+        $outdated = array_splice($versions, 1, -$keep);
 
-    /**
-     * @param LambdaFunction $function
-     * @param null $checksum
-     * @return bool
-     */
-    protected function functionExists(LambdaFunction $function, $checksum = null)
-    {
-        try {
-            $response = $this->lambda->getFunction([
-                'FunctionName' => $function->nameWithPrefix(),
-            ]);
-        } catch (LambdaException $e) {
-            // If it's a 404, then that means the function doesn't
-            // exist, which is what we're trying to figure out.
-            if ($e->getStatusCode() === 404) {
-                return false;
-            }
+        // Only do five at a time for each function, as
+        // we catch up from having no sweeping at all.
+        $outdated = array_slice($outdated, 0, 5);
 
-            // If it's some other kind of error, we need to bail.
-            throw $e;
+        foreach ($outdated as $version) {
+            $version = $version['Version'];
+            Sidecar::log("Removing outdated version $version.");
+
+            $this->lambda->deleteFunctionVersion($function, $version);
         }
-
-        // We're just checking to see if any version of it exists,
-        // not necessarily a particular version.
-        if (is_null($checksum)) {
-            return true;
-        }
-
-        $description = Arr::get($response, 'Configuration.Description');
-
-        // No description? Default to re-deploying.
-        if (!$description) {
-            return false;
-        }
-
-        // See if the description contains the checksum.
-        return Str::contains($description, $checksum);
     }
 }

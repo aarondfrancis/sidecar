@@ -1,0 +1,54 @@
+{
+    "Versions": [
+        {
+            "FunctionName": "SC-Laravel-local-Sidecar-OgImage",
+            "FunctionArn": "arn:aws:lambda:us-east-2:XXXXXX:function:SC-Laravel-local-Sidecar-OgImage:81",
+            "Runtime": "nodejs12.x",
+            "Role": "arn:aws:iam::XXXXXX:role\/sidecar-execution-role",
+            "Handler": "lambda\/image.handler",
+            "CodeSize": 1963857,
+            "Description": "Laravel [local]: Sidecar function `App\\Sidecar\\OgImage`. [ab0f64a5]",
+            "Timeout": 300,
+            "MemorySize": 512,
+            "LastModified": "2021-06-12T14:04:51.802+0000",
+            "CodeSha256": "hHe3JC+E9cHvgZjRgf39adwq2yzNOftvN0qA\/1kaukU=",
+            "Version": "81",
+            "Environment": {
+                "Variables": {
+                    "BAZ": "buzz"
+                }
+            },
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "09db5f5f-16be-4579-9a68-0f2e900cb4be",
+            "Layers": [
+                {
+                    "Arn": "arn:aws:lambda:us-east-2:XXXXXX:layer:node_canvas:1",
+                    "CodeSize": 31165483
+                },
+                {
+                    "Arn": "arn:aws:lambda:us-east-2:XXXXXX:layer:node_canvas_64:1",
+                    "CodeSize": 721111
+                }
+            ],
+            "PackageType": "Zip"
+        }
+    ],
+    "@metadata": {
+        "statusCode": 200,
+        "effectiveUri": "https:\/\/lambda.us-east-2.amazonaws.com\/2015-03-31\/functions\/SC-Laravel-local-Sidecar-OgImage\/versions?MaxItems=1&Marker=8S%2BOdy4laq0rHBfV3pB88xh7YV9FpwNeTtSSkMuJOK4Q5kLNpv3donI3szgkKau%2Bbzr5365%2BjP7xsaVqiGda8wBwVWscjGKD9SWwmOfZUKiiIyRSJPUtQQq%2FxhSP18oP51P1ly8LdnDAjTaC6X%2FdI9tmJIhPUHPKRkRQd9HXJjMjY7XcbSP2PqQeG8eikXLtzynsF9CSKKr5AZGsv2wAN8UX84R%2BgNG4qSG4UQz3uFTrNM7wjxBr1h%2BDbWI3NfAR1hiMODba1jJup8RG2MsrBT2FGV3z7tAn%2B85VIlN79G1V2fDiudxAr92hiuIB452uzXCMwQmcdar2UBoTKKmjFhxWv%2FPn7JoLobDF2Djmn1fW8gBpgx%2FohnHIW65rjdJiTY4%2Fo9j7sDrseZu8BqDuBFce0UCWNtqWjb%2BsXTcp2Gy6LnizYfn%2F1z1rvQXGhXWYT0QSbckZlgbGr1mgbcV5QxzlPza6dEAuevvNV1pV7v2%2FQ0DoY6YRcXnK8trIdpUsQhWksGBMaPgdBAL52ty6naOJtFs5Q1zYtreoQBGZ3V2uStrFoZiF%2F04D4zp8A3k4dMkm%2Bh5xehodE4PrxVbXIjoJ9v%2B8%2FVervIVInE9gDdNE0KQMKB9tKfEd5MdPwow%2BfrwM5J%2FwWy7nssfcQKwB9grYeWyB%2BcxewYGlRobVWQs%3D",
+        "headers": {
+            "date": "Sat, 12 Jun 2021 21:58:24 GMT",
+            "content-type": "application\/json",
+            "content-length": "1407",
+            "connection": "keep-alive",
+            "x-amzn-requestid": "18aa8098-86fc-42a1-aa9b-ea1bbd4a48b1"
+        },
+        "transferStats": {
+            "http": [
+                []
+            ]
+        }
+    }
+}

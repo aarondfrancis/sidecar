@@ -3,10 +3,10 @@
  * @author Aaron Francis <aaron@hammerstone.dev>
  */
 
-namespace Hammerstone\Sidecar\Tests;
+namespace Hammerstone\Sidecar\Tests\Unit;
 
 use Hammerstone\Sidecar\Package;
-use Hammerstone\Sidecar\Tests\Support\FakeStreamWrapper;
+use Hammerstone\Sidecar\Tests\Unit\Support\FakeStreamWrapper;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Mockery;

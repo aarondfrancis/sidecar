@@ -183,7 +183,7 @@ class Package
      */
     public function upload()
     {
-        Sidecar::log('Packaging function code.');
+        Sidecar::log('Packaging files for deployment.');
 
         $this->registerStreamWrapper();
 
@@ -193,7 +193,7 @@ class Package
 
         // If it already exists we can bail early.
         if (file_exists($path)) {
-            Sidecar::log("Package unchanged, reusing previous code package at $path.");
+            Sidecar::log("Package unchanged. Reusing $path.");
 
             return $filename;
         }

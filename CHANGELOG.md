@@ -6,6 +6,8 @@
 - Added better error reporting when `sidecar:deploy` is called and there are no functions.
 - Added better error reporting when a function is not found. 
 - Added `sidecar:warm` function
+- Added sweeping to remove old, unused functions
+- Changed: moved some methods into the Sidecar\LambdaClient  
 
 ## 0.1.4 - 2021-06-05
 

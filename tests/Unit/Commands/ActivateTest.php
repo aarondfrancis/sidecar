@@ -3,7 +3,7 @@
  * @author Aaron Francis <aaron@hammerstone.dev>
  */
 
-namespace Hammerstone\Sidecar\Tests;
+namespace Hammerstone\Sidecar\Tests\Unit;
 
 use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Events\AfterFunctionsActivated;
@@ -11,7 +11,7 @@ use Hammerstone\Sidecar\Events\AfterFunctionsDeployed;
 use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
 use Hammerstone\Sidecar\Events\BeforeFunctionsDeployed;
 use Hammerstone\Sidecar\Sidecar;
-use Hammerstone\Sidecar\Tests\Support\DeploymentTestFunction;
+use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunction;
 use Illuminate\Support\Facades\Event;
 
 class ActivateTest extends BaseTest
@@ -27,43 +27,23 @@ class ActivateTest extends BaseTest
         $this->lambda = $this->mock(LambdaClient::class);
     }
 
-    public function mockListingVersions()
-    {
-        $this->lambda->shouldReceive('listVersionsByFunction')
-            ->once()
-            ->with([
-                'FunctionName' => 'test-FunctionName',
-                'MaxItems' => 100,
-                'Marker' => null
-            ])
-            ->andReturn([
-                'Versions' => [[
-                    'FunctionName' => 'test-FunctionName',
-                    'Version' => '10',
-                ], [
-                    'FunctionName' => 'test-FunctionName',
-                    'Version' => '11',
-                ], [
-                    'FunctionName' => 'test-FunctionName',
-                    'Version' => '12',
-                ]]
-            ]);
-    }
-
     public function mockActivating()
     {
-        $this->mockListingVersions();
+        $this->lambda->shouldReceive('getLatestVersion')
+            ->once()
+            ->withArgs(function ($function) {
+                return $function instanceof DeploymentTestFunction;
+            })
+            ->andReturn('10');
 
-        $this->lambda->shouldReceive('deleteAlias')->once()->with([
-            'FunctionName' => 'test-FunctionName',
-            'Name' => 'active',
-        ]);
-
-        $this->lambda->shouldReceive('createAlias')->once()->with([
-            'FunctionName' => 'test-FunctionName',
-            'FunctionVersion' => '12',
-            'Name' => 'active',
-        ]);
+        $this->lambda->shouldReceive('aliasVersion')
+            ->once()
+            ->withArgs(function ($function, $alias, $version) {
+                return $function instanceof DeploymentTestFunction
+                    && $alias === 'active'
+                    && $version === '10';
+            })
+            ->andReturn(LambdaClient::CREATED);
     }
 
     public function assertEvents($deployed = true, $activated = true)

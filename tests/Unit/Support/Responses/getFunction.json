@@ -1,0 +1,58 @@
+{
+    "Configuration": {
+        "FunctionName": "SC-Laravel-local-Sidecar-OgImage",
+        "FunctionArn": "arn:aws:lambda:us-east-2:XXXXXX:function:SC-Laravel-local-Sidecar-OgImage",
+        "Runtime": "nodejs12.x",
+        "Role": "arn:aws:iam::XXXXXX:role\/sidecar-execution-role",
+        "Handler": "lambda\/image.handler",
+        "CodeSize": 1963857,
+        "Description": "Laravel [local]: Sidecar function `App\\Sidecar\\OgImage`. [ab0f64a5]",
+        "Timeout": 300,
+        "MemorySize": 512,
+        "LastModified": "2021-06-12T14:04:51.802+0000",
+        "CodeSha256": "hHe3JC+E9cHvgZjRgf39adwq2yzNOftvN0qA\/1kaukU=",
+        "Version": "$LATEST",
+        "Environment": {
+            "Variables": {
+                "BAZ": "buzz"
+            }
+        },
+        "TracingConfig": {
+            "Mode": "PassThrough"
+        },
+        "RevisionId": "f1e279fa-08c3-45a4-9ae3-a041029aae65",
+        "Layers": [
+            {
+                "Arn": "arn:aws:lambda:us-east-2:XXXXXX:layer:node_canvas:1",
+                "CodeSize": 31165483
+            },
+            {
+                "Arn": "arn:aws:lambda:us-east-2:XXXXXX:layer:node_canvas_64:1",
+                "CodeSize": 721111
+            }
+        ],
+        "State": "Active",
+        "LastUpdateStatus": "Successful",
+        "PackageType": "Zip"
+    },
+    "Code": {
+        "RepositoryType": "S3",
+        "Location": "https:\/\/awslambda-us-east-2-tasks.s3.us-east-2.amazonaws.com\/snapshots\/XXXXXX\/SC-Laravel-local-Sidecar-OgImage-5ba5a55a-693c-4812-ae38-a342156fdb96?versionId=fPgLDhzJd.nd6nIpwlibArDMzPSGLFLw&X-Amz-Security-Token=IQoJb3JpZ2luX2VjECYaCXVzLWVhc3QtMiJHMEUCIQCeIF1s3X%2FwVSjyVvwS5Ghpi3obUPVAZwadKyomQjLg9wIgURodw5qzHWQuGyUxGLWsj05vqXnidCOlt11kwjbwwHEqgwQI3v%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARACGgwxMDQyNDYwMTc4NjUiDAXnO8seM08Ytla%2FoyrXA5Hh%2BBSpDwVQABHR0Vhro22WxzMIil66mHTN8hvJi7D%2BbYp1xrYGLFqfn7P5u12t282ak5TXjBlw8jschE5x118EnVMaLlbE3w1XOVobhLhc7T87yA1M%2FUsFqbr5Pr92iHvxpaN90sOiHq7UHCaUIfoCG28pXT9xtudsl68xFe7Ov%2FgKNMdgribGOaKicZou38a4DNnGcwqlZfSD1BWn%2BufU8i831TyskGKlkeE2p8To2nmsQ4U4frISKVzBAliW9V6Db%2FAudHNVUlkyyQu8GQIcqnelbU16nPwV0mKk6KEMnJEamP5kJHEgU6fcN0S9foNO7CeyXFWXz7iW0ZIoLkJRZtkSD4hnrDOQmYyGptk8AvadqVISrVyeSn%2BOsGRsZujJ2RmHWxlzToLTUi9t8Cy3z16nag%2Bze9xPRblNC3GrN3Cu1ikXYKjXQJqIPi061fMsv044GQqffJR0DdshlpM0WLVkNZfp28pzumExx2V%2F3kTaywczPPqc1fsr1R5OJ55sZnbVbIGpKesD87JAQv7cgWMwVKFr604QSmmkmRkRbzKqo0WoNq19FQukNUU4q4sCco824ukj1JvmVoNOrZFsRMxvbnovWSMDTr%2FFUf33nkTOtcXEjzCb05SGBjqlAWrzb0Ywt4gzywpAaQvfr5dOa1%2Bm5dJJSYsQuMn9EilyIUkXq77m7dCV4pNvRE4fNncwjfmmwOCtizrMtLLCZUdsrk1VjztKM9Ots8J%2B4UxQu0HmSpIV61BmmLbXXEGBVUDpRKbhBMFVUi%2FiGS2skQYXWrjI94xGiIt3H5YvzPBHmrZWlpHurbLoQbZnAvDgYQeoTzYY4EEPNqX4siXYOHrpl5wH4g%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210612T223316Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIARQRML75E6V7IHLVP%2F20210612%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Signature=2077c1a8555a18fd5e139cda49fbe52834e627525c639be5158b26af6c1e6424"
+    },
+    "@metadata": {
+        "statusCode": 200,
+        "effectiveUri": "https:\/\/lambda.us-east-2.amazonaws.com\/2015-03-31\/functions\/SC-Laravel-local-Sidecar-OgImage",
+        "headers": {
+            "date": "Sat, 12 Jun 2021 22:33:16 GMT",
+            "content-type": "application\/json",
+            "content-length": "3116",
+            "connection": "keep-alive",
+            "x-amzn-requestid": "3bfd575b-2bf2-4e7c-b1af-54c2f4eabea0"
+        },
+        "transferStats": {
+            "http": [
+                []
+            ]
+        }
+    }
+}

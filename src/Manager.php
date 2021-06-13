@@ -31,6 +31,11 @@ class Manager
     protected $environment;
 
     /**
+     * @var bool
+     */
+    protected $sublog = false;
+
+    /**
      * @param $closure
      * @return $this
      */
@@ -57,8 +62,25 @@ class Manager
     public function log($message)
     {
         foreach ($this->loggers as $logger) {
-            $logger('[Sidecar] ' . $message);
+            $logger(($this->sublog ? '          ↳' : '[Sidecar]') . " $message");
         }
+    }
+
+    /**
+     * @param bool $sublog
+     * @return \Closure
+     */
+    public function sublog()
+    {
+        $cached = $this->sublog;
+
+        $undo = function () use ($cached) {
+            $this->sublog = $cached;
+        };
+
+        $this->sublog = true;
+
+        return $undo;
     }
 
     /**
