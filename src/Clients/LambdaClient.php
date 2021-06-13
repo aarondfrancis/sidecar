@@ -62,7 +62,7 @@ class LambdaClient extends BaseClient
         $aliased = $this->getAliasWithoutException($function, $alias);
 
         // The alias already exists and its the version we were trying to alias anyway.
-        if ($aliased && $version === Arr::get($alias, 'FunctionVersion')) {
+        if ($aliased && $version === Arr::get($aliased, 'FunctionVersion')) {
             return self::NOOP;
         }
 
@@ -88,31 +88,6 @@ class LambdaClient extends BaseClient
      */
     public function getAliasWithoutException(LambdaFunction $function, $name)
     {
-        //  Aws\Result^ {#1108
-        ////  -data: array:6 [
-        ////    "AliasArn" => "arn:aws:lambda:us-east-2:457434779810:function:SC-Laravel-local-Sidecar-OgImage:active"
-        ////    "Name" => "active"
-        ////    "FunctionVersion" => "78"
-        ////    "Description" => ""
-        ////    "RevisionId" => "62333798-7bd2-4456-89b1-677351020a7e"
-        ////    "@metadata" => array:4 [
-        ////      "statusCode" => 200
-        ////      "effectiveUri" => "https://lambda.us-east-2.amazonaws.com/2015-03-31/functions/SC-Laravel-local-Sidecar-OgImage/aliases/active"
-        ////      "headers" => array:5 [
-        ////        "date" => "Fri, 11 Jun 2021 18:25:03 GMT"
-        ////        "content-type" => "application/json"
-        ////        "content-length" => "230"
-        ////        "connection" => "keep-alive"
-        ////        "x-amzn-requestid" => "026df39a-60cd-46eb-9c24-a3e9c2a3cc1f"
-        ////      ]
-        ////      "transferStats" => array:1 [
-        ////        "http" => array:1 [
-        ////          0 => []
-        ////        ]
-        ////      ]
-        ////    ]
-        ////  ]
-        ////  -monitoringEvents: []
         try {
             return $this->getAlias([
                 'FunctionName' => $function->nameWithPrefix(),
@@ -188,6 +163,7 @@ class LambdaClient extends BaseClient
             $response = $this->getFunction([
                 'FunctionName' => $function->nameWithPrefix(),
             ]);
+
         } catch (LambdaException $e) {
             // If it's a 404, then that means the function doesn't
             // exist, which is what we're trying to figure out.

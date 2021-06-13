@@ -1,0 +1,23 @@
+{
+    "AliasArn": "arn:aws:lambda:us-east-2:XXXXXX:function:SC-Laravel-local-Sidecar-OgImage:active",
+    "Name": "active",
+    "FunctionVersion": "81",
+    "Description": "",
+    "RevisionId": "77400ee9-5265-495b-8577-8b7f59e0cdd0",
+    "@metadata": {
+        "statusCode": 200,
+        "effectiveUri": "https:\/\/lambda.us-east-2.amazonaws.com\/2015-03-31\/functions\/SC-Laravel-local-Sidecar-OgImage\/aliases\/active",
+        "headers": {
+            "date": "Sat, 12 Jun 2021 22:17:06 GMT",
+            "content-type": "application\/json",
+            "content-length": "230",
+            "connection": "keep-alive",
+            "x-amzn-requestid": "29dc29e3-b46f-4218-8b83-6e550e09cabe"
+        },
+        "transferStats": {
+            "http": [
+                []
+            ]
+        }
+    }
+}
