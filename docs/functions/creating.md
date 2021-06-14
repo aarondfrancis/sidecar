@@ -342,7 +342,7 @@ class ExampleFunction extends LambdaFunction
         //
     } // [tl! collapse-end]
     
-    public function timeout() 
+    public function layers() 
     {
         return [
             // Node Canvas from https://github.com/jwerre/node-canvas-lambda [tl! ~~]
