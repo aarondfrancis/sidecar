@@ -5,11 +5,11 @@
 
 namespace Hammerstone\Sidecar\Concerns;
 
+use Closure;
 use Illuminate\Console\Command;
 
 trait HandlesLogging
 {
-
     /**
      * @var array
      */
@@ -52,9 +52,10 @@ trait HandlesLogging
     }
 
     /**
-     * @return \Closure
+     * @param $callback
+     * @return mixed|Closure
      */
-    public function sublog()
+    public function sublog($callback)
     {
         $cached = $this->sublog;
 
@@ -63,6 +64,12 @@ trait HandlesLogging
         };
 
         $this->sublog = true;
+
+        if ($callback) {
+            $result = $callback();
+            $undo();
+            return $result;
+        }
 
         return $undo;
     }
