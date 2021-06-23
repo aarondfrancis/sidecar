@@ -68,7 +68,11 @@ abstract class LambdaFunction
      */
     public static function deploy($activate = true)
     {
-        Deployment::make(static::class)->deploy($activate);
+        $deployment = Deployment::make(static::class)->deploy();
+
+        if ($activate) {
+            $deployment->activate();
+        }
     }
 
     /**

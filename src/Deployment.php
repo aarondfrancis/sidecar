@@ -28,6 +28,7 @@ class Deployment
     /**
      * @param $functions
      * @return static
+     * @throws NoFunctionsRegisteredException
      */
     public static function make($functions = null)
     {
@@ -36,6 +37,7 @@ class Deployment
 
     /**
      * @param $functions
+     * @throws NoFunctionsRegisteredException
      */
     public function __construct($functions = null)
     {
@@ -52,45 +54,47 @@ class Deployment
      * Deploy the code to Lambda. Creating or updating
      * functions where necessary.
      *
-     * @param $activate
+     * @return Deployment
+     * @throws Exception
      */
-    public function deploy($activate)
+    public function deploy()
     {
         event(new BeforeFunctionsDeployed($this->functions));
 
         foreach ($this->functions as $function) {
-            Sidecar::log('Deploying ' . get_class($function) . ' to Lambda as "' . $function->nameWithPrefix(). '."');
-            $undo = Sidecar::sublog();
+            Sidecar::log('Deploying ' . get_class($function) . ' to Lambda as `' . $function->nameWithPrefix() . '`.');
 
-            $this->deploySingle($function, $activate);
-            $this->sweep($function);
-
-            $undo();
+            Sidecar::sublog(function () use ($function) {
+                $this->deploySingle($function);
+                $this->sweep($function);
+            });
         }
 
         event(new AfterFunctionsDeployed($this->functions));
 
-        if ($activate) {
-            $this->activate();
-        }
+        return $this;
     }
 
     /**
      * Activate the latest versions of each function.
+     *
+     * @param bool $prewarm
+     * @return Deployment
      */
-    public function activate()
+    public function activate($prewarm = false)
     {
         event(new BeforeFunctionsActivated($this->functions));
 
         foreach ($this->functions as $function) {
-            $function->beforeActivation();
-
-            $this->aliasLatestVersion($function);
-
-            $function->afterActivation();
+            Sidecar::log('Activating function ' . get_class($function) . '.');
+            Sidecar::sublog(function () use ($function, $prewarm) {
+                $this->activateSingle($function, $prewarm);
+            });
         }
 
         event(new AfterFunctionsActivated($this->functions));
+
+        return $this;
     }
 
     /**
@@ -109,6 +113,23 @@ class Deployment
             : $this->createNewFunction($function);
 
         $function->afterDeployment();
+    }
+
+    /**
+     * @param LambdaFunction $function
+     * @param bool $prewarm
+     */
+    protected function activateSingle(LambdaFunction $function, $prewarm)
+    {
+        $function->beforeActivation();
+
+        if ($prewarm) {
+            $this->warmLatestVersion($function);
+        }
+
+        $this->aliasLatestVersion($function);
+
+        $function->afterActivation();
     }
 
     /**
@@ -138,6 +159,34 @@ class Deployment
     }
 
     /**
+     * Send warming requests to the latest version.
+     *
+     * @param LambdaFunction $function
+     */
+    protected function warmLatestVersion(LambdaFunction $function)
+    {
+        if ($this->lambda->latestVersionHasAlias($function, 'active')) {
+            Sidecar::log('Active version unchanged, no need to warm.');
+            return;
+        }
+
+        $version = $this->lambda->getLatestVersion($function);
+
+        Sidecar::log("Warming Version $version of {$function->nameWithPrefix()}...");
+
+        // Warm the latest version of the function, waiting for the results
+        // to settle. If we didn't wait for the results to settle, we might
+        // activate them immediately while they are still warming.
+        $results = Sidecar::warmSingle($function, $async = false, $version);
+
+        if ($warmed = count($results)) {
+            Sidecar::log("Warmed $warmed instances.");
+        } else {
+            Sidecar::log('No instances warmed. If this is unexpected, confirm your `warmingConfig` method is set up correctly.');
+        }
+    }
+
+    /**
      * Alias the latest version of a function as the "active" one.
      *
      * @param LambdaFunction $function
@@ -148,8 +197,8 @@ class Deployment
         $result = $this->lambda->aliasVersion($function, 'active', $version);
 
         $messages = [
-            LambdaClient::CREATED => "Creating alias for latest version ($version) of {$function->nameWithPrefix()}.",
-            LambdaClient::UPDATED => "Activating latest version ($version) of {$function->nameWithPrefix()}.",
+            LambdaClient::CREATED => "Creating alias for Version $version of {$function->nameWithPrefix()}.",
+            LambdaClient::UPDATED => "Activating Version $version of {$function->nameWithPrefix()}.",
             LambdaClient::NOOP => "Version $version of {$function->nameWithPrefix()} is already active.",
         ];
 

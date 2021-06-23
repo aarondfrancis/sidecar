@@ -6,8 +6,8 @@
 namespace Hammerstone\Sidecar\Commands;
 
 use Hammerstone\Sidecar\Deployment;
+use Hammerstone\Sidecar\Exceptions\NoFunctionsRegisteredException;
 use Hammerstone\Sidecar\Sidecar;
-use Illuminate\Console\Command;
 
 class Activate extends EnvironmentAwareCommand
 {
@@ -15,7 +15,7 @@ class Activate extends EnvironmentAwareCommand
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'sidecar:activate';
+    protected $signature = 'sidecar:activate {--pre-warm}';
 
     /**
      * The console command description.
@@ -24,13 +24,13 @@ class Activate extends EnvironmentAwareCommand
     protected $description = 'Activate Sidecar functions that have already been deployed.';
 
     /**
-     * @throws Exception
+     * @throws NoFunctionsRegisteredException
      */
     public function handle()
     {
         $this->overrideEnvironment();
         Sidecar::addCommandLogger($this);
 
-        Deployment::make()->activate();
+        Deployment::make()->activate($this->option('pre-warm'));
     }
 }

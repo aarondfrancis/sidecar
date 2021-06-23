@@ -6,6 +6,7 @@
 namespace Hammerstone\Sidecar;
 
 use Aws\Lambda\Exception\LambdaException;
+use Closure;
 use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Concerns\HandlesLogging;
 use Hammerstone\Sidecar\Concerns\ManagesEnvironments;
@@ -16,10 +17,40 @@ use Hammerstone\Sidecar\Results\PendingResult;
 use Hammerstone\Sidecar\Results\SettledResult;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Traits\Macroable;
+use Throwable;
 
 class Manager
 {
     use Macroable, HandlesLogging, ManagesEnvironments;
+
+    /**
+     * @var string
+     */
+    public $executionVersion = 'active';
+
+    /**
+     * @param $version
+     * @param null $callback
+     * @return Closure
+     */
+    public function overrideExecutionVersion($version, $callback = null)
+    {
+        $cached = $this->executionVersion;
+
+        $undo = function () use ($cached) {
+            $this->executionVersion = $cached;
+        };
+
+        $this->executionVersion = $version;
+
+        if ($callback) {
+            $result = $callback();
+            $undo();
+            return $result;
+        }
+
+        return $undo;
+    }
 
     /**
      * @param string|LambdaFunction $function
@@ -47,7 +78,7 @@ class Manager
         try {
             $result = app(LambdaClient::class)->{$method}([
                 // Function name plus our alias name.
-                'FunctionName' => $function->nameWithPrefix() . ':active',
+                'FunctionName' => $function->nameWithPrefix() . ':' . $this->executionVersion,
 
                 // `RequestResponse` is a synchronous call, vs `Event` which
                 // is a fire-and-forget, we can make it async by using the
@@ -149,21 +180,36 @@ class Manager
      * Warm functions by firing a set of async requests at them.
      *
      * @param null|array $functions
+     * @throws Throwable
      */
     public function warm($functions = null)
     {
-        $functions = $this->instantiatedFunctions($functions);
+        array_map(function (LambdaFunction $function) {
+            $this->warmSingle($function);
+        }, $this->instantiatedFunctions($functions));
+    }
 
-        collect($functions)->each(function ($function) {
-            $config = $function->warmingConfig();
+    /**
+     * Warm a single function, with the option to override the version.
+     *
+     * @param LambdaFunction $function
+     * @param bool $async
+     * @param string $version
+     * @return array
+     * @throws Throwable
+     */
+    public function warmSingle(LambdaFunction $function, $async = true, $version = 'active')
+    {
+        $config = $function->warmingConfig();
 
-            if (!$config instanceof WarmingConfig || !$config->instances) {
-                return;
-            }
+        if (!$config instanceof WarmingConfig || !$config->instances) {
+            return [];
+        }
 
-            $payloads = array_fill(0, $config->instances, $config->payload);
+        $payloads = array_fill(0, $config->instances, $config->payload);
 
-            $function::executeManyAsync($payloads);
+        return $this->overrideExecutionVersion($version, function () use ($function, $async, $payloads) {
+            return $function::executeMany($payloads, $async);
         });
     }
 }
