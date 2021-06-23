@@ -13,12 +13,12 @@ class WarmingConfig
         'warming' => true
     ];
 
-    public function __construct($instances = 1)
+    public function __construct($instances = 0)
     {
         $this->instances = $instances;
     }
 
-    public static function instances($count = 1)
+    public static function instances($count)
     {
         $self = new static;
 
