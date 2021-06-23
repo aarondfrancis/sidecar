@@ -41,6 +41,33 @@ class LambdaClientTest extends BaseTest
     }
 
     /** @test */
+    public function it_checks_latest_version_has_alias()
+    {
+        $this->lambda->shouldReceive('getVersions')
+            ->once()
+            ->andReturn($this->responseFromFile('getVersions'));
+
+        $this->lambda->shouldReceive('getAliasWithoutException')
+            ->andReturn($this->responseFromFile('getAlias'));
+
+        $this->assertTrue($this->lambda->latestVersionHasAlias(new EmptyTestFunction, 'active'));
+    }
+
+    /** @test */
+    public function it_checks_latest_version_has_alias_different()
+    {
+        $this->lambda->shouldReceive('getVersions')
+            ->once()
+            ->andReturn($this->responseFromFile('getVersions'));
+
+        $this->lambda->shouldReceive('getAliasWithoutException')
+            ->andReturn(false);
+
+        $this->assertFalse($this->lambda->latestVersionHasAlias(new EmptyTestFunction, 'nonexistent'));
+    }
+
+
+    /** @test */
     public function it_gets_all_versions()
     {
         $this->lambda->shouldReceive('listVersionsByFunction')

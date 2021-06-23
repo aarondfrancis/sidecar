@@ -27,6 +27,23 @@ class LambdaClient extends BaseClient
         return last($this->getVersions($function))['Version'];
     }
 
+
+    /**
+     * Test whether or not the latest deployed version is the one that is aliased.
+     *
+     * @param LambdaFunction $function
+     * @param $alias
+     * @return bool
+     */
+    public function latestVersionHasAlias(LambdaFunction $function, $alias)
+    {
+        $version = $this->getLatestVersion($function);
+
+        $aliased = $this->getAliasWithoutException($function, $alias);
+
+        return $aliased && $version === Arr::get($aliased, 'FunctionVersion');
+    }
+
     /**
      * @param LambdaFunction $function
      * @param null|string $marker
