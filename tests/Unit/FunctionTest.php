@@ -12,8 +12,13 @@ class FunctionTest extends BaseTest
     /** @test */
     public function app_name_with_a_space_gets_dashed()
     {
-        config(['app.name' => 'Amazing App']);
+        config([
+            'app.name' => 'Amazing App'
+        ]);
 
-        $this->assertEquals('SC-Amazing-App-testing-', (new EmptyTestFunction)->prefix());
+        $this->assertEquals(
+            'SC-Amazing-App-testing-ecar-Tests-Unit-Support-EmptyTestFunction',
+            (new EmptyTestFunction)->nameWithPrefix()
+        );
     }
 }

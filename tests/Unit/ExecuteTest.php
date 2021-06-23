@@ -169,6 +169,20 @@ class ExecuteTest extends BaseTest
     }
 
     /** @test */
+    public function async_execution_by_facade_directly()
+    {
+        $this->mockInvokeAsync([
+            'Payload' => '{"foo":"bar"}'
+        ]);
+
+        Sidecar::executeAsync(EmptyTestFunction::class, [
+            'foo' => 'bar'
+        ]);
+
+        $this->assertEvents();
+    }
+
+    /** @test */
     public function async_execution_by_facade_with_instantiated_class()
     {
         $this->mockInvokeAsync([
