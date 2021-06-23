@@ -88,9 +88,7 @@ abstract class LambdaFunction
      */
     public function prefix()
     {
-        $appName = str_replace(' ', '-', config('app.name'));
-
-        return 'SC-' . $appName . '-' . Sidecar::getEnvironment() . '-';
+        return 'SC-' . config('app.name') . '-' . Sidecar::getEnvironment() . '-';
     }
 
     /**
@@ -103,11 +101,13 @@ abstract class LambdaFunction
         $prefix = $this->prefix();
 
         // Names can only be 64 characters long.
-        return $prefix . substr($this->name(), -(64 - strlen($prefix)));
+        $name = $prefix . substr($this->name(), -(64 - strlen($prefix)));
+
+        return str_replace(' ', '-', $name);
     }
 
     /**
-     * Not used by Lambda at all, use as you see fit.
+     * Not used by Sidecar at all, use as you see fit.
      *
      * @return string
      */
