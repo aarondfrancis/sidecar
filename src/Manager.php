@@ -7,112 +7,27 @@ namespace Hammerstone\Sidecar;
 
 use Aws\Lambda\Exception\LambdaException;
 use Hammerstone\Sidecar\Clients\LambdaClient;
+use Hammerstone\Sidecar\Concerns\HandlesLogging;
+use Hammerstone\Sidecar\Concerns\ManagesEnvironments;
 use Hammerstone\Sidecar\Events\AfterFunctionExecuted;
 use Hammerstone\Sidecar\Events\BeforeFunctionExecuted;
 use Hammerstone\Sidecar\Exceptions\FunctionNotFoundException;
 use Hammerstone\Sidecar\Results\PendingResult;
-use Illuminate\Console\Command;
+use Hammerstone\Sidecar\Results\SettledResult;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Traits\Macroable;
-use Throwable;
 
 class Manager
 {
-    use Macroable;
-
-    /**
-     * @var array
-     */
-    protected $loggers = [];
-
-    /**
-     * @var string
-     */
-    protected $environment;
-
-    /**
-     * @var bool
-     */
-    protected $sublog = false;
-
-    /**
-     * @param $closure
-     * @return $this
-     */
-    public function addLogger($closure)
-    {
-        $this->loggers[] = $closure;
-
-        return $this;
-    }
-
-    /**
-     * @param Command $command
-     */
-    public function addCommandLogger(Command $command)
-    {
-        $this->addLogger(function ($message) use ($command) {
-            $command->info($message);
-        });
-    }
-
-    /**
-     * @param $message
-     */
-    public function log($message)
-    {
-        foreach ($this->loggers as $logger) {
-            $logger(($this->sublog ? '          ↳' : '[Sidecar]') . " $message");
-        }
-    }
-
-    /**
-     * @param bool $sublog
-     * @return \Closure
-     */
-    public function sublog()
-    {
-        $cached = $this->sublog;
-
-        $undo = function () use ($cached) {
-            $this->sublog = $cached;
-        };
-
-        $this->sublog = true;
-
-        return $undo;
-    }
-
-    /**
-     * @param string $environment
-     */
-    public function overrideEnvironment($environment)
-    {
-        $this->environment = $environment;
-    }
-
-    /**
-     * Clear the environment override.
-     */
-    public function clearEnvironment()
-    {
-        $this->environment = null;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEnvironment()
-    {
-        return $this->environment ?? config('sidecar.env') ?? config('app.env');
-    }
+    use Macroable, HandlesLogging, ManagesEnvironments;
 
     /**
      * @param string|LambdaFunction $function
      * @param array $payload
-     * @param false $async
-     * @return PendingResult|Results\SettledResult
+     * @param bool $async
+     * @return PendingResult|SettledResult
      * @throws Exceptions\SidecarException
+     * @throws FunctionNotFoundException
      */
     public function execute($function, $payload = [], $async = false)
     {
@@ -168,6 +83,7 @@ class Manager
      * @param array $payload
      * @return PendingResult|Results\SettledResult
      * @throws Exceptions\SidecarException
+     * @throws FunctionNotFoundException
      */
     public function executeAsync($function, $payload = [])
     {
@@ -180,6 +96,7 @@ class Manager
      * @param bool $async
      * @return array
      * @throws Exceptions\SidecarException
+     * @throws FunctionNotFoundException
      */
     public function executeMany($function, $payloads, $async = false)
     {
@@ -205,7 +122,8 @@ class Manager
     /**
      * @param $params
      * @return array
-     * @throws Throwable
+     * @throws Exceptions\SidecarException
+     * @throws FunctionNotFoundException
      */
     public function executeManyAsync($params)
     {
