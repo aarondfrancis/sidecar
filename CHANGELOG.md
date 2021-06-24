@@ -3,18 +3,18 @@
 ## Unreleased 
 
 ### Added
-- `sidecar.env` config option to separate Sidecar environment from application environment. Useful mostly for teams who have multiple developers that all have an app env of `local` and don't want to be constantly overwriting each other's functions.
+- New `sidecar.env` config option to separate Sidecar environment from application environment. Useful mostly for teams who have multiple developers that all have an app env of `local` and don't want to be constantly overwriting each other's functions.
+- New `sidecar:warm` command ([#6](https://github.com/hammerstonedev/sidecar/pull/6))
 - Better error reporting when `sidecar:deploy` is called and there are no functions.
 - Better error reporting when a function is not found. 
-- `sidecar:warm` function [#6](https://github.com/hammerstonedev/sidecar/pull/6)
-- Sweeping to remove old, unused functions [#15](https://github.com/hammerstonedev/sidecar/pull/15)
-- `--pre-warm` options to `sidecar:deploy` and `sidecar:active` commands [Commit](https://github.com/hammerstonedev/sidecar/commit/4794e6d4bfc5ddb4976c4686939ca1ee0c0ae979)
-- `latestVersionHasAlias` method to the LambdaClient [Commit](https://github.com/hammerstonedev/sidecar/commit/a54f4e59aef9bfeac57ced7fb50b0c25ff268ab9)
+- Implemented Sweeping to remove old, unused function versions ([#15](https://github.com/hammerstonedev/sidecar/pull/15))
+- `--pre-warm` options to `sidecar:deploy` and `sidecar:active` commands ([Commit](https://github.com/hammerstonedev/sidecar/commit/4794e6d4bfc5ddb4976c4686939ca1ee0c0ae979))
+- `latestVersionHasAlias` method to the LambdaClient ([Commit](https://github.com/hammerstonedev/sidecar/commit/a54f4e59aef9bfeac57ced7fb50b0c25ff268ab9))
 
 ### Changed
-- Warming is now opt-in. 0 instances are configured by default. [Commit](https://github.com/hammerstonedev/sidecar/commit/ba53467368bcb253034fdbae7726fb0916b28de2)
-- Moved some methods into the Sidecar\LambdaClient [#15](https://github.com/hammerstonedev/sidecar/pull/15)
-- Break out logging & environment concerns from the Labmda Client. [Commit](https://github.com/hammerstonedev/sidecar/commit/20e368c9773c4aae2262021c7682cf72737af270)
+- Warming is now opt-in. 0 instances are configured by default. ([Commit](https://github.com/hammerstonedev/sidecar/commit/ba53467368bcb253034fdbae7726fb0916b28de2))
+- Moved some methods into the Sidecar\LambdaClient ([#15](https://github.com/hammerstonedev/sidecar/pull/15))
+- Break out logging & environment concerns from the Labmda Client. ([Commit](https://github.com/hammerstonedev/sidecar/commit/20e368c9773c4aae2262021c7682cf72737af270))
 
 ### Fixed
 - Allow spacing in `APP_NAME` [#17](https://github.com/hammerstonedev/sidecar/pull/17)  
