@@ -2,15 +2,22 @@
 
 ## Unreleased 
 
-- Add: `sidecar.env` config option to separate Sidecar environment from application environment. Useful mostly for teams who have multiple developers that all have an app env of `local` and don't want to be constantly overwriting each other's functions.
-- Add: Better error reporting when `sidecar:deploy` is called and there are no functions.
-- Add: Better error reporting when a function is not found. 
-- Add: `sidecar:warm` function [#6](https://github.com/hammerstonedev/sidecar/pull/6)
-- Add: Sweeping to remove old, unused functions [#15](https://github.com/hammerstonedev/sidecar/pull/15)
+### Added
+- `sidecar.env` config option to separate Sidecar environment from application environment. Useful mostly for teams who have multiple developers that all have an app env of `local` and don't want to be constantly overwriting each other's functions.
+- Better error reporting when `sidecar:deploy` is called and there are no functions.
+- Better error reporting when a function is not found. 
+- `sidecar:warm` function [#6](https://github.com/hammerstonedev/sidecar/pull/6)
+- Sweeping to remove old, unused functions [#15](https://github.com/hammerstonedev/sidecar/pull/15)
+- `--pre-warm` options to `sidecar:deploy` and `sidecar:active` commands [Commit](https://github.com/hammerstonedev/sidecar/commit/4794e6d4bfc5ddb4976c4686939ca1ee0c0ae979)
+- `latestVersionHasAlias` method to the LambdaClient [Commit](https://github.com/hammerstonedev/sidecar/commit/a54f4e59aef9bfeac57ced7fb50b0c25ff268ab9)
 
-- Change: Moved some methods into the Sidecar\LambdaClient [#15](https://github.com/hammerstonedev/sidecar/pull/15)
+### Changed
+- Warming is now opt-in. 0 instances are configured by default. [Commit](https://github.com/hammerstonedev/sidecar/commit/ba53467368bcb253034fdbae7726fb0916b28de2)
+- Moved some methods into the Sidecar\LambdaClient [#15](https://github.com/hammerstonedev/sidecar/pull/15)
+- Break out logging & environment concerns from the Labmda Client. [Commit](https://github.com/hammerstonedev/sidecar/commit/20e368c9773c4aae2262021c7682cf72737af270)
 
-- Fix: Allow spacing in `APP_NAME` [#17](https://github.com/hammerstonedev/sidecar/pull/17)  
+### Fixed
+- Allow spacing in `APP_NAME` [#17](https://github.com/hammerstonedev/sidecar/pull/17)  
 
 ## 0.1.4 - 2021-06-05
 
