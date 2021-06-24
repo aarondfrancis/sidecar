@@ -27,7 +27,6 @@ class LambdaClient extends BaseClient
         return last($this->getVersions($function))['Version'];
     }
 
-
     /**
      * Test whether or not the latest deployed version is the one that is aliased.
      *

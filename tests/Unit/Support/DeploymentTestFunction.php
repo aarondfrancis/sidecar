@@ -6,6 +6,7 @@
 namespace Hammerstone\Sidecar\Tests\Unit\Support;
 
 use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\WarmingConfig;
 
 class DeploymentTestFunction extends LambdaFunction
 {
@@ -22,6 +23,13 @@ class DeploymentTestFunction extends LambdaFunction
     public function nameWithPrefix()
     {
         return 'test-FunctionName';
+    }
+
+    public function warmingConfig()
+    {
+        return WarmingConfig::instances(2)->withPayload([
+            'test' => 'payload'
+        ]);
     }
 
     public function toDeploymentArray()
