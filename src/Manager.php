@@ -46,6 +46,7 @@ class Manager
         if ($callback) {
             $result = $callback();
             $undo();
+
             return $result;
         }
 

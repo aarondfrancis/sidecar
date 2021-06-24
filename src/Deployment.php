@@ -167,6 +167,7 @@ class Deployment
     {
         if ($this->lambda->latestVersionHasAlias($function, 'active')) {
             Sidecar::log('Active version unchanged, no need to warm.');
+
             return;
         }
 

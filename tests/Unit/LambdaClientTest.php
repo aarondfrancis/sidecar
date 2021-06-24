@@ -66,7 +66,6 @@ class LambdaClientTest extends BaseTest
         $this->assertFalse($this->lambda->latestVersionHasAlias(new EmptyTestFunction, 'nonexistent'));
     }
 
-
     /** @test */
     public function it_gets_all_versions()
     {

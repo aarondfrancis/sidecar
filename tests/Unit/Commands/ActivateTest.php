@@ -11,7 +11,6 @@ use Hammerstone\Sidecar\Events\AfterFunctionsActivated;
 use Hammerstone\Sidecar\Events\AfterFunctionsDeployed;
 use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
 use Hammerstone\Sidecar\Events\BeforeFunctionsDeployed;
-use Hammerstone\Sidecar\Results\SettledResult;
 use Hammerstone\Sidecar\Sidecar;
 use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunction;
 use Illuminate\Support\Facades\Event;
@@ -71,7 +70,7 @@ class ActivateTest extends BaseTest
     public function it_should_activate_functions()
     {
         $this->mockActivating();
-        
+
         $this->lambda->shouldNotReceive('invokeAsync');
 
         config()->set('sidecar.functions', [
@@ -147,7 +146,6 @@ class ActivateTest extends BaseTest
 
         $this->artisan('sidecar:activate --pre-warm');
     }
-
 
     /** @test */
     public function it_should_activate_functions_with_env()

@@ -68,6 +68,7 @@ trait HandlesLogging
         if ($callback) {
             $result = $callback();
             $undo();
+
             return $result;
         }
 

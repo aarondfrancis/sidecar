@@ -5,10 +5,8 @@
 
 namespace Hammerstone\Sidecar\Concerns;
 
-
 trait ManagesEnvironments
 {
-
     /**
      * @var string
      */
@@ -37,6 +35,4 @@ trait ManagesEnvironments
     {
         return $this->environment ?? config('sidecar.env') ?? config('app.env');
     }
-
-
 }
