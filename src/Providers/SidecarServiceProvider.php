@@ -11,6 +11,7 @@ use Hammerstone\Sidecar\Commands\Activate;
 use Hammerstone\Sidecar\Commands\Configure;
 use Hammerstone\Sidecar\Commands\Deploy;
 use Hammerstone\Sidecar\Commands\Install;
+use Hammerstone\Sidecar\Commands\Warm;
 use Hammerstone\Sidecar\Manager;
 use Illuminate\Support\ServiceProvider;
 
@@ -56,6 +57,7 @@ class SidecarServiceProvider extends ServiceProvider
             $this->commands([
                 Activate::class,
                 Configure::class,
+                Warm::class,
                 Deploy::class,
                 Install::class,
             ]);

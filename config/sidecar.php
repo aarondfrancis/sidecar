@@ -16,6 +16,25 @@ return [
      */
     'env' => env('SIDECAR_ENV', env('APP_ENV')),
 
+    /*
+     * The default timeout for your functions, in seconds.
+     * This can be overridden per function.
+     */
+    'timeout' => env('SIDECAR_TIMEOUT', 300),
+
+    /*
+     * The default memory for your functions, in megabytes.
+     * This can be overridden per function.
+     */
+    'memory' => env('SIDECAR_MEMORY', 512),
+
+    /*
+     * The base path for your package files. If you e.g. keep
+     * all your Lambda package files in your resource path,
+     * you may change the base path here.
+     */
+    'package_base_path' => env('SIDECAR_PACKAGE_BASE_PATH', base_path()),
+
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *                                                                       *
      *  You are welcome to edit this configuration directly, or you can run  *
@@ -42,8 +61,9 @@ return [
     'aws_region' => env('SIDECAR_REGION'),
 
     /*
-     * The bucket that temporarily holds your function's ZIP files as they
-     * are deployed to Lambda. It must be the same region as your Lambdas.
+     * The bucket that temporarily holds your function's ZIP files
+     * while they are deployed to Lambda. It must be in the same
+     * region as your functions.
      */
     'aws_bucket' => env('SIDECAR_ARTIFACT_BUCKET_NAME'),
 
@@ -53,23 +73,4 @@ return [
      * See CreateExecutionRole::policy for the IAM policy.
      */
     'execution_role' => env('SIDECAR_EXECUTION_ROLE'),
-
-    /*
-     * The default timeout for your functions, in seconds.
-     * This can be overridden per function.
-     */
-    'timeout' => env('SIDECAR_TIMEOUT', 300),
-
-    /*
-     * The default memory for your functions, in megabytes.
-     * This can be overridden per function.
-     */
-    'memory' => env('SIDECAR_MEMORY', 512),
-
-    /*
-     * The base path for your package files. If you e.g. keep
-     * all your Lambda package files in your resource path,
-     * you may change the base path here.
-     */
-    'package_base_path' => env('SIDECAR_PACKAGE_BASE_PATH', base_path()),
 ];

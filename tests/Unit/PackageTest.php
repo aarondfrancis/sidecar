@@ -152,6 +152,24 @@ class PackageTest extends BaseTest
     }
 
     /** @test */
+    public function an_exclamation_excludes_is_ignored()
+    {
+        $package = Package::make()
+            ->include([
+                'include',
+            ])
+            ->exclude([
+                '!exclude',
+            ]);
+
+        $this->assertCount(1, $package->getIncludedPaths());
+        $this->assertStringContainsString('include', $package->getIncludedPaths()[0]);
+
+        $this->assertCount(1, $package->getExcludedPaths());
+        $this->assertStringContainsString('exclude', $package->getExcludedPaths()[0]);
+    }
+
+    /** @test */
     public function hashes_are_stable()
     {
         $package = $this->makePackageClass();

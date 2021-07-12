@@ -84,6 +84,18 @@ class Package
      */
     public function exclude($paths)
     {
+        // If someone passed e.g. "!ignore.js", we'll just silently
+        // strip it off here. The array style happily accepts the
+        // exclamation as a negate flag, and I can see that
+        // causing unnecessary DX issues.
+        $paths = array_map(function ($path) {
+            if (Str::startsWith($path, '!')) {
+                $path = Str::replaceFirst('!', '', $path);
+            }
+
+            return $path;
+        }, Arr::wrap($paths));
+
         $this->exclude = array_merge($this->exclude, $this->pathsForMerging($paths));
 
         $this->files = null;
