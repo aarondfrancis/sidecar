@@ -5,21 +5,21 @@ After you have created your function class and all the handler code, you'll need
 
 The simplest way to deploy and activate all of your configured functions is to run the following command
 
-```text
+```shell
 php artisan sidecar:deploy --activate
 ```
 
 When you run that, you'll see an output log similar to the one below:
 
 ```text
-[Sidecar] ---------
-[Sidecar] Deploying App\Sidecar\OgImage to Lambda. (Runtime nodejs12.x)
-[Sidecar] Creating new lambda function.
-[Sidecar] Packaging function code.
-[Sidecar] Creating a new zip file.
-[Sidecar] Zip file created at s3://sidecar-us-east-2-XXX/sidecar/001-79a5915eaec296be04a0f4fb7cc80e40.zip
-[Sidecar] ---------
-[Sidecar] Activating the latest version (1) of SC-Laravel-local-Sidecar-OgImage.
+[Sidecar] Deploying App\Sidecar\OgImage to Lambda as `SC-Laravel-local-Sidecar-OgImage`.
+          ↳ Environment: local
+          ↳ Runtime: nodejs12.x
+          ↳ Packaging function code.
+          ↳ Creating a new zip file.
+          ↳ Zip file created at s3://sidecar-us-east-2-XXX/sidecar/001-79a5915eaec296be04a0f4fb7cc80e40.zip
+[Sidecar] Activating function App\Sidecar\OgImage.
+          ↳ Activating Version 1 of SC-Laravel-local-Sidecar-OgImage.
 ```
 
 The deployment process consists of 
@@ -45,13 +45,13 @@ That's why we have separated the two steps into Deploy and Activate.
 
 To deploy but not activate your code, you would run the deploy command without the `--activate` flag.
 
-```text
+```shell
 php artisan sidecar:deploy
 ```
 
 Then, when it is time to flip the switch over to your new application code, you can call `sidecar:activate` to activate the newest version of all your Sidecar functions on Lambda.
 
-```text
+```shell
 php artisan sidecar:activate
 ```
 
@@ -87,10 +87,12 @@ Sidecar names your function based on environment, to prevent collisions between 
 
 If you need to deploy an environment other than the one you are in, you can override the environment from the config by passing an `--env` flag to the Deploy and Activate commands.
 
-```text
+```shell
 php artisan sidecar:deploy --env=production
 php artisan sidecar:activate --env=production
 ```
+
+To read more about environments, head to the [Environments section](../environments) of the docs.
 
 ## Reusing Package Files
 
@@ -103,14 +105,13 @@ In the event that neither the code nor function configuration have changed, Side
 You will see output similar to the following:
 
 ```text
-[Sidecar] ---------
 [Sidecar] Deploying App\Sidecar\OgImage to Lambda. (Runtime nodejs12.x.)
-[Sidecar] Function already exists, potentially updating code and configuration.
-[Sidecar] Packaging function code.
-[Sidecar] Package unchanged, reusing previous code package at s3://sidecar-us-east-2-XXX/sidecar/001-79a5915eaec296be04a0f4fb7cc80e40.zip.
-[Sidecar] Function code and configuration are unchanged! Not updating anything.
-[Sidecar] ---------
-[Sidecar] Activating the latest version (1) of SC-Laravel-local-Sidecar-OgImage.
+          ↳ Function already exists, potentially updating code and configuration.
+          ↳ Packaging function code.
+          ↳ Package unchanged, reusing previous code package at s3://sidecar-us-east-2-XXX/sidecar/001-79a5915eaec296be04a0f4fb7cc80e40.zip.
+          ↳ Function code and configuration are unchanged! Not updating anything. [tl! focus]
+[Sidecar] Activating function App\Sidecar\OgImage.
+          ↳ Activating Version 1 of SC-Laravel-local-Sidecar-OgImage.
 ``` 
 
 

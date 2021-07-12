@@ -1,23 +1,27 @@
 
 # Configuring Sidecar
 
-## Configuring AWS
+After running `php artisan sidecar:install`, you should have a `sidecar.php` file in your `config` folder. 
+
+There are several configuration options in that file, which we'll cover in this section.
+
+## AWS Credentials
 
 Sidecar requires a few very specific things be set up in your AWS in order to have the proper permissions to deploy and execute your functions.
 
-In order to save you from the frustration of AWS IAM, we have written a single, interactive command that can handle everything for you.
+In order to save you from the frustration of using AWS IAM we have written a single, interactive command that can handle everything for you.
 
 To get started, run the following command:
 
-```text
+```shell
 php artisan sidecar:configure
 ```
 
-The first thing it will do is guide you through creating a new AWS user, which it will then use to create everything else it needs. 
+The first thing it will do is guide you through creating a new AWS user in the web interface, which it will then use to create everything else it needs. 
 
 Note that this won't start any services, it just creates some policies in IAM.
 
-This is the same method that Vapor uses: you provide it with Admin Access and then it configures itself.
+This is the same general method that Laravel Vapor uses: you provide it with Admin Access and then it configures itself. Sidecar takes it a step further and provides you the option to self-destruct the admin keys once it has configured itself. 
 
 If you'd like to manually set everything up, take a look at the command to see exactly what it's doing, and you can recreate it in the IAM portal.
 
@@ -25,7 +29,7 @@ If you'd like to manually set everything up, take a look at the command to see e
 
 Each function that you make will need to be registered in the `functions` key of your `sidecar.php`
 
-sidecar.php {.filename}
+config/sidecar.php {.filename}
 ```php
 return [
     /*
@@ -35,45 +39,15 @@ return [
         \App\Sidecar\OgImage::class,
         \App\Sidecar\ProcessThumbnail::class,
     ],
-    // [tl! collapse-start closed]
-    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-     *                                                                       *
-     *  You are welcome to edit this configuration directly, or you can run  *
-     *  `php artisan sidecar:configure` for an interactive walk-through.     *
-     *                                                                       *
-     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+];
+```
 
-    /*
-     * Your AWS key. See CreateDeploymentUser::policy for the IAM policy.
-     *
-     * Unfortunately you cannot rely on the keys available in the Vapor
-     * runtime, as those do not have the right permissions.
-     */
-    'aws_key' => env('SIDECAR_ACCESS_KEY_ID'),
+## Function Timeout & Memory
 
-    /*
-     * Your AWS secret key.
-     */
-    'aws_secret' => env('SIDECAR_SECRET_ACCESS_KEY'),
+The timeout and memory can be customized on a per-function basis, but if they aren't, the defaults from your `sidecar.php` file will be used.
 
-    /*
-     * The region where your Lambdas will be deployed.
-     */
-    'aws_region' => env('SIDECAR_REGION'),
-
-    /*
-     * The bucket that temporarily holds your function's ZIP files as they
-     * are deployed to Lambda. It must be the same region as your Lambdas.
-     */
-    'aws_bucket' => env('SIDECAR_ARTIFACT_BUCKET_NAME'),
-
-    /*
-     * This is the execution role that your Lambdas will use.
-     *
-     * See CreateExecutionRole::policy for the IAM policy.
-     */
-    'execution_role' => env('SIDECAR_EXECUTION_ROLE'),
-
+```php
+return [
     /*
      * The default timeout for your functions, in seconds.
      * This can be overridden per function.
@@ -84,89 +58,19 @@ return [
      * The default memory for your functions, in megabytes.
      * This can be overridden per function.
      */
-    'memory' => env('SIDECAR_MEMORY', 512), 
-
-    /*
-     * The base path for your package files. If you e.g. keep
-     * all your Lambda package files in your resource path,
-     * you may change the base path here.
-     */
-    'package_base_path' => env('SIDECAR_PACKAGE_BASE_PATH', base_path()), // [tl! collapse-end]
+    'memory' => env('SIDECAR_MEMORY', 512),
 ];
 ```
 
-## Default Settings
-
-The timeout and memory can be customized on a per-function basis, but if they aren't, the defaults from your `sidecar.php` file will be used.
-
-### Package Base Path
+## Package Base Path
 
 By default, all of your Lambda resources are going to be relative to the `base_path()` of your application. That means when you're defining your code packages, you'll use the root of your application as the starting point. 
 
 If all of your Lambda code lives in e.g. `resources/lambda`, then you can update your `package_base_path` to reflect that.
 
-sidecar.php {.filename}
+config/sidecar.php {.filename}
 ```php
 return [ 
-    // [tl! collapse-start closed]
-    /*
-     * All of your function classes that you'd like to deploy go here.
-     */
-    'functions' => [
-        \App\Sidecar\OgImage::class,
-        \App\Sidecar\ProcessThumbnail::class,
-    ],
-    
-    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-     *                                                                       *
-     *  You are welcome to edit this configuration directly, or you can run  *
-     *  `php artisan sidecar:configure` for an interactive walk-through.     *
-     *                                                                       *
-     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-    /*
-     * Your AWS key. See CreateDeploymentUser::policy for the IAM policy.
-     *
-     * Unfortunately you cannot rely on the keys available in the Vapor
-     * runtime, as those do not have the right permissions.
-     */
-    'aws_key' => env('SIDECAR_ACCESS_KEY_ID'),
-
-    /*
-     * Your AWS secret key.
-     */
-    'aws_secret' => env('SIDECAR_SECRET_ACCESS_KEY'),
-
-    /*
-     * The region where your Lambdas will be deployed.
-     */
-    'aws_region' => env('SIDECAR_REGION'),
-
-    /*
-     * The bucket that temporarily holds your function's ZIP files as they
-     * are deployed to Lambda. It must be the same region as your Lambdas.
-     */
-    'aws_bucket' => env('SIDECAR_ARTIFACT_BUCKET_NAME'),
-
-    /*
-     * This is the execution role that your Lambdas will use.
-     *
-     * See CreateExecutionRole::policy for the IAM policy.
-     */
-    'execution_role' => env('SIDECAR_EXECUTION_ROLE'), 
-    // [tl! collapse-end]
-    /*
-     * The default timeout for your functions, in seconds.
-     * This can be overridden per function.
-     */
-    'timeout' => env('SIDECAR_TIMEOUT', 300),
-
-    /*
-     * The default memory for your functions, in megabytes.
-     * This can be overridden per function.
-     */
-    'memory' => env('SIDECAR_MEMORY', 512), 
-
     /*
      * The base path for your package files. If you e.g. keep
      * all your Lambda package files in your resource path,
@@ -175,3 +79,26 @@ return [
     'package_base_path' => env('SIDECAR_PACKAGE_BASE_PATH', base_path()),
 ];
 ```
+
+This is also configurable on a per-function basis. To learn more about that, see the [Handlers & Packages](/functions/handlers-and-packages) section.
+
+## Environment
+
+Sidecar separates functions by environment so that your development, staging, and production functions do not overwrite each other.
+
+By default, the environment name that Sidecar uses is your `APP_ENV` from your `.env` file. This usually works great for staging and production, but if you are working on a team, you'll have multiple people using an environment named `local`, potentially interfering with one another.
+
+If you'd like to use something other than the `APP_ENV`, you can do so by providing a `SIDECAR_ENV` environment variable.
+
+```php
+return [ 
+    /*  
+     * Sidecar separates functions by environment. If you'd like to change
+     * your Sidecar environment without changing your entire application
+     * environment, you may do so here.
+     */
+    'env' => env('SIDECAR_ENV', env('APP_ENV')),
+];
+```
+    
+To learn much more about environments and how to use them, see the [Environments](/environments) section.

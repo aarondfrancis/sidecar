@@ -128,17 +128,17 @@ Image.php {.filename}
 ```php
 class OgImage extends LambdaFunction 
 {
-    public function handler() // [tl! collapse-start closed]
+    public function handler() // [tl! collapse:start]
     {
         // 
-    } // [tl! collapse-end]
+    } // [tl! collapse:end]
 
-    public function package() // [tl! collapse-start closed]
+    public function package() // [tl! collapse:start]
     {
         //
-    } // [tl! collapse-end]
+    } // [tl! collapse:end]
 
-    public function toSettledResult(Result $raw)
+    public function toSettledResult(Result $raw) // [tl! focus:4]
     {
         // Use a custom settled result class for this function.
         return new OgImageResult($raw, $this);
@@ -156,14 +156,14 @@ image.js {.filename}
 ```js
 exports.handler = async function (event) {
     const canvas = createCanvas(1200, 630)
-    // [tl! collapse-start closed]
+    // [tl! collapse:start]
     const context = canvas.getContext('2d')
 
     context.font = 'bold 70pt Helvetica'
     context.textAlign = 'center'
     context.fillStyle = '#3574d4'
     context.fillText(text, 600, 170)
-    // [tl! collapse-end]
+    // [tl! collapse:end]
     // Return an image. 
     return canvas.toDataURL('image/jpeg');
 }
@@ -256,8 +256,10 @@ abstract class LambdaFunction
 {
     public function toResponse($request, SettledResult $result)
     {
+        // If the Lambda failed, throw an exception.
         $result->throw();
-
+        
+        // Otherwise return the response we got from Lambda.
         return response($result->body());
     }
 }
@@ -279,29 +281,29 @@ App\Sidecar\OgImage.php {.filename}
 ```php
 class OgImage extends LambdaFunction
 {
-    public function handler() // [tl! collapse-start closed]
+    public function handler() // [tl! collapse:start closed]
     {
         // Define your handler function. 
         // (Javascript file + export name.) 
         return 'lambda/image.handler';
-    } // [tl! collapse-end]
+    } // [tl! collapse:end]
 
-    public function package() // [tl! collapse-start closed]
+    public function package() // [tl! collapse:start closed]
     {
         // All files and folders needed for the function.
         return [
             'lambda',
         ];
-    } // [tl! collapse-end]
+    } // [tl! collapse:end]
 
-    public function toResponse($request, SettledResult $result)
+    public function toResponse($request, SettledResult $result) // [tl! focus:9]
     {
         // Throw an exception if it failed.
         $result->throw();
 
         $image = base64_decode($result->body());
         
-        // Set an appropriate header
+        // Set an appropriate header.
         return response($image)->header('Content-type', 'image/jpg');
     }
 }
@@ -390,7 +392,7 @@ When executing that function from PHP, Sidecar will not throw an exception unles
 $result = ErrorFunction::execute();
 
 // When asked to, Sidecar will throw a PHP Exception 
-// if there was a runtime error.
+// if there was a runtime error on the Lambda side.
 $result->throw();
 
 // > Hammerstone\Sidecar\Exceptions\LambdaExecutionException

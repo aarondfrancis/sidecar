@@ -5,14 +5,16 @@
         "Overview": "/overview",
         "Installation": "/installation",
         "Configuration": "/configuration",
+        "Environments": "/environments",
         "Functions": {
             "children": {
-                "Creating": "/functions/creating",
+                "Handlers & Packages": "/functions/handlers-and-packages",
+                "Customization": "/functions/customization",
                 "Deploying": "/functions/deploying",
+                "Hooks": "/functions/hooks",
+                "Warming": "/functions/warming",
                 "Executing": "/functions/executing"
             }
-        },
-        "Commands": "/commands",
-        "Events": "/events"
+        }
     }
 }

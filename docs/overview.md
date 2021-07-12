@@ -1,5 +1,5 @@
 
-# Sidecar for Laravel
+# Sidecar for Laravel Overview
 
 Sidecar packages, deploys, and executes AWS Lambda functions from your Laravel application. {.text-xl .font-bold} 
 
@@ -29,7 +29,7 @@ Any runtime that [Lambda supports](https://docs.aws.amazon.com/lambda/latest/dg/
 Every Sidecar Function requires two things:
 
 - A PHP class
-- Files that you want deployed to Lambda
+- Files that you want deployed to Lambda (called a "package")
 
 For example, if you want to use Node on Lambda to generate an og:image for all of your blog posts, you would first set up a simple class in PHP called e.g. `OgImage`.
 
@@ -86,7 +86,7 @@ exports.handler = async function (event) {
 
 With those files created, you can deploy this function to Lambda:
 
-```text
+```shell
 php artisan sidecar:deploy --activate
 ```
 
@@ -102,8 +102,6 @@ Route::get('/ogimage', function () {
 ```
 
 Sidecar passes the payload from `execute` over to your Javascript function. Your Javascript function generates an image and sends it back to PHP.
-
-Sidecar reduces the complexity of deploying small bits of code to Lambda. 
 
 ## Why Sidecar Exists
 
@@ -124,8 +122,9 @@ Sidecar brings the ease of Vapor to those non-PHP functions.
 
 Sidecar does _not_ handle any API Gateway, Databases, Caches, etc. The _only_ thing Sidecar concerns itself with is packaging, deploying, and executing Lambda functions.
 
-Sidecar does not provide a way to execute a function via HTTP. You must execute it from your Laravel app through the provided methods. {.font-bold}
+If you need other services, you are encouraged to use the instances that Vapor has set up for you, or set them up yourself.
 
-If you need those other services, you are encouraged to use the instances that Vapor has set up for you, or set them up yourself.
+**Sidecar does not provide a way to execute a function via HTTP. You must execute it from your Laravel app through the provided methods.**
 
-Finally, Sidecar doesn't replace Vapor in any way. In fact, PHP is not even one of the AWS supported runtimes! 
+
+Finally, Sidecar doesn't replace Vapor in any way. In fact, PHP is not even one of the default AWS supported runtimes! 
