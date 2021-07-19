@@ -5,7 +5,7 @@ The only two things _required_ for a Sidecar function are the [package and the h
 
 ## Runtime
 
-Lambda supports multiple languages through the use of runtimes. You can choose any of the following runtimes by returning its corresponding identifier: 
+Lambda supports multiple languages through the use of runtimes. You can choose any of the following runtimes by returning its corresponding identifier:
 
 - Node.js 14: `nodejs14.x`
 - Node.js 12: `nodejs12.x`
@@ -20,16 +20,16 @@ Lambda supports multiple languages through the use of runtimes. You can choose a
 - Java 8: `java8`
 - Go 1.x: `go1.x`
 - .NET Core 3.1: `dotnetcore3.1`
-- .NET Core 2.1: `dotnetcore2.1` 
+- .NET Core 2.1: `dotnetcore2.1`
 
 E.g. to use the Go runtime, you would return `go1.x`:
 
 ```php
 class ExampleFunction extends LambdaFunction
 {
-    public function runtime() // [tl! focus:3] 
+    public function runtime() // [tl! focus:3]
     {
-        return 'go1.x'; 
+        return 'go1.x';
     }
 }
 ```
@@ -49,7 +49,7 @@ To change the allocated memory of your function, return the number in megabytes.
 ```php
 class ExampleFunction extends LambdaFunction
 {
-    public function memory() //  [tl! focus:4] 
+    public function memory() //  [tl! focus:4]
     {
         // 2GB of memory
         return 2048;
@@ -80,7 +80,7 @@ class ExampleFunction extends LambdaFunction
 
 ## Layers
 
-Some functions require extra code or data beyond what is in your code package. From [Amazon's documentation](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html): 
+Some functions require extra code or data beyond what is in your code package. From [Amazon's documentation](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html):
 
 > A Lambda layer is a .zip file archive that can contain additional code or data. A layer can contain libraries, a custom runtime, data, or configuration files. Layers promote code sharing and separation of responsibilities so that you can iterate faster on writing business logic.
 
@@ -92,25 +92,52 @@ class ExampleFunction extends LambdaFunction
 {
     public function handler()
     {
-        // 
+        //
     }
 
     public function package()
     {
         //
     }
-    
-    public function layers() // [tl! focus:start] 
+
+    public function layers() // [tl! focus:start]
     {
         return [
-            // Node Canvas from https://github.com/jwerre/node-canvas-lambda 
-            'arn:aws:lambda:us-east-2:XXXX:layer:node_canvas:1', 
-        ];       
+            // Node Canvas from https://github.com/jwerre/node-canvas-lambda
+            'arn:aws:lambda:us-east-2:XXXX:layer:node_canvas:1',
+        ];
     } // [tl! focus:end]
 }
 ```
 
 Note that your layers must be in the same AWS region as your Lambdas!
+
+## Environment Variables
+
+Some functions or layers may require configuration via Lambda environment variables. The Lambda runtime makes environment variables available to the code.
+
+In this example below, we're providing a path to a font directory as an environment variable.
+```php
+class ExampleFunction extends LambdaFunction
+{
+    public function handler()
+    {
+        //
+    }
+
+    public function package()
+    {
+        //
+    }
+
+    public function variables() // [tl! focus:start]
+    {
+        return [
+            'FONTCONFIG_PATH' => '/opt/etc/fonts',
+        ];
+    } // [tl! focus:end]
+}
+```
 
 ## Name
 
@@ -119,16 +146,16 @@ Your function has a `name` method that determines how Sidecar names your Lambda 
 ```php
 class ExampleFunction extends LambdaFunction
 {
-    public function name() // [tl! focus:3] 
+    public function name() // [tl! focus:3]
     {
-        return 'Function Name'; 
+        return 'Function Name';
     }
 }
 ```
 
 ### Name Prefix
 
-Regardless of what you choose for your function names, Sidecar will prepend the name of your app and the current environment. 
+Regardless of what you choose for your function names, Sidecar will prepend the name of your app and the current environment.
 
 Lambda function names must be unique, so adding these variables to your function names prevents collisions between different apps and environments.
 
@@ -143,7 +170,7 @@ You likely won't need to change this, but if you do, *you must include the envir
             // Don't forget the environment!
             return 'My App ' . Sidecar::getEnvironment()
         }
-    }       
+    }
 ```
 
 ## Description
