@@ -210,6 +210,16 @@ abstract class LambdaFunction
     }
 
     /**
+     * A key/value array of environment variables for the Lambda function. Totally optional.
+     *
+     * @return array
+     */
+    public function variables()
+    {
+        return [];
+    }
+
+    /**
      * The function within your code that Lambda calls to begin execution.
      * For Node.js, it is the `module-name.export` value in your function.
      *
@@ -316,6 +326,9 @@ abstract class LambdaFunction
             'Timeout' => $this->timeout(),
             'MemorySize' => $this->memory(),
             'Layers' => $this->layers(),
+            'Environment' => [
+                'Variables' => $this->variables(),
+            ],
             'Publish' => true,
         ];
     }
