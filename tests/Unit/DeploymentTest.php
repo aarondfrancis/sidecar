@@ -14,6 +14,7 @@ use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
 use Hammerstone\Sidecar\Events\BeforeFunctionsDeployed;
 use Hammerstone\Sidecar\Exceptions\NoFunctionsRegisteredException;
 use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunction;
+use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunctionWithVariables;
 use Illuminate\Support\Facades\Event;
 use Mockery;
 
@@ -193,6 +194,31 @@ class DeploymentTest extends BaseTest
         $this->mockActivating();
 
         DeploymentTestFunction::deploy($activate = true);
+
+        $this->assertEvents($deployed = true, $activated = true);
+    }
+
+    /** @test */
+    public function it_sets_environment_variables()
+    {
+        $this->lambda->shouldReceive('functionExists')->andReturn(true);
+        $this->lambda->shouldReceive('getVersions')->andReturn([]);
+        $this->lambda->shouldReceive('updateExistingFunction')->once()->withArgs(function ($function) {
+            return $function instanceof DeploymentTestFunctionWithVariables;
+        });
+
+        $this->lambda->shouldReceive('updateFunctionConfiguration')->with([
+            'FunctionName' => 'test-FunctionName',
+            'Environment' => [
+                'Variables' => [
+                    'env' => 'value'
+                ],
+            ],
+        ]);
+
+        $this->mockActivating();
+
+        DeploymentTestFunctionWithVariables::deploy($activate = true);
 
         $this->assertEvents($deployed = true, $activated = true);
     }

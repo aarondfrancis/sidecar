@@ -210,13 +210,17 @@ abstract class LambdaFunction
     }
 
     /**
-     * A key/value array of environment variables for the Lambda function. Totally optional.
+     * A key/value array of environment variables that will be injected into the
+     * environment of the Lambda function. If Sidecar manages your environment
+     * variables, it will overwrite all variables that you set through the
+     * AWS UI. Return false to disable.
      *
-     * @return array
+     * @return bool|array
      */
     public function variables()
     {
-        return [];
+        // By default, Sidecar does not manage your environment variables.
+        return false;
     }
 
     /**
@@ -326,9 +330,6 @@ abstract class LambdaFunction
             'Timeout' => $this->timeout(),
             'MemorySize' => $this->memory(),
             'Layers' => $this->layers(),
-            'Environment' => [
-                'Variables' => $this->variables(),
-            ],
             'Publish' => true,
         ];
     }
