@@ -114,7 +114,7 @@ Note that your layers must be in the same AWS region as your Lambdas!
 
 ## Environment Variables
 
-Some functions or layers may require configuration via Lambda environment variables. The Lambda runtime makes environment variables available to the code.
+Some functions or layers may require configuration via Lambda environment variables. The Lambda runtime will inject the environment variables so that they available to your handler code.
 
 In this example below, we're providing a path to a font directory as an environment variable.
 ```php
@@ -145,7 +145,7 @@ By default, Sidecar doesn't touch your Lambda's environment at all. Only when yo
 
 Another important thing to note is that Sidecar sets your environment variables as a part of the _activation_ process, not the _deploy_ process. This means that the environment variables will be pulled from the machine that calls `sidecar:activate`.
 
-For example, if you are sharing secrets with your Lambda, then the values passed to your Lambda will be equal to the ones on the machine that called `sidecar:activate`, not the one that called `sidecar:deploy`:
+For example, if you are sharing secrets with your Lambda, then the values passed to your Lambda will be equal to the ones on the machine that called `sidecar:activate`, not the one that called `sidecar:deploy`
 
 ```php
 class ExampleFunction extends LambdaFunction
@@ -170,6 +170,8 @@ class ExampleFunction extends LambdaFunction
     } // [tl! focus:end]
 }
 ```
+
+This is obviously important when you are calling `deploy` and `activate` from different machines as a part of your Laravel application's deployment process. To read more about deployment strategies, check out the [deploying](deploying) section.
 
 ## Name
 

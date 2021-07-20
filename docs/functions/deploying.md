@@ -94,6 +94,73 @@ php artisan sidecar:activate --env=production
 
 To read more about environments, head to the [Environments section](../environments) of the docs.
 
+## Setting Environment Variables
+
+This is covered in the [Environment Variables](customization#environment-variables) section of the Customization docs, but we'll cover strategies around env vars and deployment here. 
+
+Some of your functions will require environment variables, either from your Laravel application or something completely distinct. In some cases, you may need to set a static variable so that some library will work [(LibreOffice example)](https://github.com/hammerstonedev/sidecar/issues/24):
+
+```php
+// torchlight! {"summaryCollapsedIndicator": "{ ... }" }
+class ExampleFunction extends LambdaFunction
+{
+    public function handler() // [tl! collapse:start]
+    {
+        //
+    }
+
+    public function package()
+    {
+        //
+    } // [tl! collapse:end]
+
+    public function variables()
+    {
+        return [
+            'FONTCONFIG_PATH' => '/opt/etc/fonts',
+        ];
+    }
+}
+```
+
+Setting static variables like that is quite straightforward.
+
+If, however, you want to share some secrets or environment variables _from your Laravel_ application, it will be important that you are sharing them from the correct environment.
+
+Imagine the scenario where you want to share your AWS keys with your Lambda function:
+
+```php
+// torchlight! {"summaryCollapsedIndicator": "{ ... }" }
+class ExampleFunction extends LambdaFunction
+{
+    public function handler() // [tl! collapse:start]
+    {
+        //
+    }
+
+    public function package()
+    {
+        //
+    } // [tl! collapse:end]
+
+    public function variables()
+    {
+        return [
+            'aws_key' => config('services.aws.key'),
+            'aws_secret' => config('services.aws.secret'),
+        ];
+    }
+}
+```
+
+You pull your key and secret using the Laravel `config` function, which in turn likely delegates to the `env()` function.
+
+Sidecar sets the environment variables _upon activation_. If you are deploying from CI and then activating from e.g. Vapor, you'll want to make sure you have those variables in the Vapor environment.
+
+Environment variables are set before activation, and before any pre-warming takes place.
+
+And remember! If Sidecar manages the environment variables for a function, it will clobber any changes you make in the AWS UI, so you cannot use both methods simultaneously.  
+
 ## Reusing Package Files
 
 If you're deploying your Sidecar functions every time you deploy your app, you will likely be deploying functions that have not changed at all.

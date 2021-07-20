@@ -1,6 +1,12 @@
 # Changelog
 ## Unreleased 
 
+## 0.3.0 - 2021-07-20
+
+### Added
+
+- Support for Lambda environment variables ([#25](https://github.com/hammerstonedev/sidecar/pull/25))
+
 ## 0.2.0 - 2021-07-12 
 
 ### Added
