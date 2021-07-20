@@ -210,6 +210,20 @@ abstract class LambdaFunction
     }
 
     /**
+     * A key/value array of environment variables that will be injected into the
+     * environment of the Lambda function. If Sidecar manages your environment
+     * variables, it will overwrite all variables that you set through the
+     * AWS UI. Return false to disable.
+     *
+     * @return bool|array
+     */
+    public function variables()
+    {
+        // By default, Sidecar does not manage your environment variables.
+        return false;
+    }
+
+    /**
      * The function within your code that Lambda calls to begin execution.
      * For Node.js, it is the `module-name.export` value in your function.
      *

@@ -123,6 +123,8 @@ class Deployment
     {
         $function->beforeActivation();
 
+        $this->setEnvironmentVariables($function);
+
         if ($prewarm) {
             $this->warmLatestVersion($function);
         }
@@ -156,6 +158,29 @@ class Deployment
         } else {
             Sidecar::log('Function code and configuration updated.');
         }
+    }
+
+    /**
+     * Add environment variables to the Lambda function, if they are provided.
+     *
+     * @param LambdaFunction $function
+     */
+    protected function setEnvironmentVariables(LambdaFunction $function)
+    {
+        $variables = $function->variables();
+
+        if (!is_array($variables)) {
+            return Sidecar::log('Environment variables not managed by Sidecar. Skipping.');
+        }
+
+        Sidecar::log('Updating environment variables.');
+
+        $this->lambda->updateFunctionConfiguration([
+            'FunctionName' => $function->nameWithPrefix(),
+            'Environment' => [
+                'Variables' => $variables,
+            ],
+        ]);
     }
 
     /**
