@@ -5,9 +5,6 @@
 
 namespace Hammerstone\Sidecar\Tests\Unit\Support;
 
-use Hammerstone\Sidecar\LambdaFunction;
-use Hammerstone\Sidecar\WarmingConfig;
-
 class DeploymentTestFunctionWithVariables extends DeploymentTestFunction
 {
     public function variables()
@@ -16,5 +13,4 @@ class DeploymentTestFunctionWithVariables extends DeploymentTestFunction
             'env' => 'value'
         ];
     }
-
 }
