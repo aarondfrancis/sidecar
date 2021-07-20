@@ -139,6 +139,38 @@ class ExampleFunction extends LambdaFunction
 }
 ```
 
+It is **very important** to note that if you allow Sidecar to manage your Lambda's environment variables, any changes made to environment variables in the AWS UI will be overwritten next time you deploy your function. 
+
+By default, Sidecar doesn't touch your Lambda's environment at all. Only when you return an array from `variables` will Sidecar take control of the env vars.
+
+Another important thing to note is that Sidecar sets your environment variables as a part of the _activation_ process, not the _deploy_ process. This means that the environment variables will be pulled from the machine that calls `sidecar:activate`.
+
+For example, if you are sharing secrets with your Lambda, then the values passed to your Lambda will be equal to the ones on the machine that called `sidecar:activate`, not the one that called `sidecar:deploy`:
+
+```php
+class ExampleFunction extends LambdaFunction
+{
+    public function handler()
+    {
+        //
+    }
+
+    public function package()
+    {
+        //
+    }
+
+    public function variables()  // [tl! focus:start]
+    {
+        // Values will come from the "activating" machine. 
+        return [
+            'aws_key' => config('services.aws.key'),
+            'aws_secret' => config('services.aws.secret'),
+        ];
+    } // [tl! focus:end]
+}
+```
+
 ## Name
 
 Your function has a `name` method that determines how Sidecar names your Lambda functions. By default it is based on the name and path of your PHP class. You are free to change this if you want, but you're unlikely to need to.
