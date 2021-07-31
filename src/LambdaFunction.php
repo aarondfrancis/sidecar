@@ -327,8 +327,8 @@ abstract class LambdaFunction
             'Handler' => $this->handler(),
             'Code' => $this->makePackage()->deploymentConfiguration(),
             'Description' => $this->description(),
-            'Timeout' => $this->timeout(),
-            'MemorySize' => $this->memory(),
+            'Timeout' => (int)$this->timeout(),
+            'MemorySize' => (int)$this->memory(),
             'Layers' => $this->layers(),
             'Publish' => true,
         ];
