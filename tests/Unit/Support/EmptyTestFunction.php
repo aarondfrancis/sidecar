@@ -16,6 +16,6 @@ class EmptyTestFunction extends LambdaFunction
 
     public function package()
     {
-        //
+        return optional();
     }
 }

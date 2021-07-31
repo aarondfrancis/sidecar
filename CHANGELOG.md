@@ -1,6 +1,12 @@
 # Changelog
 ## Unreleased 
 
+## 0.3.1 - 2021-07-31
+
+### Fixed
+
+- Cast Memory and Timeout to integers. Fixes [#28](https://github.com/hammerstonedev/sidecar/issues/28)
+
 ## 0.3.0 - 2021-07-20
 
 ### Added

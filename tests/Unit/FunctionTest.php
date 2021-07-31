@@ -21,4 +21,19 @@ class FunctionTest extends BaseTest
             (new EmptyTestFunction)->nameWithPrefix()
         );
     }
+
+    /** @test */
+    public function memory_and_timeout_get_cast_to_ints()
+    {
+        config([
+            'sidecar.timeout' => '5',
+            'sidecar.memory' => '500'
+        ]);
+
+        $array = (new EmptyTestFunction)->toDeploymentArray();
+
+        $this->assertSame(5, $array['Timeout']);
+        $this->assertSame(500, $array['MemorySize']);
+    }
+
 }
