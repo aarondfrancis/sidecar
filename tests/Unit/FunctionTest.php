@@ -35,5 +35,4 @@ class FunctionTest extends BaseTest
         $this->assertSame(5, $array['Timeout']);
         $this->assertSame(500, $array['MemorySize']);
     }
-
 }
