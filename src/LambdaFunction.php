@@ -10,6 +10,7 @@ use GuzzleHttp\Promise\PromiseInterface;
 use Hammerstone\Sidecar\Exceptions\SidecarException;
 use Hammerstone\Sidecar\Results\PendingResult;
 use Hammerstone\Sidecar\Results\SettledResult;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 abstract class LambdaFunction
@@ -198,6 +199,17 @@ abstract class LambdaFunction
     }
 
     /**
+     * The type of deployment package. Set to Image for container image and set Zip for .zip file archive.
+     *
+     * @see https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-lambda-2015-03-31.html#createfunction
+     * @return string
+     */
+    public function packageType()
+    {
+        return 'Zip';
+    }
+
+    /**
      * An array full of ARN strings. Totally optional.
      *
      * @return array
@@ -320,17 +332,26 @@ abstract class LambdaFunction
      */
     public function toDeploymentArray()
     {
-        return [
+        $config = [
             'FunctionName' => $this->nameWithPrefix(),
             'Runtime' => $this->runtime(),
             'Role' => config('sidecar.execution_role'),
             'Handler' => $this->handler(),
-            'Code' => $this->makePackage()->deploymentConfiguration(),
+            'Code' => $this->packageType() === 'Zip'
+                ? $this->makePackage()->deploymentConfiguration()
+                : $this->package(),
             'Description' => $this->description(),
             'Timeout' => (int)$this->timeout(),
             'MemorySize' => (int)$this->memory(),
             'Layers' => $this->layers(),
             'Publish' => true,
+            'PackageType' => $this->packageType(),
         ];
+
+         if ($this->packageType() !== 'Zip') {
+             $config = Arr::except($config, ['Runtime', 'Handler']);
+         }
+
+         return $config;
     }
 }

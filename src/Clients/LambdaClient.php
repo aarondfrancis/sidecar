@@ -145,10 +145,15 @@ class LambdaClient extends BaseClient
         // and S3Key be top level instead of nested under `Code`.
         $code = [
             'FunctionName' => $config['FunctionName'],
-            'S3Bucket' => $config['Code']['S3Bucket'],
-            'S3Key' => $config['Code']['S3Key'],
             'Publish' => $config['Publish']
         ];
+
+        if($function->packageType() === 'Zip'){
+            $code['S3Bucket'] = $config['Code']['S3Bucket'];
+            $code['S3Key'] = $config['Code']['S3Key'];
+        }else{
+            $code = array_merge($code, $function->package());
+        }
 
         $config = Arr::except($config, ['Code', 'Publish']);
 
