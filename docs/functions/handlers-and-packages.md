@@ -398,18 +398,19 @@ class ScreenshotFunction extends LambdaFunction
 
 In addition to the standard runtimes AWS Lambda offers the ability to package your Lambda function code and dependencies as a container image of up to 10 GB in size. 
 
-To use a container image with Sidecar you must first build a docker image and push it to the Amazon Elastic Container Registry (ECR). See [the official docs](https://docs.aws.amazon.com/lambda/latest/dg/images-create.html) for step-by-step instructions.
+To use a container image with Sidecar you must first build a Lambda compatible docker image and push it to the Amazon Elastic Container Registry (ECR). See [the official docs](https://docs.aws.amazon.com/lambda/latest/dg/images-create.html) for step-by-step instructions.
 
-Once the container has been added to the registry update the function's `package` method to return the container's ECR Image URI as shown below. Finally, add the `packageType` method with a return value of 'Image'. Note that you do not need to return anything from the `handler` method.
+Once the container has been added to the registry update the Sidecar function's handler method to return the `Package::CONTAINER_HANDLER` constant. Finally, update the function's `package` method to return the ECR Image URI as shown below.
 
 ```php
 use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\Package;
 
 class ExampleFunction extends LambdaFunction
 {
     public function handler()
     {
-        
+        return Package::CONTAINER_HANDLER;
     }
 
     public function package()
@@ -417,11 +418,6 @@ class ExampleFunction extends LambdaFunction
         return [
             'ImageUri' => '123456789012.dkr.ecr.us-east-1.amazonaws.com/hello-world:latest',
         ];
-    }
-    
-    public function packageType()
-    {
-        return 'Image';
     }
 }
 ```

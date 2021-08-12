@@ -105,7 +105,7 @@ class Deployment
     {
         Sidecar::log('Environment: ' . Sidecar::getEnvironment());
         Sidecar::log('Package Type: ' . $function->packageType());
-        if($function->packageType() === 'Zip'){
+        if ($function->packageType() === 'Zip') {
             Sidecar::log('Runtime: ' . $function->runtime());
         }
 

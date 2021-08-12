@@ -6,17 +6,13 @@
 namespace Hammerstone\Sidecar\Tests\Unit\Support;
 
 use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\Package;
 
 class DeploymentTestFunctionWithImage extends LambdaFunction
 {
     public function handler()
     {
-        //
-    }
-
-    public function packageType()
-    {
-        return 'Image';
+        return Package::CONTAINER_HANDLER;
     }
 
     public function package()

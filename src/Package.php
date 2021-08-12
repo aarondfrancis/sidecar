@@ -18,6 +18,11 @@ use ZipStream\ZipStream;
 class Package
 {
     /**
+     * @var string
+     */
+    public const CONTAINER_HANDLER = 'Image';
+
+    /**
      * @var array
      */
     protected $include = [];

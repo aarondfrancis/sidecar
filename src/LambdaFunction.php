@@ -206,6 +206,10 @@ abstract class LambdaFunction
      */
     public function packageType()
     {
+        if ($this->handler() === Package::CONTAINER_HANDLER) {
+            return Package::CONTAINER_HANDLER;
+        }
+
         return 'Zip';
     }
 
@@ -348,10 +352,10 @@ abstract class LambdaFunction
             'PackageType' => $this->packageType(),
         ];
 
-         if ($this->packageType() !== 'Zip') {
-             $config = Arr::except($config, ['Runtime', 'Handler']);
-         }
+        if ($this->packageType() !== 'Zip') {
+            $config = Arr::except($config, ['Runtime', 'Handler']);
+        }
 
-         return $config;
+        return $config;
     }
 }

@@ -148,10 +148,10 @@ class LambdaClient extends BaseClient
             'Publish' => $config['Publish']
         ];
 
-        if($function->packageType() === 'Zip'){
+        if ($function->packageType() === 'Zip') {
             $code['S3Bucket'] = $config['Code']['S3Bucket'];
             $code['S3Key'] = $config['Code']['S3Key'];
-        }else{
+        } else {
             $code = array_merge($code, $function->package());
         }
 
