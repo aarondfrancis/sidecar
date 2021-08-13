@@ -109,7 +109,6 @@ class Deployment
             Sidecar::log('Runtime: ' . $function->runtime());
         }
 
-
         $function->beforeDeployment();
 
         $this->lambda->functionExists($function)
