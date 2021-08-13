@@ -10,6 +10,7 @@ use GuzzleHttp\Promise\PromiseInterface;
 use Hammerstone\Sidecar\Exceptions\SidecarException;
 use Hammerstone\Sidecar\Results\PendingResult;
 use Hammerstone\Sidecar\Results\SettledResult;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 abstract class LambdaFunction
@@ -198,6 +199,18 @@ abstract class LambdaFunction
     }
 
     /**
+     * The type of deployment package. Set to Image for container
+     * image and set Zip for .zip file archive.
+     *
+     * @see https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-lambda-2015-03-31.html#createfunction
+     * @return string
+     */
+    public function packageType()
+    {
+        return $this->handler() === Package::CONTAINER_HANDLER ? 'Image' : 'Zip';
+    }
+
+    /**
      * An array full of ARN strings. Totally optional.
      *
      * @return array
@@ -233,6 +246,7 @@ abstract class LambdaFunction
      * If your file lived in a folder called "lambda", you can just prepend the
      * path to your handler, leaving you with e.g. "lambda/image.generate".
      *
+     * @see https://hammerstone.dev/sidecar/docs/main/functions/handlers-and-packages
      * @see https://docs.aws.amazon.com/aws-sdk-php/v2/api/class-Aws.Lambda.LambdaClient.html#_createFunction
      * @return string
      */
@@ -320,17 +334,29 @@ abstract class LambdaFunction
      */
     public function toDeploymentArray()
     {
-        return [
+        $config = [
             'FunctionName' => $this->nameWithPrefix(),
             'Runtime' => $this->runtime(),
             'Role' => config('sidecar.execution_role'),
             'Handler' => $this->handler(),
-            'Code' => $this->makePackage()->deploymentConfiguration(),
+            'Code' => $this->packageType() === 'Zip'
+                ? $this->makePackage()->deploymentConfiguration()
+                : $this->package(),
             'Description' => $this->description(),
             'Timeout' => (int)$this->timeout(),
             'MemorySize' => (int)$this->memory(),
             'Layers' => $this->layers(),
             'Publish' => true,
+            'PackageType' => $this->packageType(),
         ];
+
+        // For container image packages, we need to remove the Runtime
+        // and Handler since the container handles both of those
+        // things inherently.
+        if ($this->packageType() === 'Image') {
+            $config = Arr::except($config, ['Runtime', 'Handler']);
+        }
+
+        return $config;
     }
 }

@@ -18,6 +18,15 @@ use ZipStream\ZipStream;
 class Package
 {
     /**
+     * If your package is a container image, it does not require
+     * a handler function. Use this constant instead.
+     *
+     * @see https://hammerstone.dev/sidecar/docs/main/functions/handlers-and-packages
+     * @var string
+     */
+    public const CONTAINER_HANDLER = 'container';
+
+    /**
      * @var array
      */
     protected $include = [];

@@ -8,6 +8,7 @@ namespace Hammerstone\Sidecar\Tests\Unit;
 use Aws\Lambda\Exception\LambdaException;
 use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunction;
+use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunctionWithImage;
 use Hammerstone\Sidecar\Tests\Unit\Support\EmptyTestFunction;
 use Illuminate\Support\Facades\Event;
 use Mockery;
@@ -194,6 +195,38 @@ class LambdaClientTest extends BaseTest
                 'S3Bucket' => 'test-bucket',
                 'S3Key' => 'test-key',
                 'Publish' => 'test-Publish',
+            ]);
+
+        $this->lambda->updateExistingFunction($function);
+    }
+
+    /** @test */
+    public function update_existing_image_function()
+    {
+        $function = new DeploymentTestFunctionWithImage;
+
+        $this->lambda->shouldReceive('functionExists')
+            ->once()
+            ->andReturn(false);
+
+        $this->lambda->shouldReceive('updateFunctionConfiguration')
+            ->once()
+            ->with([
+                'FunctionName' => 'test-FunctionName',
+                'Role' => null,
+                'Description' => 'test-Description [ffeb0fec]',
+                'Timeout' => 300,
+                'MemorySize' => 512,
+                'Layers' => [],
+                'PackageType' => 'Image',
+            ]);
+
+        $this->lambda->shouldReceive('updateFunctionCode')
+            ->once()
+            ->with([
+                'FunctionName' => 'test-FunctionName',
+                'Publish' => 'test-Publish',
+                'ImageUri' => '123.dkr.ecr.us-west-2.amazonaws.com/image:latest',
             ]);
 
         $this->lambda->updateExistingFunction($function);
