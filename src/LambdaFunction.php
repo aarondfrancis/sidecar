@@ -199,18 +199,15 @@ abstract class LambdaFunction
     }
 
     /**
-     * The type of deployment package. Set to Image for container image and set Zip for .zip file archive.
+     * The type of deployment package. Set to Image for container
+     * image and set Zip for .zip file archive.
      *
      * @see https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-lambda-2015-03-31.html#createfunction
      * @return string
      */
     public function packageType()
     {
-        if ($this->handler() === Package::CONTAINER_HANDLER) {
-            return Package::CONTAINER_HANDLER;
-        }
-
-        return 'Zip';
+        return $this->handler() === Package::CONTAINER_HANDLER ? 'Image' : 'Zip';
     }
 
     /**
@@ -249,6 +246,7 @@ abstract class LambdaFunction
      * If your file lived in a folder called "lambda", you can just prepend the
      * path to your handler, leaving you with e.g. "lambda/image.generate".
      *
+     * @see https://hammerstone.dev/sidecar/docs/main/functions/handlers-and-packages
      * @see https://docs.aws.amazon.com/aws-sdk-php/v2/api/class-Aws.Lambda.LambdaClient.html#_createFunction
      * @return string
      */
@@ -352,7 +350,10 @@ abstract class LambdaFunction
             'PackageType' => $this->packageType(),
         ];
 
-        if ($this->packageType() !== 'Zip') {
+        // For container image packages, we need to remove the Runtime
+        // and Handler since the container handles both of those
+        // things inherently.
+        if ($this->packageType() === 'Image') {
             $config = Arr::except($config, ['Runtime', 'Handler']);
         }
 
