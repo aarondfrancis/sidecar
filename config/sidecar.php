@@ -77,5 +77,6 @@ return [
     /**
      * Customize your Lambdas prefix
      */
-    'lambda_prefix' => env('SIDECAR_LAMBDA_PREFIX', 'SC')
+    'lambda_prefix' => env('SIDECAR_LAMBDA_PREFIX', 'SC'),
+    
 ];
