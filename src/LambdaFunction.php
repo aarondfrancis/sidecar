@@ -107,7 +107,10 @@ abstract class LambdaFunction
      */
     public function nameWithPrefix()
     {
-        return Str::slug($this->prefix() . '-' . substr($this->name(), -(64 - strlen($prefix))));
+        $prefix = $this->prefix();
+        $trimmed_name = substr($this->name(), -(64 - strlen($prefix)));
+        
+        return Str::slug("{$prefix}-{$trimmed_name}");
     }
 
     /**
