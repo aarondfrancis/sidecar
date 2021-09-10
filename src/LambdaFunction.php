@@ -93,7 +93,11 @@ abstract class LambdaFunction
      */
     public function prefix()
     {
-        return 'SC-' . config('app.name') . '-' . Sidecar::getEnvironment() . '-';
+        return Str::slug(implode('-', [
+            config('sidecar.lambda_prefix', 'SC'),
+            config('app.name'),
+            Sidecar::getEnvironment()
+        ])) . '-';
     }
 
     /**
