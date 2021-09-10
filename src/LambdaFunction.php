@@ -97,7 +97,7 @@ abstract class LambdaFunction
             config('sidecar.lambda_prefix', 'SC'),
             config('app.name'),
             Sidecar::getEnvironment()
-        ])) . '-';
+        ]));
     }
 
     /**
@@ -107,12 +107,7 @@ abstract class LambdaFunction
      */
     public function nameWithPrefix()
     {
-        $prefix = $this->prefix();
-
-        // Names can only be 64 characters long.
-        $name = $prefix . substr($this->name(), -(64 - strlen($prefix)));
-
-        return str_replace(' ', '-', $name);
+        return Str::slug($this->prefix() . '-' . substr($this->name(), -(64 - strlen($prefix))));
     }
 
     /**
