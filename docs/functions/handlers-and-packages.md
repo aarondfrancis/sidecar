@@ -246,7 +246,7 @@ As Sidecar is building your package to be uploaded to S3, it creates a hash of t
 
 ## Package Limitations
 
-There is a 250mb hard upper limit of imposed by Amazon on the size of your Lambda package. That means that when your package is _uncompressed_ it must be smaller that 250mb, _including_ all of your layers.
+There is a 250mb hard upper limit imposed by Amazon on the size of your Lambda package. That means that when your package is _uncompressed_ it must be smaller that 250mb, _including_ all of your layers.
 
 You can read it the official docs [here](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) or in a good real-world boundary-testing article [here](https://hackernoon.com/exploring-the-aws-lambda-deployment-limits-9a8384b0bec3).
 
