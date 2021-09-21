@@ -22,6 +22,7 @@ class Package
      * a handler function. Use this constant instead.
      *
      * @see https://hammerstone.dev/sidecar/docs/main/functions/handlers-and-packages
+     *
      * @var string
      */
     public const CONTAINER_HANDLER = 'container';
@@ -47,7 +48,7 @@ class Package
     protected $basePath;
 
     /**
-     * @param array $paths
+     * @param  array  $paths
      * @return static
      */
     public static function make($paths = [])
@@ -56,7 +57,7 @@ class Package
     }
 
     /**
-     * @param array $paths
+     * @param  array  $paths
      */
     public function __construct($paths = [])
     {
@@ -159,6 +160,7 @@ class Package
 
     /**
      * A hash of the contents.
+     *
      * @return string
      */
     public function hash()
@@ -170,6 +172,7 @@ class Package
 
     /**
      * @return string[]
+     *
      * @throws SidecarException
      */
     public function deploymentConfiguration()
@@ -200,6 +203,7 @@ class Package
 
     /**
      * @return string
+     *
      * @throws \ZipStream\Exception
      */
     public function upload()

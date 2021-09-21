@@ -13,7 +13,7 @@ trait ManagesEnvironments
     protected $environment;
 
     /**
-     * @param string $environment
+     * @param  string  $environment
      */
     public function overrideEnvironment($environment)
     {

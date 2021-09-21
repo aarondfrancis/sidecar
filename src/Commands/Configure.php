@@ -18,12 +18,14 @@ class Configure extends Command
 {
     /**
      * The name and signature of the console command.
+     *
      * @var string
      */
     protected $signature = 'sidecar:configure';
 
     /**
      * The console command description.
+     *
      * @var string
      */
     protected $description = 'Interactively configure your Sidecar AWS environment variables.';

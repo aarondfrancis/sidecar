@@ -32,7 +32,7 @@ trait HandlesLogging
     }
 
     /**
-     * @param Command $command
+     * @param  Command  $command
      */
     public function addCommandLogger(Command $command)
     {

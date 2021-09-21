@@ -19,7 +19,7 @@ class LambdaClient extends BaseClient
     const NOOP = 3;
 
     /**
-     * @param LambdaFunction $function
+     * @param  LambdaFunction  $function
      * @return string
      */
     public function getLatestVersion(LambdaFunction $function)
@@ -30,7 +30,7 @@ class LambdaClient extends BaseClient
     /**
      * Test whether or not the latest deployed version is the one that is aliased.
      *
-     * @param LambdaFunction $function
+     * @param  LambdaFunction  $function
      * @param $alias
      * @return bool
      */
@@ -44,8 +44,8 @@ class LambdaClient extends BaseClient
     }
 
     /**
-     * @param LambdaFunction $function
-     * @param null|string $marker
+     * @param  LambdaFunction  $function
+     * @param  null|string  $marker
      * @return \Aws\Result
      */
     public function getVersions(LambdaFunction $function, $marker = null)
@@ -66,9 +66,9 @@ class LambdaClient extends BaseClient
     }
 
     /**
-     * @param LambdaFunction $function
-     * @param string $alias
-     * @param string|null $version
+     * @param  LambdaFunction  $function
+     * @param  string  $alias
+     * @param  string|null  $version
      * @return int
      */
     public function aliasVersion(LambdaFunction $function, $alias, $version = null)
@@ -100,7 +100,7 @@ class LambdaClient extends BaseClient
     }
 
     /**
-     * @param LambdaFunction $function
+     * @param  LambdaFunction  $function
      * @param $name
      * @return \Aws\Result|false
      */
@@ -121,8 +121,9 @@ class LambdaClient extends BaseClient
     }
 
     /**
-     * @param LambdaFunction $function
+     * @param  LambdaFunction  $function
      * @return int
+     *
      * @throws Exception
      */
     public function updateExistingFunction(LambdaFunction $function)
@@ -164,8 +165,8 @@ class LambdaClient extends BaseClient
     /**
      * Delete a particular version of a function.
      *
-     * @param LambdaFunction $function
-     * @param string $version
+     * @param  LambdaFunction  $function
+     * @param  string  $version
      */
     public function deleteFunctionVersion(LambdaFunction $function, $version)
     {
@@ -176,8 +177,8 @@ class LambdaClient extends BaseClient
     }
 
     /**
-     * @param LambdaFunction $function
-     * @param null $checksum
+     * @param  LambdaFunction  $function
+     * @param  null  $checksum
      * @return bool
      */
     public function functionExists(LambdaFunction $function, $checksum = null)

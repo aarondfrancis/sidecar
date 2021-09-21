@@ -78,8 +78,9 @@ class SettledResult implements Responsable, ResultContract
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     *
      * @throws Exception
      */
     public function toResponse($request)
@@ -107,7 +108,7 @@ class SettledResult implements Responsable, ResultContract
     /**
      * The Payload of the result is always JSON encoded, even if it's not JSON.
      *
-     * @param int $options
+     * @param  int  $options
      * @return mixed
      */
     public function body($options = JSON_OBJECT_AS_ARRAY)

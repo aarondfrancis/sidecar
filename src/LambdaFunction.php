@@ -18,8 +18,8 @@ abstract class LambdaFunction
     /**
      * Execute the current function and return the response.
      *
-     * @param array $payload
-     * @param bool $async
+     * @param  array  $payload
+     * @param  bool  $async
      * @return SettledResult|PendingResult
      */
     public static function execute($payload = [], $async = false)
@@ -30,7 +30,7 @@ abstract class LambdaFunction
     /**
      * Execute the current function and return the response.
      *
-     * @param array $payload
+     * @param  array  $payload
      * @return PendingResult
      */
     public static function executeAsync($payload = [])
@@ -42,8 +42,9 @@ abstract class LambdaFunction
      * Execute the current function and return the response.
      *
      * @param $payloads
-     * @param bool $async
+     * @param  bool  $async
      * @return array
+     *
      * @throws \Throwable
      */
     public static function executeMany($payloads, $async = false)
@@ -56,6 +57,7 @@ abstract class LambdaFunction
      *
      * @param $payloads
      * @return array
+     *
      * @throws \Throwable
      */
     public static function executeManyAsync($payloads)
@@ -65,7 +67,8 @@ abstract class LambdaFunction
 
     /**
      * Deploy this function only.
-     * @param bool $activate
+     *
+     * @param  bool  $activate
      */
     public static function deploy($activate = true)
     {
@@ -140,8 +143,9 @@ abstract class LambdaFunction
      * The default representation of this function as an HTTP response.
      *
      * @param $request
-     * @param SettledResult $result
+     * @param  SettledResult  $result
      * @return \Illuminate\Http\Response
+     *
      * @throws \Exception
      */
     public function toResponse($request, SettledResult $result)
@@ -152,8 +156,9 @@ abstract class LambdaFunction
     }
 
     /**
-     * @param Result|PromiseInterface $raw
+     * @param  Result|PromiseInterface  $raw
      * @return SettledResult|PendingResult
+     *
      * @throws SidecarException
      */
     public function toResult($raw)
@@ -170,7 +175,7 @@ abstract class LambdaFunction
     }
 
     /**
-     * @param Result $raw
+     * @param  Result  $raw
      * @return SettledResult
      */
     public function toSettledResult(Result $raw)
@@ -179,7 +184,7 @@ abstract class LambdaFunction
     }
 
     /**
-     * @param PromiseInterface $raw
+     * @param  PromiseInterface  $raw
      * @return PendingResult
      */
     public function toPendingResult(PromiseInterface $raw)
@@ -191,6 +196,7 @@ abstract class LambdaFunction
      * The runtime environment for the Lambda function.
      *
      * @see https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+     *
      * @return string
      */
     public function runtime()
@@ -203,6 +209,7 @@ abstract class LambdaFunction
      * image and set Zip for .zip file archive.
      *
      * @see https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-lambda-2015-03-31.html#createfunction
+     *
      * @return string
      */
     public function packageType()
@@ -248,6 +255,7 @@ abstract class LambdaFunction
      *
      * @see https://hammerstone.dev/sidecar/docs/main/functions/handlers-and-packages
      * @see https://docs.aws.amazon.com/aws-sdk-php/v2/api/class-Aws.Lambda.LambdaClient.html#_createFunction
+     *
      * @return string
      */
     abstract public function handler();
@@ -330,6 +338,7 @@ abstract class LambdaFunction
 
     /**
      * @return array
+     *
      * @throws SidecarException
      */
     public function toDeploymentArray()

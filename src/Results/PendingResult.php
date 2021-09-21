@@ -27,8 +27,8 @@ class PendingResult implements Responsable, ResultContract
     protected $function;
 
     /**
-     * @param PromiseInterface $raw
-     * @param LambdaFunction $function
+     * @param  PromiseInterface  $raw
+     * @param  LambdaFunction  $function
      */
     public function __construct($raw, LambdaFunction $function)
     {
@@ -51,8 +51,9 @@ class PendingResult implements Responsable, ResultContract
     /**
      * Defer to the SettledResult.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     *
      * @throws \Exception
      */
     public function toResponse($request)
