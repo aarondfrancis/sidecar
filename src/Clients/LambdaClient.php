@@ -159,7 +159,13 @@ class LambdaClient extends BaseClient
         $config = Arr::except($config, ['Code', 'Publish']);
 
         $this->updateFunctionConfiguration($config);
-        $this->updateFunctionCode($code);
+
+        retry(3, function () use ($code) {
+            $this->updateFunctionCode($code);
+        }, 2500, function ($exception) {
+            return $exception instanceof LambdaException
+                && $exception->getStatusCode() === 409;
+        });
     }
 
     /**
