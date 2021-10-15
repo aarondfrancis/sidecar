@@ -162,6 +162,10 @@ class ExampleFunction extends LambdaFunction
 }
 ```
 
+> Note; if you are using any external dependencies (i.e packages installed in your `node_modules`), you need to ship the dependencies also.
+> For example, if you have installed some Javascript packages for your Javascript function, and these were installed alongside your function in the `resources/lambda` folder, then you would need to include the whole directory as detailed above.
+> See the section below on "Strategies for Dealing With node_modules" for more control over this
+
 ## The Package Class
 
 If you need a little more fine-grained control over the packaging process, you can use the `Package` class instead of the simpler array format.
