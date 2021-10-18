@@ -22,9 +22,9 @@ abstract class LambdaFunction
      * @param  bool  $async
      * @return SettledResult|PendingResult
      */
-    public static function execute($payload = [], $async = false)
+    public static function execute($payload = [], $async = false, $invocationType = 'RequestResponse')
     {
-        return Sidecar::execute(static::class, $payload, $async);
+        return Sidecar::execute(static::class, $payload, $async, $invocationType);
     }
 
     /**
@@ -63,6 +63,17 @@ abstract class LambdaFunction
     public static function executeManyAsync($payloads)
     {
         return static::executeMany($payloads, $async = true);
+    }
+
+    /**
+     * Execute the current function asynchronously as an event. This is "fire-and-forget" style.
+     *
+     * @param  array  $payload
+     * @return PendingResult
+     */
+    public static function executeAsEvent($payload = [])
+    {
+        return static::execute($payload, $async = false, $invocationType = 'Event');
     }
 
     /**

@@ -62,7 +62,7 @@ class Manager
      * @throws Exceptions\SidecarException
      * @throws FunctionNotFoundException
      */
-    public function execute($function, $payload = [], $async = false)
+    public function execute($function, $payload = [], $async = false, $invocationType = 'RequestResponse')
     {
         // Could be a FQCN.
         if (is_string($function)) {
@@ -85,7 +85,7 @@ class Manager
                 // `RequestResponse` is a synchronous call, vs `Event` which
                 // is a fire-and-forget, we can make it async by using the
                 // invokeAsync method.
-                'InvocationType' => 'RequestResponse',
+                'InvocationType' => $invocationType,
 
                 // Include the execution log in the response.
                 'LogType' => 'Tail',
@@ -164,6 +164,19 @@ class Manager
     public function executeManyAsync($params)
     {
         return $this->executeMany($params, $async = true);
+    }
+
+    /**
+     * @param $function
+     * @param  array  $payload
+     * @return PendingResult|SettledResult
+     *
+     * @throws Exceptions\SidecarException
+     * @throws FunctionNotFoundException
+     */
+    public function executeAsEvent($function, $payload = [])
+    {
+        return $this->execute($function, $payload, $async = false, $invocationType = 'Event');
     }
 
     /**
