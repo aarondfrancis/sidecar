@@ -201,7 +201,7 @@ abstract class LambdaFunction
      */
     public function runtime()
     {
-        return 'nodejs14.x';
+        return Runtime::NODEJS_14;
     }
 
     /**
