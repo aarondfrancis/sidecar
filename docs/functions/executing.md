@@ -62,7 +62,7 @@ $result = Sidecar::execute(OgImage::class, $payload = [], $async = true);
 echo 'Image may or may not have finished generating yet!';
 ```
 
-Whilst the execution is asynchronous, it is expected that you wait for the response, which is documented more below. If you're looking for "fire-and-forget" style execution, where you don't care about the response and are happy for execution to occur in the background then you'll need to execute your function as an event.
+Whilst the execution is asynchronous, it is expected that you wait for the response, which is documented more in the next section below. If you're looking for "fire-and-forget" style execution, where you don't care about the response and are happy for execution to occur in the background then you'll need to execute your function as an event.
 
 ```php
 // Event execution using the class. 
