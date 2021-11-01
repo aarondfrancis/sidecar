@@ -1,22 +1,29 @@
 # Changelog
 ## Unreleased 
 
+## 0.3.3 - 2021-11-01
+
+### Added
+- Added runtime constants ([#33](https://github.com/hammerstonedev/sidecar/pull/33))
+- Add event invocation support ([#36](https://github.com/hammerstonedev/sidecar/pull/36))
+ 
+### Fixed
+- Docs typo ([#31](https://github.com/hammerstonedev/sidecar/pull/31)) 
+- Update package documentation to include note for shipping node_modules ([#34](https://github.com/hammerstonedev/sidecar/pull/34))
+
 ## 0.3.2 - 2021-08-13
 
 ### Added
-
 - Support for Container Images. [#29](https://github.com/hammerstonedev/sidecar/pull/29)
 
 ## 0.3.1 - 2021-07-31
 
 ### Fixed
-
 - Cast Memory and Timeout to integers. Fixes [#28](https://github.com/hammerstonedev/sidecar/issues/28)
 
 ## 0.3.0 - 2021-07-20
 
 ### Added
-
 - Support for Lambda environment variables ([#25](https://github.com/hammerstonedev/sidecar/pull/25))
 
 ## 0.2.0 - 2021-07-12 
