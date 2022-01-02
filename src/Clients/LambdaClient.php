@@ -174,7 +174,8 @@ class LambdaClient extends BaseClient
      * @link https://aws.amazon.com/blogs/compute/tracking-the-state-of-lambda-functions/
      * @link https://github.com/hammerstonedev/sidecar/issues/32
      * @link https://github.com/aws/aws-sdk-php/blob/master/src/data/lambda/2015-03-31/waiters-2.json
-     * @param LambdaFunction $function
+     *
+     * @param  LambdaFunction  $function
      */
     public function waitUntilFunctionUpdated(LambdaFunction $function)
     {
