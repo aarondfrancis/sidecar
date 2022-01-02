@@ -9,6 +9,7 @@ use Aws\Lambda\Exception\LambdaException;
 use Aws\Lambda\LambdaClient as BaseClient;
 use Exception;
 use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\Sidecar;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -28,7 +29,7 @@ class LambdaClient extends BaseClient
     }
 
     /**
-     * Test whether or not the latest deployed version is the one that is aliased.
+     * Test whether the latest deployed version is the one that is aliased.
      *
      * @param  LambdaFunction  $function
      * @param $alias
@@ -77,7 +78,7 @@ class LambdaClient extends BaseClient
 
         $aliased = $this->getAliasWithoutException($function, $alias);
 
-        // The alias already exists and its the version we were trying to alias anyway.
+        // The alias already exists and it's the version we were trying to alias anyway.
         if ($aliased && $version === Arr::get($aliased, 'FunctionVersion')) {
             return self::NOOP;
         }
@@ -158,14 +159,28 @@ class LambdaClient extends BaseClient
 
         $config = Arr::except($config, ['Code', 'Publish']);
 
+        $this->waitUntilFunctionUpdated($function);
         $this->updateFunctionConfiguration($config);
 
-        retry(3, function () use ($code) {
-            $this->updateFunctionCode($code);
-        }, 2500, function ($exception) {
-            return $exception instanceof LambdaException
-                && $exception->getStatusCode() === 409;
-        });
+        $this->waitUntilFunctionUpdated($function);
+        $this->updateFunctionCode($code);
+    }
+
+    /**
+     * Wait until the function is out of the Pending state, so that
+     * we don't get 409 conflict errors.
+     *
+     * @link https://aws.amazon.com/de/blogs/compute/coming-soon-expansion-of-aws-lambda-states-to-all-functions/
+     * @link https://aws.amazon.com/blogs/compute/tracking-the-state-of-lambda-functions/
+     * @link https://github.com/hammerstonedev/sidecar/issues/32
+     * @link https://github.com/aws/aws-sdk-php/blob/master/src/data/lambda/2015-03-31/waiters-2.json
+     * @param LambdaFunction $function
+     */
+    public function waitUntilFunctionUpdated(LambdaFunction $function)
+    {
+        $this->waitUntil('FunctionUpdated', [
+            'FunctionName' => $function->nameWithPrefix(),
+        ]);
     }
 
     /**

@@ -197,6 +197,12 @@ class LambdaClientTest extends BaseTest
                 'Publish' => 'test-Publish',
             ]);
 
+        $this->lambda->shouldReceive('waitUntil')
+            ->twice()
+            ->with('FunctionUpdated', [
+                'FunctionName' => 'test-FunctionName',
+            ]);
+
         $this->lambda->updateExistingFunction($function);
     }
 
@@ -227,6 +233,12 @@ class LambdaClientTest extends BaseTest
                 'FunctionName' => 'test-FunctionName',
                 'Publish' => 'test-Publish',
                 'ImageUri' => '123.dkr.ecr.us-west-2.amazonaws.com/image:latest',
+            ]);
+
+        $this->lambda->shouldReceive('waitUntil')
+            ->twice()
+            ->with('FunctionUpdated', [
+                'FunctionName' => 'test-FunctionName',
             ]);
 
         $this->lambda->updateExistingFunction($function);

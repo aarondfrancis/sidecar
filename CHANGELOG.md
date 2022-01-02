@@ -1,6 +1,13 @@
 # Changelog
 ## Unreleased 
 
+## 0.3.4 - 2022-01-02
+
+### Fixed
+
+- Add method to ensure function is updated before we try to do anything else. Should hopefully fix [#32](https://github.com/hammerstonedev/sidecar/issues/32)  
+
+
 ## 0.3.3 - 2021-11-01
 
 ### Added
