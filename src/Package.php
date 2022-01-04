@@ -53,7 +53,7 @@ class Package
     protected $basePath;
 
     /**
-     * @param array $paths
+     * @param  array  $paths
      * @return static
      */
     public static function make($paths = [])
@@ -62,7 +62,7 @@ class Package
     }
 
     /**
-     * @param array $paths
+     * @param  array  $paths
      */
     public function __construct($paths = [])
     {
