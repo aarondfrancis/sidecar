@@ -179,13 +179,18 @@ class Package
      */
     public function hash()
     {
-        $standard = $this->files()->reduce(function ($carry, $file) {
+        $hash = $this->files()->reduce(function ($carry, $file) {
             return md5($carry . $this->removeBasePath($file) . md5_file($file));
         });
 
-        return collect($this->exactIncludes)->reduce(function ($carry, $destination, $source) {
-            return md5($carry . $destination . md5_file($source));
-        }, $standard);
+        // We cannot use the collection `reduce` method here, because it
+        // doesn't provide the key in some versions of Laravel.
+        // @see https://github.com/hammerstonedev/sidecar/runs/4710405742
+        foreach ($this->exactIncludes as $source => $destination) {
+            $hash = md5($hash . $destination . md5_file($source));
+        }
+
+        return $hash;
     }
 
     /**
