@@ -35,11 +35,11 @@ class DestroyAdminKeys extends BaseAction
 
         if (!$isSidecar) {
             $this->command->info('');
-            $this->command->error(" ********************************************************************************* ");
-            $this->command->error(" *                                                                               * ");
-            $this->command->error(" *  The admin keys you provided are not Sidecar specific. Be cautious deleting.  * ");
-            $this->command->error(" *                                                                               * ");
-            $this->command->error(" ********************************************************************************* ");
+            $this->command->error(' ********************************************************************************* ');
+            $this->command->error(' *                                                                               * ');
+            $this->command->error(' *  The admin keys you provided are not Sidecar specific. Be cautious deleting.  * ');
+            $this->command->error(' *                                                                               * ');
+            $this->command->error(' ********************************************************************************* ');
         }
 
         $question = '' .
@@ -50,6 +50,7 @@ class DestroyAdminKeys extends BaseAction
         // because that is most safe. If not, defaulting to `false` is most safe!
         if (!$this->command->confirm($question, $default = $isSidecar)) {
             $this->progress('Not deleting keys');
+
             return;
         }
 
