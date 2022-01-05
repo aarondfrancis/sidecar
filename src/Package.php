@@ -35,6 +35,11 @@ class Package
     /**
      * @var array
      */
+    protected $exactIncludes = [];
+
+    /**
+     * @var array
+     */
     protected $exclude = [];
 
     /**
@@ -82,6 +87,15 @@ class Package
     public function include($paths)
     {
         $this->include = array_merge($this->include, $this->pathsForMerging($paths));
+
+        $this->files = null;
+
+        return $this;
+    }
+
+    public function includeExactly($files)
+    {
+        $this->exactIncludes = $files;
 
         $this->files = null;
 
@@ -165,9 +179,13 @@ class Package
      */
     public function hash()
     {
-        return $this->files()->reduce(function ($carry, $file) {
-            return md5($carry . md5_file($file));
+        $standard = $this->files()->reduce(function ($carry, $file) {
+            return md5($carry . $file . md5_file($file));
         });
+
+        return collect($this->exactIncludes)->reduce(function ($carry, $destination, $source) {
+            return md5($carry . $destination . md5_file($source));
+        }, $standard);
     }
 
     /**
@@ -245,9 +263,15 @@ class Package
             // relative to the project root. Add the base path so that
             // ZipStream can find it read off the disk.
             $zip->addFileFromPath(
-                $this->removeBasePath($file),
-                $file,
-                $options
+                $this->removeBasePath($file), $file, $options
+            );
+        }
+
+        foreach ($this->exactIncludes as $source => $destination) {
+            $options = tap(new FileOptions)->setTime(Carbon::now());
+
+            $zip->addFileFromPath(
+                $destination, $source, $options
             );
         }
 

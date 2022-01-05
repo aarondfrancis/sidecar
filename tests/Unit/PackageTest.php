@@ -152,6 +152,36 @@ class PackageTest extends BaseTest
     }
 
     /** @test */
+    public function can_add_exact_files()
+    {
+        $package = $this->makePackageClass();
+
+        $package->include([
+            'Support/Files'
+        ]);
+
+        $package->includeExactly([
+            __DIR__ . '/Support/Files/file1.txt' => 'root.txt'
+        ]);
+
+        file_put_contents(__DIR__ . '/Support/Files/file1.txt', '1');
+
+        $package->upload();
+
+        $contents = head(FakeStreamWrapper::$paths);
+
+        file_put_contents(__DIR__ . '/Support/Files/file1.txt', '');
+
+        // Write the contents to disk to inspect.
+        // file_put_contents('contents.zip', $contents);
+
+        // This hash has been manually verified to be the correct zip file.
+        // Make sure that there is a file at the root called root.txt
+        // with contents of "1".
+        $this->assertEquals('8894314657ee3cb70ac4d3bc6bea8a09', md5($contents));
+    }
+
+    /** @test */
     public function an_exclamation_excludes_is_ignored()
     {
         $package = Package::make()
@@ -178,8 +208,32 @@ class PackageTest extends BaseTest
             'Support/Files'
         ]);
 
-        $this->assertEquals('55ba7f7885ab81a55dd6ddda087b280b', $package->hash());
-        $this->assertEquals('55ba7f7885ab81a55dd6ddda087b280b', $package->hash());
+        $this->assertEquals('f0832737d1b192e7d29719aa7303c2a9', $package->hash());
+        $this->assertEquals('f0832737d1b192e7d29719aa7303c2a9', $package->hash());
+    }
+
+    /** @test */
+    public function exact_includes_affect_hashes()
+    {
+        $package = $this->makePackageClass();
+
+        $package->include([
+            'Support/Files'
+        ]);
+
+        $this->assertEquals('f0832737d1b192e7d29719aa7303c2a9', $package->hash());
+
+        $package->includeExactly([
+            __DIR__ . '/Support/Files/file1.txt' => 'bar'
+        ]);
+
+        $this->assertEquals('5ba72e0b5627858527b685c374c98cda', $package->hash());
+
+        $package->includeExactly([
+            __DIR__ . '/Support/Files/file1.txt' => 'buz'
+        ]);
+
+        $this->assertEquals('d8cd3151e4557293ea0459d3b21827c9', $package->hash());
     }
 
     /** @test */
@@ -191,15 +245,17 @@ class PackageTest extends BaseTest
             'Support/Files'
         ]);
 
-        $this->assertEquals('55ba7f7885ab81a55dd6ddda087b280b', $package->hash());
+        file_put_contents(__DIR__ . '/Support/Files/file3.txt', '');
+
+        $this->assertEquals('f0832737d1b192e7d29719aa7303c2a9', $package->hash());
 
         file_put_contents(__DIR__ . '/Support/Files/file3.txt', 'Some new data');
 
-        $this->assertEquals('f88e608b4831d7231af71f63c1839b05', $package->hash());
+        $this->assertEquals('0a1e2cc16698253a6fbb9938cfdeaf91', $package->hash());
 
         file_put_contents(__DIR__ . '/Support/Files/file3.txt', '');
 
-        $this->assertEquals('55ba7f7885ab81a55dd6ddda087b280b', $package->hash());
+        $this->assertEquals('f0832737d1b192e7d29719aa7303c2a9', $package->hash());
     }
 
     /** @test */
@@ -213,9 +269,9 @@ class PackageTest extends BaseTest
 
         $package->upload();
 
-        $this->assertArrayHasKey('s3://sidecar-bucket/sidecar/001-55ba7f7885ab81a55dd6ddda087b280b.zip', FakeStreamWrapper::$paths);
+        $this->assertArrayHasKey('s3://sidecar-bucket/sidecar/001-f0832737d1b192e7d29719aa7303c2a9.zip', FakeStreamWrapper::$paths);
 
-        $contents = FakeStreamWrapper::$paths['s3://sidecar-bucket/sidecar/001-55ba7f7885ab81a55dd6ddda087b280b.zip'];
+        $contents = FakeStreamWrapper::$paths['s3://sidecar-bucket/sidecar/001-f0832737d1b192e7d29719aa7303c2a9.zip'];
 
         // Write the contents to disk to inspect.
         // file_put_contents('contents.zip', $contents);
@@ -234,7 +290,7 @@ class PackageTest extends BaseTest
 
         // Pretend it's already on S3
         FakeStreamWrapper::$paths = [
-            's3://sidecar-bucket/sidecar/001-55ba7f7885ab81a55dd6ddda087b280b.zip' => 'fake'
+            's3://sidecar-bucket/sidecar/001-f0832737d1b192e7d29719aa7303c2a9.zip' => 'fake'
         ];
 
         $package->upload();
@@ -255,7 +311,7 @@ class PackageTest extends BaseTest
 
         $this->assertEquals([
             'S3Bucket' => 'sidecar-bucket',
-            'S3Key' => 'sidecar/001-55ba7f7885ab81a55dd6ddda087b280b.zip',
+            'S3Key' => 'sidecar/001-f0832737d1b192e7d29719aa7303c2a9.zip',
         ], $package->deploymentConfiguration());
     }
 }
