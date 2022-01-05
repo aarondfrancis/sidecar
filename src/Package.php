@@ -180,7 +180,7 @@ class Package
     public function hash()
     {
         $standard = $this->files()->reduce(function ($carry, $file) {
-            return md5($carry . $file . md5_file($file));
+            return md5($carry . $this->removeBasePath($file) . md5_file($file));
         });
 
         return collect($this->exactIncludes)->reduce(function ($carry, $destination, $source) {
