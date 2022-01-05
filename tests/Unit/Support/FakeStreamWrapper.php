@@ -63,6 +63,11 @@ class FakeStreamWrapper
         return $stat;
     }
 
+    public function stream_stat()
+    {
+        return $this->url_stat($this->path, 0);
+    }
+
     public function stream_open($path, $mode, $options, &$opened_path)
     {
         static::$calls[] = [__FUNCTION__, func_get_args()];

@@ -192,6 +192,14 @@ class Deployment
                 'Variables' => $variables,
             ],
         ]);
+
+        Sidecar::log('Publishing new version with new environment variables.');
+
+        $this->lambda->waitUntilFunctionUpdated($function);
+
+        $this->lambda->publishVersion([
+            'FunctionName' => $function->nameWithPrefix(),
+        ]);
     }
 
     /**
@@ -201,6 +209,8 @@ class Deployment
      */
     protected function warmLatestVersion(LambdaFunction $function)
     {
+        $this->lambda->waitUntilFunctionUpdated($function);
+
         if ($this->lambda->latestVersionHasAlias($function, 'active')) {
             Sidecar::log('Active version unchanged, no need to warm.');
 
@@ -261,7 +271,7 @@ class Deployment
         }
 
         // Skip the $LATEST at the beginning and remove the
-        // ten good ones at the end.
+        // `$keep` good ones at the end.
         $outdated = array_splice($versions, 1, -$keep);
 
         // Only do five at a time for each function, as

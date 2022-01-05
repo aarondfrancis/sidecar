@@ -28,7 +28,7 @@ class DeploymentTest extends BaseTest
 
         Event::fake();
 
-        $this->lambda = $this->mock(LambdaClient::class);
+        $this->lambda = $this->partialMock(LambdaClient::class);
     }
 
     public function notFoundException()
@@ -203,6 +203,7 @@ class DeploymentTest extends BaseTest
     {
         $this->lambda->shouldReceive('functionExists')->andReturn(true);
         $this->lambda->shouldReceive('getVersions')->andReturn([]);
+        $this->lambda->shouldReceive('waitUntil')->twice();
         $this->lambda->shouldReceive('updateExistingFunction')->once()->withArgs(function ($function) {
             return $function instanceof DeploymentTestFunctionWithVariables;
         });
@@ -215,6 +216,12 @@ class DeploymentTest extends BaseTest
                 ],
             ],
         ]);
+
+        $this->lambda->shouldReceive('publishVersion')
+            ->once()
+            ->with([
+                'FunctionName' => 'test-FunctionName',
+            ]);
 
         $this->mockActivating();
 
