@@ -184,6 +184,8 @@ class Deployment
 
         Sidecar::log('Updating environment variables.');
 
+        $this->lambda->waitUntilFunctionUpdated($function);
+
         $this->lambda->updateFunctionConfiguration([
             'FunctionName' => $function->nameWithPrefix(),
             'Environment' => [
