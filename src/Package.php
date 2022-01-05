@@ -277,9 +277,12 @@ class Package
 
         $zip->finish();
 
+        $size = fstat($stream)['size'] / 1024 / 1024;
+        $size = round($size, 2);
+
         fclose($stream);
 
-        Sidecar::log('Zip file created at ' . $path);
+        Sidecar::log("Zip file created at $path. ({$size}MB)");
 
         return $filename;
     }
