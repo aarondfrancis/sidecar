@@ -29,6 +29,12 @@ return [
     'memory' => env('SIDECAR_MEMORY', 512),
 
     /*
+     * The default architecture your function runs on.
+     * Available options are: x86_64, arm64
+     */
+    'architecture' => env('SIDECAR_ARCH', 'x86_64'),
+
+    /*
      * The base path for your package files. If you e.g. keep
      * all your Lambda package files in your resource path,
      * you may change the base path here.

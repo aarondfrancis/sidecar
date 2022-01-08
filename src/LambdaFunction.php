@@ -216,6 +216,16 @@ abstract class LambdaFunction
     }
 
     /**
+     * The architecture for the Lambda function.
+     *
+     * @return string
+     */
+    public function architecture()
+    {
+        return config('sidecar.architecture', 'x86_64');
+    }
+
+    /**
      * The type of deployment package. Set to Image for container
      * image and set Zip for .zip file archive.
      *
@@ -368,6 +378,7 @@ abstract class LambdaFunction
             'Layers' => $this->layers(),
             'Publish' => true,
             'PackageType' => $this->packageType(),
+            'Architectures' => [$this->architecture()]
         ];
 
         // For container image packages, we need to remove the Runtime
