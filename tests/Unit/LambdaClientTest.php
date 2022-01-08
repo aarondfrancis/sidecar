@@ -195,6 +195,7 @@ class LambdaClientTest extends BaseTest
                 'S3Bucket' => 'test-bucket',
                 'S3Key' => 'test-key',
                 'Publish' => 'test-Publish',
+                'Architectures' => ['x86_64']
             ]);
 
         $this->lambda->shouldReceive('waitUntil')
