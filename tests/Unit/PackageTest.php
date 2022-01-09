@@ -241,6 +241,54 @@ class PackageTest extends BaseTest
     }
 
     /** @test */
+    public function string_includes_affect_hashes()
+    {
+        /** @var Package $package */
+        $package = $this->makePackageClass();
+
+        $package->include([
+            'Support/Files'
+        ]);
+
+        $this->assertEquals('2b46678c7e891927b2529672d349dfb7', $package->hash());
+
+        $package->includeStrings([
+            'string.txt' => 'this is a string'
+        ]);
+
+        $this->assertEquals('551e39e7471632f6fd195523f315acb3', $package->hash());
+
+        $package->includeStrings([
+            'string.txt' => 'this is a string 2'
+        ]);
+
+        $this->assertEquals('31e5673b500083fcd8c79ca730da966f', $package->hash());
+
+        $package->includeStrings([
+            'string2.txt' => 'this is a string 2'
+        ]);
+
+        $this->assertEquals('8407e93a88691be2459f59fa9db3ec80', $package->hash());
+    }
+
+    /** @test */
+    public function other_string_include_affects_hashes()
+    {
+        /** @var Package $package */
+        $package = $this->makePackageClass();
+
+        $package->include([
+            'Support/Files'
+        ]);
+
+        $this->assertEquals('2b46678c7e891927b2529672d349dfb7', $package->hash());
+
+        $package->includeString('string.txt', 'this is a string');
+
+        $this->assertEquals('551e39e7471632f6fd195523f315acb3', $package->hash());
+    }
+
+    /** @test */
     public function hashes_change_based_on_file_content()
     {
         $package = $this->makePackageClass();
@@ -282,6 +330,29 @@ class PackageTest extends BaseTest
 
         // This hash has been manually verified to be the correct zip file.
         $this->assertEquals('d9826f2d35243727a4a5e3fe2e1d8ad4', md5($contents));
+    }
+
+    /** @test */
+    public function a_string_include_gets_included()
+    {
+        /** @var Package $package */
+        $package = $this->makePackageClass();
+
+        $package->include([
+            'Support/Files'
+        ]);
+
+        $package->includeString('string.txt', 'this is a string file');
+
+        $package->upload();
+
+        $contents = head(FakeStreamWrapper::$paths);
+
+        // Write the contents to disk to inspect.
+        // file_put_contents('contents.zip', $contents);
+
+        // This hash has been manually verified to be the correct zip file.
+        $this->assertEquals('e0f6b25b6be65f03ac8c91bc0ff0c2c1', md5($contents));
     }
 
     /** @test */

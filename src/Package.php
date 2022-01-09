@@ -40,6 +40,11 @@ class Package
     /**
      * @var array
      */
+    protected $stringContents = [];
+
+    /**
+     * @var array
+     */
     protected $exclude = [];
 
     /**
@@ -93,9 +98,49 @@ class Package
         return $this;
     }
 
+    /**
+     * Include files with explicit control over the source and
+     * destination. The keys should be the source, while the
+     * values should be the destination, i.e. the path
+     * within the zip file.
+     *
+     * @param array $files
+     * @return $this
+     */
     public function includeExactly($files)
     {
         $this->exactIncludes = $files;
+
+        $this->files = null;
+
+        return $this;
+    }
+
+    /**
+     * Include a string as a file. The path is the
+     * destination within the zip file.
+     *
+     * @param $path
+     * @param $contents
+     * @return $this
+     */
+    public function includeString($path, $contents)
+    {
+        return $this->includeStrings([
+            $path => $contents
+        ]);
+    }
+
+    /**
+     * Include strings as files. The keys are paths within the
+     * zip file and the values are the contents of the files.
+     *
+     * @param array $strings
+     * @return $this
+     */
+    public function includeStrings($strings)
+    {
+        $this->stringContents = array_merge($this->stringContents, $strings);
 
         $this->files = null;
 
@@ -110,7 +155,7 @@ class Package
     {
         // If someone passed e.g. "!ignore.js", we'll just silently
         // strip it off here. The array style happily accepts the
-        // exclamation as a negate flag, and I can see that
+        // exclamation as a negation flag, and I can see that
         // causing unnecessary DX issues.
         $paths = array_map(function ($path) {
             if (Str::startsWith($path, '!')) {
@@ -190,6 +235,10 @@ class Package
             $hash = md5($hash . $destination . md5_file($source));
         }
 
+        foreach ($this->stringContents as $destination => $stringContent) {
+            $hash = md5($hash . $destination . md5($stringContent));
+        }
+
         return $hash;
     }
 
@@ -260,13 +309,16 @@ class Package
         $zip = new ZipStream($name = null, $options);
 
         foreach ($this->files() as $file) {
+            // Add the base path so that ZipStream can
+            // find it read off the disk.
             $file = $this->prependBasePath($file);
 
+            // Set the time to now so that hashes are
+            // stable during testing.
             $options = tap(new FileOptions)->setTime(Carbon::now());
 
-            // Remove the base path so that everything inside the zip is
-            // relative to the project root. Add the base path so that
-            // ZipStream can find it read off the disk.
+            // Remove the base path so that everything inside
+            // the zip is relative to the project root.
             $zip->addFileFromPath(
                 $this->removeBasePath($file), $file, $options
             );
@@ -277,6 +329,14 @@ class Package
 
             $zip->addFileFromPath(
                 $destination, $source, $options
+            );
+        }
+
+        foreach ($this->stringContents as $destination => $stringContent) {
+            $options = tap(new FileOptions)->setTime(Carbon::now());
+
+            $zip->addFile(
+                $destination, $stringContent, $options
             );
         }
 

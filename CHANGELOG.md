@@ -1,6 +1,13 @@
 # Changelog
 ## Unreleased 
 
+## 0.3.5 - 2022-01-09
+
+### Added
+
+- Add Package method to include strings as files.
+
+
 ## 0.3.4 - 2022-01-02
 
 ### Fixed
