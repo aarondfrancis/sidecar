@@ -6,7 +6,12 @@
 ### Added
 
 - Add Package method to include strings as files.
+- Add Package method to include files with more explicit path control ([#41](https://github.com/hammerstonedev/sidecar/pull/41))
 
+### Fixed
+
+- Wait for the function to update before updating environment variables.
+- Be more clear when deleting keys
 
 ## 0.3.4 - 2022-01-02
 
