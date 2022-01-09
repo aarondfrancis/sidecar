@@ -104,7 +104,7 @@ class Package
      * values should be the destination, i.e. the path
      * within the zip file.
      *
-     * @param array $files
+     * @param  array  $files
      * @return $this
      */
     public function includeExactly($files)
@@ -135,7 +135,7 @@ class Package
      * Include strings as files. The keys are paths within the
      * zip file and the values are the contents of the files.
      *
-     * @param array $strings
+     * @param  array  $strings
      * @return $this
      */
     public function includeStrings($strings)
