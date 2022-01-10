@@ -216,6 +216,18 @@ abstract class LambdaFunction
     }
 
     /**
+     * The instruction set architecture for the Lambda function.
+     *
+     * @see https://docs.aws.amazon.com/lambda/latest/dg/foundation-arch.html
+     *
+     * @return array
+     */
+    public function architectures()
+    {
+        return [Architecture::X86_64];
+    }
+
+    /**
      * The type of deployment package. Set to Image for container
      * image and set Zip for .zip file archive.
      *
@@ -357,6 +369,7 @@ abstract class LambdaFunction
         $config = [
             'FunctionName' => $this->nameWithPrefix(),
             'Runtime' => $this->runtime(),
+            'Architectures' => $this->architectures(),
             'Role' => config('sidecar.execution_role'),
             'Handler' => $this->handler(),
             'Code' => $this->packageType() === 'Zip'
