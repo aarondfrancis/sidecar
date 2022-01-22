@@ -186,6 +186,7 @@ class LambdaClient extends BaseClient
         // time setting them and activating a new version.
         if ($variables['SIDECAR_CHECKSUM'] === Arr::get($response, 'Environment.Variables.SIDECAR_CHECKSUM')) {
             Sidecar::log('Environment variables unchanged.');
+
             return;
         }
 

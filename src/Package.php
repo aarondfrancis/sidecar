@@ -10,7 +10,6 @@ use Hammerstone\Sidecar\Exceptions\SidecarException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 use ZipStream\Option\Archive;

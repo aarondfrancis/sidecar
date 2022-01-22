@@ -5,7 +5,6 @@
 
 namespace Hammerstone\Sidecar;
 
-use Aws\Result;
 use Exception;
 use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Events\AfterFunctionsActivated;
@@ -13,7 +12,6 @@ use Hammerstone\Sidecar\Events\AfterFunctionsDeployed;
 use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
 use Hammerstone\Sidecar\Events\BeforeFunctionsDeployed;
 use Hammerstone\Sidecar\Exceptions\NoFunctionsRegisteredException;
-use Illuminate\Support\Arr;
 
 class Deployment
 {

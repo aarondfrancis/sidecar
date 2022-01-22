@@ -227,7 +227,6 @@ class DeploymentTest extends BaseTest
                 ],
             ]);
 
-
         $this->lambda->shouldReceive('publishVersion')
             ->once()
             ->with([
@@ -266,7 +265,6 @@ class DeploymentTest extends BaseTest
 
         $this->assertEvents($deployed = true, $activated = true);
     }
-
 
     /** @test */
     public function it_throws_an_exception_if_there_are_no_functions()
