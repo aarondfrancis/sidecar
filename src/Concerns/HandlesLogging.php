@@ -36,8 +36,12 @@ trait HandlesLogging
      */
     public function addCommandLogger(Command $command)
     {
-        $this->addLogger(function ($message) use ($command) {
-            $command->info($message);
+        $this->addLogger(function ($message, $level = 'info') use ($command) {
+            if ($level === 'warning') {
+                $command->warn($message);
+            } else {
+                $command->info($message);
+            }
         });
     }
 
@@ -46,8 +50,25 @@ trait HandlesLogging
      */
     public function log($message)
     {
+        $this->write($message, 'info');
+    }
+
+    /**
+     * @param $message
+     */
+    public function warning($message)
+    {
+        $this->write($message, 'warning');
+    }
+
+    /**
+     * @param $message
+     * @param $level
+     */
+    protected function write($message, $level)
+    {
         foreach ($this->loggers as $logger) {
-            $logger(($this->sublog ? '          ↳' : '[Sidecar]') . " $message");
+            $logger(($this->sublog ? '          ↳' : '[Sidecar]') . " $message", $level);
         }
     }
 
