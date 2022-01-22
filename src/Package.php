@@ -10,13 +10,17 @@ use Hammerstone\Sidecar\Exceptions\SidecarException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
 use ZipStream\Option\Archive;
 use ZipStream\Option\File as FileOptions;
 use ZipStream\ZipStream;
 
 class Package
 {
+    use Macroable;
+
     /**
      * If your package is a container image, it does not require
      * a handler function. Use this constant instead.
@@ -107,8 +111,35 @@ class Package
      * @param  array  $files
      * @return $this
      */
-    public function includeExactly($files)
+    public function includeExactly($files, $followLinks = false)
     {
+        $expanded = [];
+
+        foreach ($files as $source => $destination) {
+            // Files can stay as is, they just get added directly.
+            if (!is_dir($source)) {
+                continue;
+            }
+
+            $finder = Finder::create($source)->shouldFollowLinks($followLinks)->selected();
+
+            foreach ($finder as $file) {
+                // For directories, we need to replace the source
+                // directory with the destination directory.
+                $expanded[$destination . Str::after($file, $source)] = $file;
+            }
+
+            // Now that all the files are included in the expanded array,
+            // we don't need the directory in the files array.
+            Arr::pull($files, $destination);
+        }
+
+        $files = array_merge(
+            $this->exactIncludes, $files, $expanded
+        );
+
+        ksort($files);
+
         $this->exactIncludes = $files;
 
         $this->files = null;
@@ -308,14 +339,14 @@ class Package
 
         $zip = new ZipStream($name = null, $options);
 
+        // Set the time to now so that hashes are
+        // stable during testing.
+        $options = tap(new FileOptions)->setTime(Carbon::now());
+
         foreach ($this->files() as $file) {
             // Add the base path so that ZipStream can
             // find it read off the disk.
             $file = $this->prependBasePath($file);
-
-            // Set the time to now so that hashes are
-            // stable during testing.
-            $options = tap(new FileOptions)->setTime(Carbon::now());
 
             // Remove the base path so that everything inside
             // the zip is relative to the project root.
@@ -325,16 +356,12 @@ class Package
         }
 
         foreach ($this->exactIncludes as $source => $destination) {
-            $options = tap(new FileOptions)->setTime(Carbon::now());
-
             $zip->addFileFromPath(
                 $destination, $source, $options
             );
         }
 
         foreach ($this->stringContents as $destination => $stringContent) {
-            $options = tap(new FileOptions)->setTime(Carbon::now());
-
             $zip->addFile(
                 $destination, $stringContent, $options
             );
