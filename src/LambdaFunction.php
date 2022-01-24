@@ -222,7 +222,7 @@ abstract class LambdaFunction
      */
     public function architecture()
     {
-        return config('sidecar.architecture', 'x86_64');
+        return config('sidecar.architecture', Architecture::X86_64);
     }
 
     /**
