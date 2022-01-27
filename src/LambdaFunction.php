@@ -338,6 +338,23 @@ abstract class LambdaFunction
     }
 
     /**
+     * @return array
+     */
+    public function normalizedHandler()
+    {
+        $handler = $this->handler();
+
+        // Allow an at-sign to separate the file and function. This
+        // matches the Laravel ecosystem better: `image@handler`
+        // and `image.handler` will work the exact same way.
+        if (is_string($handler) && Str::contains($handler, '@')) {
+            $handler = Str::replace('@', '.', $handler);
+        }
+
+        return $handler;
+    }
+
+    /**
      * @return Package
      */
     public function makePackage()
@@ -358,7 +375,7 @@ abstract class LambdaFunction
             'FunctionName' => $this->nameWithPrefix(),
             'Runtime' => $this->runtime(),
             'Role' => config('sidecar.execution_role'),
-            'Handler' => $this->handler(),
+            'Handler' => $this->normalizedHandler(),
             'Code' => $this->packageType() === 'Zip'
                 ? $this->makePackage()->deploymentConfiguration()
                 : $this->package(),
