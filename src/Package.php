@@ -125,12 +125,12 @@ class Package
             foreach ($finder as $file) {
                 // For directories, we need to replace the source
                 // directory with the destination directory.
-                $expanded[$destination . Str::after($file, $source)] = $file;
+                $expanded[$file] = $destination . Str::after($file, $source);
             }
 
             // Now that all the files are included in the expanded array,
             // we don't need the directory in the files array.
-            Arr::pull($files, $destination);
+            Arr::pull($files, $source);
         }
 
         $files = array_merge(
