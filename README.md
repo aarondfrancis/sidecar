@@ -35,6 +35,10 @@ You can write functions in any of the following runtimes and execute them straig
 
 Any runtime that [Lambda supports](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html), you can use!
 
+### [Hammerstone](https://www.hammerstone.dev)
+
+Sidecar is maintained by [Aaron Francis](https://twitter.com/aarondfrancis). If you find it useful consider checking out [Refine](https://hammerstone.dev/refine/laravel/docs/main) which allows your users to easily create filters you can run on your app’s data. Works with Laravel and Vue 2 or Vue 3.
+
 ### What It Looks Like
 
 Every Sidecar Function requires two things:
