@@ -1,0 +1,7 @@
+{
+    "name": "sidecar-managed",
+    "version": "0.0.1",
+    "scripts": {
+        "build": "unzip -d package package/package.zip && rm package/package.zip"
+    }
+}

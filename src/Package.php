@@ -330,17 +330,52 @@ class Package
         // Stream the zip directly to S3, without it ever touching
         // a disk anywhere. Important because we might not have
         // a writeable local disk!
+        $this->zipInto($path);
+
+        return $filename;
+    }
+
+    /**
+     * @return string
+     *
+     * @throws \ZipStream\Exception
+     */
+    public function createZip($path = null)
+    {
+        Sidecar::log('Packaging files for deployment.');
+
+        $path = $path ?? tempnam(sys_get_temp_dir(), 'sc-');
+
+        $this->zipInto($path);
+
+        return $path;
+    }
+
+    /**
+     * Create a zip file in a given stream.
+     *
+     * @param $path
+     * @return array
+     * @throws \ZipStream\Exception\FileNotFoundException
+     * @throws \ZipStream\Exception\FileNotReadableException
+     * @throws \ZipStream\Exception\OverflowException
+     */
+    public function zipInto($path)
+    {
         $stream = fopen($path, 'w');
 
-        $options = new Archive;
-        $options->setEnableZip64(false);
-        $options->setOutputStream($stream);
+        $fileOptions = null;
+        $archiveOptions = new Archive;
+        $archiveOptions->setEnableZip64(false);
+        $archiveOptions->setOutputStream($stream);
 
-        $zip = new ZipStream($name = null, $options);
+        $zip = new ZipStream($name = null, $archiveOptions);
 
         // Set the time to now so that hashes are
         // stable during testing.
-        $options = tap(new FileOptions)->setTime(Carbon::now());
+        if (app()->environment('testing')) {
+            $fileOptions->setTime(Carbon::now());
+        }
 
         foreach ($this->files() as $file) {
             // Add the base path so that ZipStream can
@@ -350,32 +385,30 @@ class Package
             // Remove the base path so that everything inside
             // the zip is relative to the project root.
             $zip->addFileFromPath(
-                $this->removeBasePath($file), $file, $options
+                $this->removeBasePath($file), $file, $fileOptions
             );
         }
 
         foreach ($this->exactIncludes as $source => $destination) {
             $zip->addFileFromPath(
-                $destination, $source, $options
+                $destination, $source, $fileOptions
             );
         }
 
         foreach ($this->stringContents as $destination => $stringContent) {
             $zip->addFile(
-                $destination, $stringContent, $options
+                $destination, $stringContent, $fileOptions
             );
         }
 
         $zip->finish();
 
-        $size = fstat($stream)['size'] / 1024 / 1024;
-        $size = round($size, 2);
+        $stat = fstat($stream);
+        $stat['size_mb'] = round($stat['size'] / 1024 / 1024, 2);
 
         fclose($stream);
 
-        Sidecar::log("Zip file created at $path. ({$size}MB)");
-
-        return $filename;
+        Sidecar::log("Zip file created at $path. ({$stat['size_mb']}MB)");
     }
 
     /**

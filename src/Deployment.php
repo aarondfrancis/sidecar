@@ -12,6 +12,7 @@ use Hammerstone\Sidecar\Events\AfterFunctionsDeployed;
 use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
 use Hammerstone\Sidecar\Events\BeforeFunctionsDeployed;
 use Hammerstone\Sidecar\Exceptions\NoFunctionsRegisteredException;
+use Hammerstone\Sidecar\Vercel\Client;
 
 class Deployment
 {
@@ -44,6 +45,7 @@ class Deployment
     public function __construct($functions = null)
     {
         $this->lambda = app(LambdaClient::class);
+        $this->lambda = app(Client::class);
 
         $this->functions = Sidecar::instantiatedFunctions($functions);
 

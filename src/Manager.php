@@ -15,6 +15,7 @@ use Hammerstone\Sidecar\Events\BeforeFunctionExecuted;
 use Hammerstone\Sidecar\Exceptions\FunctionNotFoundException;
 use Hammerstone\Sidecar\Results\PendingResult;
 use Hammerstone\Sidecar\Results\SettledResult;
+use Hammerstone\Sidecar\Vercel\Client;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Traits\Macroable;
@@ -83,7 +84,7 @@ class Manager
         $function->beforeExecution($payload);
 
         try {
-            $result = app(LambdaClient::class)->{$method}([
+            $result = app(Client::class)->{$method}([
                 // Function name plus our alias name.
                 'FunctionName' => $function->nameWithPrefix() . ':' . $this->executionVersion,
 
