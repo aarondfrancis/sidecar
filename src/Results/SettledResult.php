@@ -186,7 +186,7 @@ class SettledResult implements Responsable, ResultContract
         return Arr::get($this->body(), 'trace', []);
     }
 
-    protected function errorAsString()
+    public function errorAsString()
     {
         if (!$this->isError()) {
             return '';
