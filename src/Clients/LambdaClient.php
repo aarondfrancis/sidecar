@@ -148,7 +148,8 @@ class LambdaClient extends BaseClient
         // and S3Key be top level instead of nested under `Code`.
         $code = [
             'FunctionName' => $config['FunctionName'],
-            'Publish' => $config['Publish']
+            'Publish' => $config['Publish'],
+            'Architectures' => $config['Architectures'],
         ];
 
         if ($function->packageType() === 'Zip') {

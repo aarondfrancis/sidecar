@@ -48,6 +48,7 @@ class DeploymentTestFunction extends LambdaFunction
             'MemorySize' => 'test-MemorySize',
             'Layers' => 'test-Layers',
             'Publish' => 'test-Publish',
+            'Architectures' => ['x86_64'],
         ];
     }
 }
