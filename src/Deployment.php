@@ -176,30 +176,11 @@ class Deployment
      */
     protected function setEnvironmentVariables(LambdaFunction $function)
     {
-        $variables = $function->variables();
-
-        if (!is_array($variables)) {
+        if (!is_array($function->variables())) {
             return Sidecar::log('Environment variables not managed by Sidecar. Skipping.');
         }
 
-        Sidecar::log('Updating environment variables.');
-
-        $this->lambda->waitUntilFunctionUpdated($function);
-
-        $this->lambda->updateFunctionConfiguration([
-            'FunctionName' => $function->nameWithPrefix(),
-            'Environment' => [
-                'Variables' => $variables,
-            ],
-        ]);
-
-        Sidecar::log('Publishing new version with new environment variables.');
-
-        $this->lambda->waitUntilFunctionUpdated($function);
-
-        $this->lambda->publishVersion([
-            'FunctionName' => $function->nameWithPrefix(),
-        ]);
+        $this->lambda->updateFunctionVariables($function);
     }
 
     /**

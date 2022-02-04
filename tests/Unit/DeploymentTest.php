@@ -208,20 +208,56 @@ class DeploymentTest extends BaseTest
             return $function instanceof DeploymentTestFunctionWithVariables;
         });
 
-        $this->lambda->shouldReceive('updateFunctionConfiguration')->with([
-            'FunctionName' => 'test-FunctionName',
+        $this->lambda->shouldReceive('getFunctionConfiguration')->andReturn([
             'Environment' => [
                 'Variables' => [
-                    'env' => 'value'
+                    'SIDECAR_CHECKSUM' => 'baz'
                 ],
-            ],
+            ]
         ]);
+
+        $this->lambda->shouldReceive('updateFunctionConfiguration')
+            ->with([
+                'FunctionName' => 'test-FunctionName',
+                'Environment' => [
+                    'Variables' => [
+                        'env' => 'value',
+                        'SIDECAR_CHECKSUM' => 'fa12f93b'
+                    ],
+                ],
+            ]);
 
         $this->lambda->shouldReceive('publishVersion')
             ->once()
             ->with([
                 'FunctionName' => 'test-FunctionName',
             ]);
+
+        $this->mockActivating();
+
+        DeploymentTestFunctionWithVariables::deploy($activate = true);
+
+        $this->assertEvents($deployed = true, $activated = true);
+    }
+
+    /** @test */
+    public function it_doesnt_change_variables_that_havent_changed()
+    {
+        $this->lambda->shouldReceive('functionExists')->andReturn(true);
+        $this->lambda->shouldReceive('getVersions')->andReturn([]);
+        $this->lambda->shouldReceive('updateExistingFunction')->once()->withArgs(function ($function) {
+            return $function instanceof DeploymentTestFunctionWithVariables;
+        });
+
+        $this->lambda->shouldReceive('getFunctionConfiguration')->andReturn([
+            'Environment' => [
+                'Variables' => [
+                    'SIDECAR_CHECKSUM' => 'fa12f93b'
+                ],
+            ]
+        ]);
+
+        $this->lambda->shouldNotReceive('updateFunctionConfiguration');
 
         $this->mockActivating();
 

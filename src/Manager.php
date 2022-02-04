@@ -15,6 +15,7 @@ use Hammerstone\Sidecar\Events\BeforeFunctionExecuted;
 use Hammerstone\Sidecar\Exceptions\FunctionNotFoundException;
 use Hammerstone\Sidecar\Results\PendingResult;
 use Hammerstone\Sidecar\Results\SettledResult;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Traits\Macroable;
 use Throwable;
@@ -70,6 +71,10 @@ class Manager
         }
 
         $payload = $function->preparePayload($payload);
+
+        if ($payload instanceof Arrayable) {
+            $payload = $payload->toArray();
+        }
 
         $method = $async ? 'invokeAsync' : 'invoke';
 

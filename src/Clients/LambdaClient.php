@@ -7,6 +7,7 @@ namespace Hammerstone\Sidecar\Clients;
 
 use Aws\Lambda\Exception\LambdaException;
 use Aws\Lambda\LambdaClient as BaseClient;
+use Aws\Result;
 use Exception;
 use Hammerstone\Sidecar\LambdaFunction;
 use Hammerstone\Sidecar\Sidecar;
@@ -164,6 +165,49 @@ class LambdaClient extends BaseClient
 
         $this->waitUntilFunctionUpdated($function);
         $this->updateFunctionCode($code);
+    }
+
+    public function updateFunctionVariables(LambdaFunction $function)
+    {
+        $variables = $function->variables();
+
+        // Makes the checksum hash more stable.
+        ksort($variables);
+
+        // Add a checksum so that we can easily see later if anything has changed.
+        $variables['SIDECAR_CHECKSUM'] = substr(md5(json_encode($variables)), 0, 8);
+
+        /** @var Result $response */
+        $response = $this->getFunctionConfiguration([
+            'FunctionName' => $function->nameWithPrefix(),
+        ]);
+
+        // If the variables haven't changed at all, don't waste
+        // time setting them and activating a new version.
+        if ($variables['SIDECAR_CHECKSUM'] === Arr::get($response, 'Environment.Variables.SIDECAR_CHECKSUM')) {
+            Sidecar::log('Environment variables unchanged.');
+
+            return;
+        }
+
+        Sidecar::log('Updating environment variables.');
+
+        $this->waitUntilFunctionUpdated($function);
+
+        $this->updateFunctionConfiguration([
+            'FunctionName' => $function->nameWithPrefix(),
+            'Environment' => [
+                'Variables' => $variables,
+            ],
+        ]);
+
+        Sidecar::log('Publishing new version with new environment variables.');
+
+        $this->waitUntilFunctionUpdated($function);
+
+        $this->publishVersion([
+            'FunctionName' => $function->nameWithPrefix(),
+        ]);
     }
 
     /**
