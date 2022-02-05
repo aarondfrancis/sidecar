@@ -204,7 +204,6 @@ class DeploymentTest extends BaseTest
     {
         $this->lambda->shouldReceive('functionExists')->andReturn(true);
         $this->lambda->shouldReceive('getVersions')->andReturn([]);
-        $this->lambda->shouldReceive('waitUntil')->twice();
         $this->lambda->shouldReceive('updateExistingFunction')->once()->withArgs(function ($function) {
             return $function instanceof DeploymentTestFunctionWithVariables;
         });
