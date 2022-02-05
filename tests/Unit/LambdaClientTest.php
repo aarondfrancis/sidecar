@@ -204,12 +204,6 @@ class LambdaClientTest extends BaseTest
                 ]
             ]);
 
-        $this->lambda->shouldReceive('waitUntil')
-            ->twice()
-            ->with('FunctionUpdated', [
-                'FunctionName' => 'test-FunctionName',
-            ]);
-
         $this->lambda->updateExistingFunction($function);
     }
 
@@ -246,12 +240,6 @@ class LambdaClientTest extends BaseTest
                 'Architectures' => [
                     Architecture::X86_64
                 ]
-            ]);
-
-        $this->lambda->shouldReceive('waitUntil')
-            ->twice()
-            ->with('FunctionUpdated', [
-                'FunctionName' => 'test-FunctionName',
             ]);
 
         $this->lambda->updateExistingFunction($function);

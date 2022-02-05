@@ -7,6 +7,7 @@ namespace Hammerstone\Sidecar\Clients;
 
 use Aws\Lambda\Exception\LambdaException;
 use Aws\Lambda\LambdaClient as BaseClient;
+use Aws\Middleware;
 use Aws\Result;
 use Exception;
 use Hammerstone\Sidecar\LambdaFunction;
@@ -19,6 +20,13 @@ class LambdaClient extends BaseClient
     const CREATED = 1;
     const UPDATED = 2;
     const NOOP = 3;
+
+    public function __construct(array $args)
+    {
+        parent::__construct($args);
+
+        $this->withPendingRetryMiddleware();
+    }
 
     /**
      * @param  LambdaFunction  $function
@@ -161,10 +169,7 @@ class LambdaClient extends BaseClient
 
         $config = Arr::except($config, ['Code', 'Publish']);
 
-        $this->waitUntilFunctionUpdated($function);
         $this->updateFunctionConfiguration($config);
-
-        $this->waitUntilFunctionUpdated($function);
         $this->updateFunctionCode($code);
     }
 
@@ -193,8 +198,6 @@ class LambdaClient extends BaseClient
 
         Sidecar::log('Updating environment variables.');
 
-        $this->waitUntilFunctionUpdated($function);
-
         $this->updateFunctionConfiguration([
             'FunctionName' => $function->nameWithPrefix(),
             'Environment' => [
@@ -203,8 +206,6 @@ class LambdaClient extends BaseClient
         ]);
 
         Sidecar::log('Publishing new version with new environment variables.');
-
-        $this->waitUntilFunctionUpdated($function);
 
         $this->publishVersion([
             'FunctionName' => $function->nameWithPrefix(),
@@ -220,13 +221,53 @@ class LambdaClient extends BaseClient
      * @link https://github.com/hammerstonedev/sidecar/issues/32
      * @link https://github.com/aws/aws-sdk-php/blob/master/src/data/lambda/2015-03-31/waiters-2.json
      *
-     * @param  LambdaFunction  $function
+     * @param  LambdaFunction|string  $function
      */
-    public function waitUntilFunctionUpdated(LambdaFunction $function)
+    public function waitUntilFunctionUpdated($function)
     {
+        if ($function instanceof LambdaFunction) {
+            $function = $function->nameWithPrefix();
+        }
+
+        if (is_string($function)) {
+            // Strip off any aliases.
+            $function = Str::beforeLast($function, ':');
+        }
+
         $this->waitUntil('FunctionUpdated', [
-            'FunctionName' => $function->nameWithPrefix(),
+            'FunctionName' => $function,
         ]);
+    }
+
+    /**
+     * This middleware will retry execution requests provided there is a 409
+     * Conflict response. We have to do this because Lambda puts a function
+     * in a "Pending" state as AWS is propagating the new function. When
+     * we're deploying we wait for the function to be updated using
+     * LambdaClient::waitUntilFunctionUpdated.
+     *
+     * This covers a separate scenario where an updated function is being deployed,
+     * but in another process the user is trying to call the function. The second
+     * process doesn't know a deploy has been initiated so it won't know that it
+     * needs to wait. Here we'll inspect to see if its a 409 in a Pending state,
+     * and then manually call `waitUntil` until the function is updated.
+     *
+     * @see LambdaClient::waitUntilFunctionUpdated()
+     */
+    protected function withPendingRetryMiddleware()
+    {
+        $middleware = Middleware::retry(function ($attempt, $command, $request, $result, $exception) {
+            // If the request succeeded, the exception will be null.
+            return $exception instanceof LambdaException
+                && $exception->getStatusCode() === 409
+                && Str::contains(
+                    $exception->getAwsErrorMessage(), 'The function is currently in the following state: Pending'
+                )
+                && $this->waitUntilFunctionUpdated($command['FunctionName']);
+        });
+
+        // Add the middleware to the stack in the "sign" section.
+        $this->getHandlerList()->appendSign($middleware);
     }
 
     /**
