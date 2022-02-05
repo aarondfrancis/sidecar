@@ -1,5 +1,7 @@
 <?php
 
+use Hammerstone\Sidecar\Architecture;
+
 return [
     /*
      * All of your function classes that you'd like to deploy go here.
@@ -32,7 +34,7 @@ return [
      * The default architecture your function runs on.
      * Available options are: x86_64, arm64
      */
-    'architecture' => env('SIDECAR_ARCH', 'x86_64'),
+    'architecture' => env('SIDECAR_ARCH', Architecture::X86_64),
 
     /*
      * The base path for your package files. If you e.g. keep
