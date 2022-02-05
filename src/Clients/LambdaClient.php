@@ -25,7 +25,7 @@ class LambdaClient extends BaseClient
     {
         parent::__construct($args);
 
-        $this->withPendingRetryMiddleware();
+        $this->addPendingRetryMiddleware();
     }
 
     /**
@@ -240,21 +240,13 @@ class LambdaClient extends BaseClient
     }
 
     /**
-     * This middleware will retry execution requests provided there is a 409
-     * Conflict response. We have to do this because Lambda puts a function
-     * in a "Pending" state as AWS is propagating the new function. When
-     * we're deploying we wait for the function to be updated using
-     * LambdaClient::waitUntilFunctionUpdated.
-     *
-     * This covers a separate scenario where an updated function is being deployed,
-     * but in another process the user is trying to call the function. The second
-     * process doesn't know a deploy has been initiated so it won't know that it
-     * needs to wait. Here we'll inspect to see if its a 409 in a Pending state,
-     * and then manually call `waitUntil` until the function is updated.
+     * Add a middleware that will retry all requests provided the response
+     * is a 409 Conflict. We have to do this because AWS puts a function
+     * in a "Pending" state as they propagate the updates everywhere.
      *
      * @see LambdaClient::waitUntilFunctionUpdated()
      */
-    protected function withPendingRetryMiddleware()
+    protected function addPendingRetryMiddleware()
     {
         $middleware = Middleware::retry(function ($attempt, $command, $request, $result, $exception) {
             // If the request succeeded, the exception will be null.
