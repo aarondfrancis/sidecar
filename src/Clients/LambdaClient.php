@@ -234,7 +234,7 @@ class LambdaClient extends BaseClient
             $function = Str::beforeLast($function, ':');
         }
 
-        $this->waitUntil('FunctionUpdated', [
+        return $this->waitUntil('FunctionUpdated', [
             'FunctionName' => $function,
         ]);
     }
@@ -252,9 +252,10 @@ class LambdaClient extends BaseClient
             // If the request succeeded, the exception will be null.
             return $exception instanceof LambdaException
                 && $exception->getStatusCode() === 409
-                && Str::contains(
-                    $exception->getAwsErrorMessage(), 'The function is currently in the following state: Pending'
-                )
+                && Str::contains($exception->getAwsErrorMessage(), [
+                    'The function is currently in the following state: Pending',
+                    'An update is in progress for resource: '
+                ])
                 && $this->waitUntilFunctionUpdated($command['FunctionName']);
         });
 
