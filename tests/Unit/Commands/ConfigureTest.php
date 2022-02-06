@@ -119,9 +119,6 @@ class ConfigureTest extends BaseTest
                             'logs:PutLogEvents',
                             'lambda:invokeFunction',
                             's3:*',
-                            'ses:*',
-                            'sqs:*',
-                            'dynamodb:*'
                         ],
                     ]]
                 ]),
