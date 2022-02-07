@@ -1,6 +1,25 @@
 # Changelog
 ## Unreleased 
 
+## 0.3.6 - 2022-02-07
+
+### Added 
+- Ability to choose different architectures [https://github.com/hammerstonedev/sidecar/pull/42](https://github.com/hammerstonedev/sidecar/pull/42)
+- Sidecar now creates an environment variable checksum to avoid publishing a new version when not required.
+- Handlers now support an `@` sign to be more consistent with Laravel. `image@handler` is the same as `image.handler`
+- If a payload is an instance of `Arrayable`, it will be cast to an array
+- Package is now `macroable`
+- New `Region` class full of consts
+
+### Changed
+- All 409 logic now lives in client middleware [https://github.com/hammerstonedev/sidecar/pull/47](https://github.com/hammerstonedev/sidecar/pull/47)
+- `waitUntilFunctionUpdated` now accepts a string as well
+- The signature of `Package::includeExactly` now includes a `followLinks` second param.
+- `SettledResult::errorAsString` is public now 
+
+### Removed
+- ses, sqs, and dynamodb privileges were removed from the default execution role. This only affects new roles.
+
 ## 0.3.5 - 2022-01-09
 
 ### Added
