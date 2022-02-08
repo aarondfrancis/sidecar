@@ -1,6 +1,8 @@
 # Changelog
 ## Unreleased 
 
+## 0.3.7 - 2022-02-07
+
 ### Added
 
 - Add yet another pending error string.
