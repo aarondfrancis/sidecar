@@ -1,6 +1,11 @@
 # Changelog
 ## Unreleased 
 
+### Added
+
+- Add yet another pending error string.
+- Added `rawPromise` method to `PendingResult`.
+
 ## 0.3.6 - 2022-02-07
 
 ### Added 

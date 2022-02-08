@@ -49,6 +49,14 @@ class PendingResult implements Responsable, ResultContract
     }
 
     /**
+     * @return PromiseInterface
+     */
+    public function rawPromise()
+    {
+        return $this->raw;
+    }
+
+    /**
      * Defer to the SettledResult.
      *
      * @param  \Illuminate\Http\Request  $request
