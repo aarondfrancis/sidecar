@@ -254,6 +254,7 @@ class LambdaClient extends BaseClient
                 && $exception->getStatusCode() === 409
                 && Str::contains($exception->getAwsErrorMessage(), [
                     'The function is currently in the following state: Pending',
+                    'is currently in the following state: \'Pending\'',
                     'An update is in progress for resource: '
                 ])
                 && $this->waitUntilFunctionUpdated($command['FunctionName']);
