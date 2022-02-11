@@ -1,6 +1,6 @@
 #!/bin/bash
 
-declare -a php_major_version=$(php -v | tac | tail -n 1 | cut -d " " -f 2 | cut -c 1)
+declare -a php_major_version=$(php -v | head -n 1 | cut -c 5)
 
 declare -a laravel=("7.*" "8.*")
 declare -a testbench=("5.*" "6.*")
