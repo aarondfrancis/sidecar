@@ -65,6 +65,10 @@ class Manager
      */
     public function execute($function, $payload = [], $async = false, $invocationType = 'RequestResponse')
     {
+        if (!in_array($invocationType, ['Event', 'RequestResponse'])) {
+            throw new \InvalidArgumentException('"invocationType" must be "Event" or "RequestResponse"');
+        }
+
         // Could be a FQCN.
         if (is_string($function)) {
             $function = app($function);
@@ -74,6 +78,16 @@ class Manager
 
         if ($payload instanceof Arrayable) {
             $payload = $payload->toArray();
+        } elseif (!is_array($payload)) {
+            throw new \InvalidArgumentException('"payload" must be an "array" or "Arrayable" object');
+        }
+
+        $size = mb_strlen(json_encode($payload), '8bit');
+
+        if ('Event' === $invocationType && $size > 256000) {
+            throw new \InvalidArgumentException('payload too large for "Event" type invocation');
+        } elseif ('RequestResponse' === $invocationType && $size > 6000000) {
+            throw new \InvalidArgumentException('payload too large for "RequestResponse" type invocation');
         }
 
         $method = $async ? 'invokeAsync' : 'invoke';
