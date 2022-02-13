@@ -312,6 +312,29 @@ abstract class LambdaFunction
         return config('sidecar.timeout');
     }
 
+    /**
+     * Lambda Function VPC Configuration. This option is often used to place
+     * functions within a VPC for accessibility to private RDS or
+     * Elasticache instances that are not publicly accessible.
+     *
+     * @return null|array
+     */
+    public function vpc()
+    {
+        $subnets = config('sidecar.vpc.subnets');
+
+        $sg = config('sidecar.vpc.security_group');
+
+        if ($subnets && $sg) {
+            return [
+                'SecurityGroupIds' => Arr::wrap($sg),
+                'SubnetIds' => Arr::wrap($subnets),
+            ];
+        }
+
+        return null;
+    }
+
     public function preparePayload($payload)
     {
         return $payload;
@@ -395,7 +418,8 @@ abstract class LambdaFunction
             'Layers' => $this->layers(),
             'Publish' => true,
             'PackageType' => $this->packageType(),
-            'Architectures' => [$this->architecture()]
+            'Architectures' => [$this->architecture()],
+            'VpcConfig' => $this->vpc(),
         ];
 
         // For container image packages, we need to remove the Runtime
@@ -403,6 +427,13 @@ abstract class LambdaFunction
         // things inherently.
         if ($this->packageType() === 'Image') {
             $config = Arr::except($config, ['Runtime', 'Handler']);
+        }
+
+        // Vpc Configuration is optional so let's delete it
+        // from the final configuration if the user did
+        // not opt to define a VPC.
+        if ($config['VpcConfig'] === null) {
+            unset($config['VpcConfig']);
         }
 
         return $config;
