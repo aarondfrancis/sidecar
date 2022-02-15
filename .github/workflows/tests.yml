@@ -27,9 +27,11 @@ jobs:
             testbench: 7.*
 
         exclude:
-          # Laravel 8 requires PHP 7.3.
+            # Laravel 8 requires PHP 7.3.
           - laravel: 8.*
             php: 7.2
+
+            # Laravel 9 requires PHP 8.0
           - laravel: 9.*
             php:
               - 7.2
