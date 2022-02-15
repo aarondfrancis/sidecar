@@ -1,6 +1,12 @@
 # Changelog
 ## Unreleased 
 
+## 0.3.8 - 2022-02-15
+
+### Added
+
+- Support for Laravel 9 in [#50](https://github.com/hammerstonedev/sidecar/pull/50)
+
 ## 0.3.7 - 2022-02-07
 
 ### Added
