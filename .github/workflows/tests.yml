@@ -40,6 +40,10 @@ jobs:
           - laravel: 9.*
             php: 7.4
 
+            # Laravel 9 requires Guzzle ^7.2
+          - laravel: 9.*
+            guzzle: 6.*
+
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
     steps:
