@@ -21,6 +21,7 @@ You can write functions in any of the following runtimes and execute them straig
 - Node.js 14
 - Node.js 12
 - Node.js 10
+- Python 3.9
 - Python 3.8
 - Python 3.7
 - Python 3.6
