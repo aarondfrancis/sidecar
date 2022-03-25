@@ -31,6 +31,7 @@ You can write functions in any of the following runtimes and execute them straig
 - Java 11
 - Java 8
 - Go 1.x
+- .NET 6
 - .NET Core 3.1
 - .NET Core 2.1 
 
