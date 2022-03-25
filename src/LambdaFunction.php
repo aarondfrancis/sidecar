@@ -107,7 +107,11 @@ abstract class LambdaFunction
      */
     public function prefix()
     {
-        return 'SC-' . config('app.name') . '-' . Sidecar::getEnvironment() . '-';
+        return str_replace(
+            ' ',
+            '-',
+            'SC-' . config('app.name') . '-' . Sidecar::getEnvironment() . '-'
+        );
     }
 
     /**
