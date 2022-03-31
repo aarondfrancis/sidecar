@@ -18,6 +18,7 @@ abstract class Runtime
     public const JAVA_8_LINUX2 = 'java8.al2';
     public const JAVA_8 = 'java8';
     public const GO_1X = 'go1.x';
+    public const DOT_NET_6 = 'dotnet6';
     public const DOT_NET_31 = 'dotnetcore3.1';
     public const DOT_NET_21 = 'dotnetcore2.1';
     public const PROVIDED_AL2 = 'provided.al2';
