@@ -1,6 +1,12 @@
 name: Tests
 
-on: [ push, pull_request ]
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    types: [ opened, synchronize, reopened ]
 
 jobs:
   test:
@@ -11,6 +17,7 @@ jobs:
       matrix:
         php: [ 7.2, 7.3, 7.4, 8.0 ]
         laravel: [ 7.*, 8.*, 9.* ]
+        guzzle: [ 6.*, 7.* ]
         dependency-version: [ prefer-lowest, prefer-stable ]
         include:
           - laravel: 7.*
@@ -39,7 +46,11 @@ jobs:
           - laravel: 9.*
             php: 7.4
 
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+            # Laravel 9 requires Guzzle ^7.2
+          - laravel: 9.*
+            guzzle: 6.*
+
+    name: P${{ matrix.php }} / L${{ matrix.laravel }} / G${{ matrix.guzzle }} / ${{ matrix.dependency-version }}
 
     steps:
       - name: Checkout code
@@ -61,7 +72,7 @@ jobs:
       - name: Install dependencies
         run: |
           composer self-update ${{ matrix.composer-version }}
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "guzzlehttp/guzzle:${{ matrix.guzzle }}" --no-interaction --no-update
           composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
 
       - name: Execute tests
