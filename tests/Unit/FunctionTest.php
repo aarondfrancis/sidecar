@@ -10,7 +10,7 @@ use Hammerstone\Sidecar\Tests\Unit\Support\EmptyTestFunction;
 class FunctionTest extends BaseTest
 {
     /** @test */
-    public function app_name_with_a_space_gets_dashed()
+    public function app_name_with_a_space_gets_dashed_name()
     {
         config([
             'app.name' => 'Amazing App'
@@ -19,6 +19,19 @@ class FunctionTest extends BaseTest
         $this->assertEquals(
             'SC-Amazing-App-testing-ecar-Tests-Unit-Support-EmptyTestFunction',
             (new EmptyTestFunction)->nameWithPrefix()
+        );
+    }
+
+    /** @test */
+    public function app_name_with_a_space_gets_dashed_prefix()
+    {
+        config([
+            'app.name' => 'Amazing App'
+        ]);
+
+        $this->assertEquals(
+            'SC-Amazing-App-testing-',
+            (new EmptyTestFunction)->prefix()
         );
     }
 
