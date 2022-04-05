@@ -274,6 +274,13 @@ class ConfigureTest extends BaseTest
                             'logs:FilterLogEvents',
                         ],
                         'Resource' => 'arn:aws:logs:*:*:log-group:/aws/lambda/*',
+                    ], [
+                        'Effect' => 'Allow',
+                        'Action' => [
+                            'ecr:GetRepositoryPolicy',
+                            'ecr:SetRepositoryPolicy',
+                        ],
+                        'Resource' => '*',
                     ]],
                 ]),
             ]);
