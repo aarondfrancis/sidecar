@@ -94,6 +94,13 @@ class CreateDeploymentUser extends BaseAction
                     'logs:FilterLogEvents',
                 ],
                 'Resource' => 'arn:aws:logs:*:*:log-group:/aws/lambda/*',
+            ], [
+                'Effect' => 'Allow',
+                'Action' => [
+                    'ecr:GetRepositoryPolicy',
+                    'ecr:SetRepositoryPolicy',
+                ],
+                'Resource' => '*',
             ]],
         ];
     }
