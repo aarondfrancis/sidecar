@@ -9,17 +9,14 @@ use Aws\Lambda\Exception\LambdaException;
 use Aws\Lambda\LambdaClient as BaseClient;
 use Aws\Result;
 use Exception;
+use Hammerstone\Sidecar\Contracts\FaasClient;
 use Hammerstone\Sidecar\LambdaFunction;
 use Hammerstone\Sidecar\Sidecar;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-class LambdaClient extends BaseClient
+class LambdaClient extends BaseClient implements FaasClient
 {
-    const CREATED = 1;
-    const UPDATED = 2;
-    const NOOP = 3;
-
     /**
      * @param  LambdaFunction  $function
      * @return string
@@ -81,7 +78,7 @@ class LambdaClient extends BaseClient
 
         // The alias already exists and it's the version we were trying to alias anyway.
         if ($aliased && $version === Arr::get($aliased, 'FunctionVersion')) {
-            return self::NOOP;
+            return FaasClient::NOOP;
         }
 
         $args = [
@@ -93,12 +90,12 @@ class LambdaClient extends BaseClient
         if ($aliased) {
             $this->updateAlias($args);
 
-            return self::UPDATED;
+            return FaasClient::UPDATED;
         }
 
         $this->createAlias($args);
 
-        return self::CREATED;
+        return FaasClient::CREATED;
     }
 
     /**
@@ -138,7 +135,7 @@ class LambdaClient extends BaseClient
 
         // See if the function already exists with these *exact* parameters.
         if ($this->functionExists($function, $checksum)) {
-            return self::NOOP;
+            return FaasClient::NOOP;
         }
 
         // Add the checksum to the description, so we can look for it next time.

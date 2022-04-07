@@ -7,6 +7,8 @@ namespace Hammerstone\Sidecar;
 
 use Exception;
 use Hammerstone\Sidecar\Clients\LambdaClient;
+use Hammerstone\Sidecar\Clients\VercelClient;
+use Hammerstone\Sidecar\Contracts\FaasClient;
 use Hammerstone\Sidecar\Events\AfterFunctionsActivated;
 use Hammerstone\Sidecar\Events\AfterFunctionsDeployed;
 use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
@@ -22,9 +24,9 @@ class Deployment
     protected $functions;
 
     /**
-     * @var LambdaClient
+     * @var FaasClient
      */
-    protected $lambda;
+    protected $client;
 
     /**
      * @param $functions
@@ -44,8 +46,8 @@ class Deployment
      */
     public function __construct($functions = null)
     {
-        $this->lambda = app(LambdaClient::class);
-        $this->lambda = app(Client::class);
+        $this->client = app(LambdaClient::class);
+        $this->client = app(VercelClient::class);
 
         $this->functions = Sidecar::instantiatedFunctions($functions);
 
@@ -67,7 +69,8 @@ class Deployment
         event(new BeforeFunctionsDeployed($this->functions));
 
         foreach ($this->functions as $function) {
-            Sidecar::log('Deploying ' . get_class($function) . ' to Lambda as `' . $function->nameWithPrefix() . '`.');
+            // @TODO insert platform name
+            Sidecar::log('Deploying ' . get_class($function) . ' as `' . $function->nameWithPrefix() . '`.');
 
             Sidecar::sublog(function () use ($function) {
                 $this->deploySingle($function);
@@ -117,7 +120,7 @@ class Deployment
 
         $function->beforeDeployment();
 
-        $this->lambda->functionExists($function)
+        $this->client->functionExists($function)
             ? $this->updateExistingFunction($function)
             : $this->createNewFunction($function);
 
@@ -152,7 +155,7 @@ class Deployment
     {
         Sidecar::log('Creating new lambda function.');
 
-        $this->lambda->createFunction($function->toDeploymentArray());
+        $this->client->createFunction($function->toDeploymentArray());
     }
 
     /**
@@ -164,7 +167,7 @@ class Deployment
     {
         Sidecar::log('Function already exists, potentially updating code and configuration.');
 
-        if ($this->lambda->updateExistingFunction($function) === LambdaClient::NOOP) {
+        if ($this->client->updateExistingFunction($function) === FaasClient::NOOP) {
             Sidecar::log('Function code and configuration are unchanged. Not updating anything.');
         } else {
             Sidecar::log('Function code and configuration updated.');
@@ -172,7 +175,7 @@ class Deployment
     }
 
     /**
-     * Add environment variables to the Lambda function, if they are provided.
+     * Add environment variables to the function, if they are provided.
      *
      * @param  LambdaFunction  $function
      */
@@ -182,7 +185,7 @@ class Deployment
             return Sidecar::log('Environment variables not managed by Sidecar. Skipping.');
         }
 
-        $this->lambda->updateFunctionVariables($function);
+        $this->client->updateFunctionVariables($function);
     }
 
     /**
@@ -192,15 +195,15 @@ class Deployment
      */
     protected function warmLatestVersion(LambdaFunction $function)
     {
-        $this->lambda->waitUntilFunctionUpdated($function);
+        $this->client->waitUntilFunctionUpdated($function);
 
-        if ($this->lambda->latestVersionHasAlias($function, 'active')) {
+        if ($this->client->latestVersionHasAlias($function, 'active')) {
             Sidecar::log('Active version unchanged, no need to warm.');
 
             return;
         }
 
-        $version = $this->lambda->getLatestVersion($function);
+        $version = $this->client->getLatestVersion($function);
 
         Sidecar::log("Warming Version $version of {$function->nameWithPrefix()}...");
 
@@ -223,13 +226,13 @@ class Deployment
      */
     protected function aliasLatestVersion(LambdaFunction $function)
     {
-        $version = $this->lambda->getLatestVersion($function);
-        $result = $this->lambda->aliasVersion($function, 'active', $version);
+        $version = $this->client->getLatestVersion($function);
+        $result = $this->client->aliasVersion($function, 'active', $version);
 
         $messages = [
-            LambdaClient::CREATED => "Creating alias for Version $version of {$function->nameWithPrefix()}.",
-            LambdaClient::UPDATED => "Activating Version $version of {$function->nameWithPrefix()}.",
-            LambdaClient::NOOP => "Version $version of {$function->nameWithPrefix()} is already active.",
+            FaasClient::CREATED => "Creating alias for Version $version of {$function->nameWithPrefix()}.",
+            FaasClient::UPDATED => "Activating Version $version of {$function->nameWithPrefix()}.",
+            FaasClient::NOOP => "Version $version of {$function->nameWithPrefix()} is already active.",
         ];
 
         Sidecar::log($messages[$result]);
@@ -242,7 +245,7 @@ class Deployment
      */
     protected function sweep(LambdaFunction $function)
     {
-        $versions = $this->lambda->getVersions($function);
+        $versions = $this->client->getVersions($function);
 
         $keep = 20;
 
@@ -265,7 +268,7 @@ class Deployment
             $version = $version['Version'];
             Sidecar::log("Removing outdated version $version.");
 
-            $this->lambda->deleteFunctionVersion($function, $version);
+            $this->client->deleteFunctionVersion($function, $version);
         }
     }
 }

@@ -13,6 +13,7 @@ use Hammerstone\Sidecar\Commands\Deploy;
 use Hammerstone\Sidecar\Commands\Install;
 use Hammerstone\Sidecar\Commands\Warm;
 use Hammerstone\Sidecar\Manager;
+use Hammerstone\Sidecar\Vercel\Client as VercelClient;
 use Illuminate\Support\ServiceProvider;
 
 class SidecarServiceProvider extends ServiceProvider
@@ -30,6 +31,21 @@ class SidecarServiceProvider extends ServiceProvider
         $this->app->singleton(CloudWatchLogsClient::class, function () {
             return new CloudWatchLogsClient($this->getAwsClientConfiguration());
         });
+
+        $this->app->singleton(VercelClient::class, function () {
+            return new VercelClient($this->getVercelConfiguration());
+        });
+    }
+
+    protected function getVercelConfiguration()
+    {
+        return [
+            'base_uri' => 'https://api.vercel.com',
+            'allow_redirects' => true,
+            'headers' => [
+                'Authorization' => 'Bearer ' . config('sidecar.vercel_token'),
+            ]
+        ];
     }
 
     protected function getAwsClientConfiguration()

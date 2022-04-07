@@ -16,19 +16,21 @@ use Throwable;
 
 class Configure extends Command
 {
+    use ConfigureVercel;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'sidecar:configure';
+    protected $signature = 'sidecar:configure {--vercel}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Interactively configure your Sidecar AWS environment variables.';
+    protected $description = 'Interactively configure your Sidecar environment variables.';
 
     /**
      * @var string
@@ -56,6 +58,12 @@ class Configure extends Command
      */
     public function handle()
     {
+        if ($this->option('vercel')) {
+            return $this->configureVercel();
+        }
+
+        // @TODO Factor AWS configuration out to a trait.
+
         $this->askForAdminCredentials();
 
         $this->region = $this->action(DetermineRegion::class)->invoke();

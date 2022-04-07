@@ -1,0 +1,8 @@
+{
+    "name": "sidecar-managed",
+    "version": "0.0.1",
+    "scripts": {
+        "_build": "# The developer's code is zipped up into a package.zip file and uploaded to Vercel. On Vercel, the `build` command is called, which unzips the developer's code and puts it in place.",
+        "build": "unzip -d package package/package.zip && rm package/package.zip"
+    }
+}

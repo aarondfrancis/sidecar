@@ -73,4 +73,32 @@ return [
      * See CreateExecutionRole::policy for the IAM policy.
      */
     'execution_role' => env('SIDECAR_EXECUTION_ROLE'),
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *                                                                       *
+     * If you're not using Vercel, you can skip this whole section. You can  *
+     * edit this directly or use `php artisan sidecar:configure --vercel`.   *
+     *                                                                       *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    /*
+     * Your Vercel API token. If you're not using Vercel to deploy
+     * your functions, you won't need this. You can generate
+     * a token at https://vercel.com/account/tokens.
+     */
+    'vercel_token' => env('SIDECAR_VERCEL_TOKEN'),
+
+    /*
+     * This is a random string used to generate unique, determinative
+     * domain names on Vercel. It is not used for security in any
+     * way. It should be 16 random alphanumeric characters.
+     */
+    'vercel_domain_seed' => env('SIDECAR_VERCEL_DOMAIN_SEED'),
+
+    /*
+     * This is the secret token that Sidecar uses to sign outgoing function
+     * invocations. The same secret will be used to validate the requests
+     * on Vercel. You need to redeploy your functions if this changes!
+     */
+    'vercel_signing_secret' => env('SIDECAR_VERCEL_SIGNING_SECRET'),
 ];
