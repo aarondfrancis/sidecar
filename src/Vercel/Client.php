@@ -8,7 +8,7 @@ namespace Hammerstone\Sidecar\Vercel;
 use GuzzleHttp\Client as Guzzle;
 use Hammerstone\Sidecar\Contracts\FaasClient;
 use Hammerstone\Sidecar\Exceptions\ConfigurationException;
-use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\ServerlessFunction;
 use Hammerstone\Sidecar\Sidecar;
 use Hammerstone\Sidecar\Vercel\Concerns\Primitives;
 use Illuminate\Support\Arr;
@@ -46,14 +46,14 @@ class Client implements FaasClient
         }
     }
 
-    public function getLatestVersion(LambdaFunction $function)
+    public function getLatestVersion(ServerlessFunction $function)
     {
         $versions = $this->getVersions($function);
 
         return end($versions)['Version'];
     }
 
-    public function aliasVersion(LambdaFunction $function, $alias, $version = null)
+    public function aliasVersion(ServerlessFunction $function, $alias, $version = null)
     {
         // These don't ever get used by humans, so they
         // don't need to be decipherable.
@@ -73,7 +73,7 @@ class Client implements FaasClient
         return FaasClient::UPDATED;
     }
 
-    public function updateFunctionVariables(LambdaFunction $function)
+    public function updateFunctionVariables(ServerlessFunction $function)
     {
         // @TODO this is duped from Lambda client
         $variables = $function->variables();
@@ -102,13 +102,13 @@ class Client implements FaasClient
         // @TODO deploy the first time.
     }
 
-    public function functionExists(LambdaFunction $function, $checksum = null)
+    public function functionExists(ServerlessFunction $function, $checksum = null)
     {
         // @TODO checksum?
         return $this->projectExists($function->nameWithPrefix());
     }
 
-    public function updateExistingFunction(LambdaFunction $function)
+    public function updateExistingFunction(ServerlessFunction $function)
     {
         if ($function->packageType() === 'Image') {
             throw new \Exception('Cannot deploy containers to Vercel. You must use a zip file.');
@@ -163,7 +163,7 @@ class Client implements FaasClient
         }
     }
 
-    public function domainForFunction(LambdaFunction $function, $alias)
+    public function domainForFunction(ServerlessFunction $function, $alias)
     {
         return $this->domainForFunctionName($function->nameWithPrefix(), $alias);
     }
@@ -228,7 +228,7 @@ class Client implements FaasClient
         dd($response);
     }
 
-    public function getVersions(LambdaFunction $function, $marker = null)
+    public function getVersions(ServerlessFunction $function, $marker = null)
     {
         // @TODO Marker?
 
@@ -244,7 +244,7 @@ class Client implements FaasClient
         }, $deployments);
     }
 
-    public function deleteFunctionVersion(LambdaFunction $function, $version)
+    public function deleteFunctionVersion(ServerlessFunction $function, $version)
     {
         $project = $this->getProject($function->nameWithPrefix());
 
@@ -262,18 +262,18 @@ class Client implements FaasClient
         $this->client->delete("/v13/deployments/$version");
     }
 
-    public function waitUntilFunctionUpdated(LambdaFunction $function)
+    public function waitUntilFunctionUpdated(ServerlessFunction $function)
     {
         // There is no concept of waiting with Vercel.
         // Once it's deployed, it's live.
     }
 
-    public function latestVersionHasAlias(LambdaFunction $function, $alias)
+    public function latestVersionHasAlias(ServerlessFunction $function, $alias)
     {
         // TODO: Implement latestVersionHasAlias() method.
     }
 
-    public function uploadPackage(LambdaFunction $function)
+    public function uploadPackage(ServerlessFunction $function)
     {
         Sidecar::log('Uploading files to Vercel.');
 

@@ -34,12 +34,13 @@ Every Sidecar Function requires two things:
 For example, if you want to use Node on Lambda to generate an og:image for all of your blog posts, you would first set up a simple class in PHP called e.g. `OgImage`.
 
 App\Sidecar\OgImage.php {.filename}
+
 ```php
 namespace App\Sidecar;
 
-use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\ServerlessFunction;
 
-class OgImage extends LambdaFunction
+class OgImage extends ServerlessFunction
 {
     public function handler()
     {

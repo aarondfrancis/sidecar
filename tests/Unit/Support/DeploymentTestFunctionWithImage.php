@@ -5,10 +5,10 @@
 
 namespace Hammerstone\Sidecar\Tests\Unit\Support;
 
-use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\ServerlessFunction;
 use Hammerstone\Sidecar\Package;
 
-class DeploymentTestFunctionWithImage extends LambdaFunction
+class DeploymentTestFunctionWithImage extends ServerlessFunction
 {
     public function handler()
     {

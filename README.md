@@ -49,9 +49,9 @@ For example, if we were wanting to use Node on Lambda to generate an og:image fo
 ```php
 namespace App\Sidecar;
 
-use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\ServerlessFunction;
 
-class OgImage extends LambdaFunction
+class OgImage extends ServerlessFunction
 {
     public function handler()
     {

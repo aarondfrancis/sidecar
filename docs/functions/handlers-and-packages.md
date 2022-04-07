@@ -7,12 +7,12 @@ Every Lambda function requires at least two things:
 - the name of handler function
 - the file or files needed to execute that handler function
 
-Because these two things are required, these are the two abstract methods that you must implement in your Sidecar function class. 
+Because these two things are required, these are the two abstract methods that you must implement in your Sidecar function class.
 
 ```php
-use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\ServerlessFunction;
 
-class ExampleFunction extends LambdaFunction
+class ExampleFunction extends ServerlessFunction
 {
     public function handler()
     {
@@ -407,10 +407,10 @@ To use a container image with Sidecar you must first build a Lambda compatible d
 Once the container has been added to the registry update the Sidecar function's handler method to return the `Package::CONTAINER_HANDLER` constant. Finally, update the function's `package` method to return the ECR Image URI as shown below.
 
 ```php
-use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\ServerlessFunction;
 use Hammerstone\Sidecar\Package;
 
-class ExampleFunction extends LambdaFunction
+class ExampleFunction extends ServerlessFunction
 {
     public function handler()
     {

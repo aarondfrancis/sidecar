@@ -5,9 +5,9 @@
 
 namespace Hammerstone\Sidecar\Tests\Unit\Support;
 
-use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\ServerlessFunction;
 
-class EmptyTestFunction extends LambdaFunction
+class EmptyTestFunction extends ServerlessFunction
 {
     public function handler()
     {

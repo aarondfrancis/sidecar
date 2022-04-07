@@ -5,6 +5,8 @@
 
 namespace Hammerstone\Sidecar;
 
+use ReflectionClass;
+
 class Region
 {
     const US_EAST_1 = 'us-east-1';             // US East (N. Virginia)
@@ -33,6 +35,6 @@ class Region
 
     public static function all()
     {
-        return (new \ReflectionClass(static::class))->getConstants();
+        return (new ReflectionClass(static::class))->getConstants();
     }
 }

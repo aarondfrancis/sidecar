@@ -5,7 +5,7 @@
 
 namespace Hammerstone\Sidecar\Contracts;
 
-use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\ServerlessFunction;
 
 interface FaasClient
 {
@@ -14,63 +14,63 @@ interface FaasClient
     const NOOP = 3;
 
     /**
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      * @param  null  $checksum
      * @return bool
      */
-    public function functionExists(LambdaFunction $function, $checksum = null);
+    public function functionExists(ServerlessFunction $function, $checksum = null);
 
     public function createFunction(array $args = []);
 
     /**
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      * @return int
      *
      * @throws Exception
      */
-    public function updateExistingFunction(LambdaFunction $function);
+    public function updateExistingFunction(ServerlessFunction $function);
 
-    public function updateFunctionVariables(LambdaFunction $function);
+    public function updateFunctionVariables(ServerlessFunction $function);
 
-    public function waitUntilFunctionUpdated(LambdaFunction $function);
+    public function waitUntilFunctionUpdated(ServerlessFunction $function);
 
     /**
      * Test whether the latest deployed version is the one that is aliased.
      *
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      * @param $alias
      * @return bool
      */
-    public function latestVersionHasAlias(LambdaFunction $function, $alias);
+    public function latestVersionHasAlias(ServerlessFunction $function, $alias);
 
     /**
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      * @return string
      */
-    public function getLatestVersion(LambdaFunction $function);
+    public function getLatestVersion(ServerlessFunction $function);
 
     /**
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      * @param  string  $alias
      * @param  string|null  $version
      * @return int
      */
-    public function aliasVersion(LambdaFunction $function, $alias, $version = null);
+    public function aliasVersion(ServerlessFunction $function, $alias, $version = null);
 
     /**
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      * @param  null|string  $marker
      * @return \Aws\Result
      */
-    public function getVersions(LambdaFunction $function, $marker = null);
+    public function getVersions(ServerlessFunction $function, $marker = null);
 
     /**
      * Delete a particular version of a function.
      *
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      * @param  string  $version
      */
-    public function deleteFunctionVersion(LambdaFunction $function, $version);
+    public function deleteFunctionVersion(ServerlessFunction $function, $version);
 
     public function invoke(array $args = []);
 

@@ -9,7 +9,7 @@ use Aws\Result;
 use Carbon\Carbon;
 use Exception;
 use Hammerstone\Sidecar\Exceptions\LambdaExecutionException;
-use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\ServerlessFunction;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -22,7 +22,7 @@ class SettledResult implements Responsable, ResultContract
     protected $raw;
 
     /**
-     * @var LambdaFunction
+     * @var ServerlessFunction
      */
     protected $function;
 
@@ -41,7 +41,7 @@ class SettledResult implements Responsable, ResultContract
      */
     protected $logs = [];
 
-    public function __construct($raw, LambdaFunction $function)
+    public function __construct($raw, ServerlessFunction $function)
     {
         $this->raw = $raw;
         $this->function = $function;

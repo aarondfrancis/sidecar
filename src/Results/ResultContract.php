@@ -5,15 +5,15 @@
 
 namespace Hammerstone\Sidecar\Results;
 
-use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\ServerlessFunction;
 
 interface ResultContract
 {
     /**
      * @param $raw
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      */
-    public function __construct($raw, LambdaFunction $function);
+    public function __construct($raw, ServerlessFunction $function);
 
     /**
      * @param  \Illuminate\Http\Request  $request

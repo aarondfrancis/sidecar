@@ -5,14 +5,14 @@
 
 namespace Hammerstone\Sidecar\Events;
 
-use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\ServerlessFunction;
 use Hammerstone\Sidecar\Results\PendingResult;
 use Hammerstone\Sidecar\Results\SettledResult;
 
 class AfterFunctionExecuted
 {
     /**
-     * @var LambdaFunction
+     * @var ServerlessFunction
      */
     public $function;
 

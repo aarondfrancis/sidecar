@@ -106,11 +106,11 @@ class Deployment
     }
 
     /**
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      *
      * @throws Exception
      */
-    protected function deploySingle(LambdaFunction $function)
+    protected function deploySingle(ServerlessFunction $function)
     {
         Sidecar::log('Environment: ' . Sidecar::getEnvironment());
         Sidecar::log('Package Type: ' . $function->packageType());
@@ -128,10 +128,10 @@ class Deployment
     }
 
     /**
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      * @param  bool  $prewarm
      */
-    protected function activateSingle(LambdaFunction $function, $prewarm)
+    protected function activateSingle(ServerlessFunction $function, $prewarm)
     {
         $function->beforeActivation();
 
@@ -147,11 +147,11 @@ class Deployment
     }
 
     /**
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      *
      * @throws Exception
      */
-    protected function createNewFunction(LambdaFunction $function)
+    protected function createNewFunction(ServerlessFunction $function)
     {
         Sidecar::log('Creating new lambda function.');
 
@@ -159,11 +159,11 @@ class Deployment
     }
 
     /**
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      *
      * @throws Exception
      */
-    protected function updateExistingFunction(LambdaFunction $function)
+    protected function updateExistingFunction(ServerlessFunction $function)
     {
         Sidecar::log('Function already exists, potentially updating code and configuration.');
 
@@ -177,9 +177,9 @@ class Deployment
     /**
      * Add environment variables to the function, if they are provided.
      *
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      */
-    protected function setEnvironmentVariables(LambdaFunction $function)
+    protected function setEnvironmentVariables(ServerlessFunction $function)
     {
         if (!is_array($function->variables())) {
             return Sidecar::log('Environment variables not managed by Sidecar. Skipping.');
@@ -191,9 +191,9 @@ class Deployment
     /**
      * Send warming requests to the latest version.
      *
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      */
-    protected function warmLatestVersion(LambdaFunction $function)
+    protected function warmLatestVersion(ServerlessFunction $function)
     {
         $this->client->waitUntilFunctionUpdated($function);
 
@@ -222,9 +222,9 @@ class Deployment
     /**
      * Alias the latest version of a function as the "active" one.
      *
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      */
-    protected function aliasLatestVersion(LambdaFunction $function)
+    protected function aliasLatestVersion(ServerlessFunction $function)
     {
         $version = $this->client->getLatestVersion($function);
         $result = $this->client->aliasVersion($function, 'active', $version);
@@ -241,9 +241,9 @@ class Deployment
     /**
      * Remove old, outdated versions of a function.
      *
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      */
-    protected function sweep(LambdaFunction $function)
+    protected function sweep(ServerlessFunction $function)
     {
         $versions = $this->client->getVersions($function);
 

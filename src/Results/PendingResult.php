@@ -6,7 +6,7 @@
 namespace Hammerstone\Sidecar\Results;
 
 use GuzzleHttp\Promise\PromiseInterface;
-use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\ServerlessFunction;
 use Illuminate\Contracts\Support\Responsable;
 
 class PendingResult implements Responsable, ResultContract
@@ -22,15 +22,15 @@ class PendingResult implements Responsable, ResultContract
     protected $raw;
 
     /**
-     * @var LambdaFunction
+     * @var ServerlessFunction
      */
     protected $function;
 
     /**
      * @param  PromiseInterface  $raw
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      */
-    public function __construct($raw, LambdaFunction $function)
+    public function __construct($raw, ServerlessFunction $function)
     {
         $this->raw = $raw;
         $this->function = $function;

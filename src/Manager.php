@@ -56,7 +56,7 @@ class Manager
     }
 
     /**
-     * @param  string|LambdaFunction  $function
+     * @param  string|ServerlessFunction  $function
      * @param  array  $payload
      * @param  bool  $async
      * @return PendingResult|SettledResult
@@ -209,7 +209,7 @@ class Manager
      */
     public function warm($functions = null)
     {
-        array_map(function (LambdaFunction $function) {
+        array_map(function (ServerlessFunction $function) {
             $this->warmSingle($function);
         }, $this->instantiatedFunctions($functions));
     }
@@ -217,14 +217,14 @@ class Manager
     /**
      * Warm a single function, with the option to override the version.
      *
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      * @param  bool  $async
      * @param  string  $version
      * @return array
      *
      * @throws Throwable
      */
-    public function warmSingle(LambdaFunction $function, $async = true, $version = 'active')
+    public function warmSingle(ServerlessFunction $function, $async = true, $version = 'active')
     {
         $config = $function->warmingConfig();
 

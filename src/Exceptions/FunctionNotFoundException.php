@@ -5,12 +5,12 @@
 
 namespace Hammerstone\Sidecar\Exceptions;
 
-use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\ServerlessFunction;
 use Hammerstone\Sidecar\Sidecar;
 
 class FunctionNotFoundException extends SidecarException
 {
-    public static function make(LambdaFunction $function)
+    public static function make(ServerlessFunction $function)
     {
         $env = Sidecar::getEnvironment();
 

@@ -5,12 +5,12 @@
 
 namespace Hammerstone\Sidecar\Events;
 
-use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\ServerlessFunction;
 
 class BeforeFunctionExecuted
 {
     /**
-     * @var LambdaFunction
+     * @var ServerlessFunction
      */
     public $function;
 

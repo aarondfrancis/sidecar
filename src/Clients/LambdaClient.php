@@ -10,7 +10,7 @@ use Aws\Lambda\LambdaClient as BaseClient;
 use Aws\Result;
 use Exception;
 use Hammerstone\Sidecar\Contracts\FaasClient;
-use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\ServerlessFunction;
 use Hammerstone\Sidecar\Sidecar;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -18,10 +18,10 @@ use Illuminate\Support\Str;
 class LambdaClient extends BaseClient implements FaasClient
 {
     /**
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      * @return string
      */
-    public function getLatestVersion(LambdaFunction $function)
+    public function getLatestVersion(ServerlessFunction $function)
     {
         return last($this->getVersions($function))['Version'];
     }
@@ -29,11 +29,11 @@ class LambdaClient extends BaseClient implements FaasClient
     /**
      * Test whether the latest deployed version is the one that is aliased.
      *
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      * @param $alias
      * @return bool
      */
-    public function latestVersionHasAlias(LambdaFunction $function, $alias)
+    public function latestVersionHasAlias(ServerlessFunction $function, $alias)
     {
         $version = $this->getLatestVersion($function);
 
@@ -43,11 +43,11 @@ class LambdaClient extends BaseClient implements FaasClient
     }
 
     /**
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      * @param  null|string  $marker
      * @return \Aws\Result
      */
-    public function getVersions(LambdaFunction $function, $marker = null)
+    public function getVersions(ServerlessFunction $function, $marker = null)
     {
         $result = $this->listVersionsByFunction([
             'FunctionName' => $function->nameWithPrefix(),
@@ -65,12 +65,12 @@ class LambdaClient extends BaseClient implements FaasClient
     }
 
     /**
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      * @param  string  $alias
      * @param  string|null  $version
      * @return int
      */
-    public function aliasVersion(LambdaFunction $function, $alias, $version = null)
+    public function aliasVersion(ServerlessFunction $function, $alias, $version = null)
     {
         $version = $version ?? $this->getLatestVersion($function);
 
@@ -99,11 +99,11 @@ class LambdaClient extends BaseClient implements FaasClient
     }
 
     /**
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      * @param $name
      * @return \Aws\Result|false
      */
-    public function getAliasWithoutException(LambdaFunction $function, $name)
+    public function getAliasWithoutException(ServerlessFunction $function, $name)
     {
         try {
             return $this->getAlias([
@@ -120,12 +120,12 @@ class LambdaClient extends BaseClient implements FaasClient
     }
 
     /**
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      * @return int
      *
      * @throws Exception
      */
-    public function updateExistingFunction(LambdaFunction $function)
+    public function updateExistingFunction(ServerlessFunction $function)
     {
         $config = $function->toDeploymentArray();
 
@@ -164,7 +164,7 @@ class LambdaClient extends BaseClient implements FaasClient
         $this->updateFunctionCode($code);
     }
 
-    public function updateFunctionVariables(LambdaFunction $function)
+    public function updateFunctionVariables(ServerlessFunction $function)
     {
         $variables = $function->variables();
 
@@ -216,9 +216,9 @@ class LambdaClient extends BaseClient implements FaasClient
      * @link https://github.com/hammerstonedev/sidecar/issues/32
      * @link https://github.com/aws/aws-sdk-php/blob/master/src/data/lambda/2015-03-31/waiters-2.json
      *
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      */
-    public function waitUntilFunctionUpdated(LambdaFunction $function)
+    public function waitUntilFunctionUpdated(ServerlessFunction $function)
     {
         $this->waitUntil('FunctionUpdated', [
             'FunctionName' => $function->nameWithPrefix(),
@@ -228,10 +228,10 @@ class LambdaClient extends BaseClient implements FaasClient
     /**
      * Delete a particular version of a function.
      *
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      * @param  string  $version
      */
-    public function deleteFunctionVersion(LambdaFunction $function, $version)
+    public function deleteFunctionVersion(ServerlessFunction $function, $version)
     {
         $this->deleteFunction([
             'FunctionName' => $function->nameWithPrefix(),
@@ -240,11 +240,11 @@ class LambdaClient extends BaseClient implements FaasClient
     }
 
     /**
-     * @param  LambdaFunction  $function
+     * @param  ServerlessFunction  $function
      * @param  null  $checksum
      * @return bool
      */
-    public function functionExists(LambdaFunction $function, $checksum = null)
+    public function functionExists(ServerlessFunction $function, $checksum = null)
     {
         try {
             $response = $this->getFunction([

@@ -13,7 +13,7 @@ use Hammerstone\Sidecar\Results\SettledResult;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-abstract class LambdaFunction
+abstract class ServerlessFunction
 {
     /**
      * Execute the current function and return the response.

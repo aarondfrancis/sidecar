@@ -6,7 +6,7 @@
 namespace Hammerstone\Sidecar\Vercel;
 
 use Exception;
-use Hammerstone\Sidecar\LambdaFunction;
+use Hammerstone\Sidecar\ServerlessFunction;
 use Hammerstone\Sidecar\Runtime;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -14,11 +14,11 @@ use Illuminate\Support\Str;
 class Scaffolding
 {
     /**
-     * @var LambdaFunction
+     * @var ServerlessFunction
      */
     protected $function;
 
-    public function __construct(LambdaFunction $function)
+    public function __construct(ServerlessFunction $function)
     {
         $this->function = $function;
     }
