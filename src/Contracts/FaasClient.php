@@ -20,7 +20,7 @@ interface FaasClient
      */
     public function functionExists(ServerlessFunction $function, $checksum = null);
 
-    public function createFunction(array $args = []);
+    public function createNewFunction(ServerlessFunction $function);
 
     /**
      * @param  ServerlessFunction  $function

@@ -7,6 +7,7 @@ namespace Hammerstone\Sidecar\Tests\Unit;
 
 use Aws\Lambda\Exception\LambdaException;
 use Hammerstone\Sidecar\Clients\LambdaClient;
+use Hammerstone\Sidecar\Tests\BaseTest;
 use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunction;
 use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunctionWithImage;
 use Hammerstone\Sidecar\Tests\Unit\Support\EmptyTestFunction;

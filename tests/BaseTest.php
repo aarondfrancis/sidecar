@@ -3,7 +3,7 @@
  * @author Aaron Francis <aaron@hammerstone.dev|https://twitter.com/aarondfrancis>
  */
 
-namespace Hammerstone\Sidecar\Tests\Unit;
+namespace Hammerstone\Sidecar\Tests;
 
 use Dotenv\Dotenv;
 use Hammerstone\Sidecar\Providers\SidecarServiceProvider;
@@ -11,15 +11,14 @@ use Orchestra\Testbench\TestCase;
 
 abstract class BaseTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
+    public $loadEnvironmentVariables = true;
 
+    protected function resolveApplication()
+    {
         // Since we have live Vercel and AWS keys for integration tests, we can't
         // use PHPUnit's environment handling as those would be exposed in the
-        // git repository. Here we manually load any values from a .env file
-        // for local tests. In GitHub there is no .env, so we use safeLoad.
-        Dotenv::createImmutable(dirname(__DIR__, 2))->safeLoad();
+        // git repository. We use an ignored .env file for our local tests.
+        return parent::resolveApplication()->useEnvironmentPath(dirname(__DIR__));
     }
 
     protected function getPackageProviders($app)

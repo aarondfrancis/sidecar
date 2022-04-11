@@ -101,4 +101,10 @@ return [
      * on Vercel. You need to redeploy your functions if this changes!
      */
     'vercel_signing_secret' => env('SIDECAR_VERCEL_SIGNING_SECRET'),
+
+    /*
+     * If you are a part of a team, you can deploy your functions into
+     * that team specifically by supplying the team ID here.
+     */
+    'vercel_team' => env('SIDECAR_VERCEL_TEAM'),
 ];

@@ -6,6 +6,7 @@
 namespace Hammerstone\Sidecar\Tests\Unit;
 
 use Hammerstone\Sidecar\Sidecar;
+use Hammerstone\Sidecar\Tests\BaseTest;
 
 class EnvironmentTest extends BaseTest
 {

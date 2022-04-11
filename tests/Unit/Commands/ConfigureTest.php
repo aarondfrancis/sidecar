@@ -10,6 +10,7 @@ use Aws\Iam\Exception\IamException;
 use Aws\Iam\IamClient;
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
+use Hammerstone\Sidecar\Tests\BaseTest;
 use Illuminate\Support\Carbon;
 use Mockery;
 

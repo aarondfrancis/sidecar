@@ -46,8 +46,8 @@ class Deployment
      */
     public function __construct($functions = null)
     {
-        $this->client = app(LambdaClient::class);
-        $this->client = app(VercelClient::class);
+//        $this->client = app(LambdaClient::class);
+        $this->client = app(Client::class);
 
         $this->functions = Sidecar::instantiatedFunctions($functions);
 
@@ -155,7 +155,7 @@ class Deployment
     {
         Sidecar::log('Creating new lambda function.');
 
-        $this->client->createFunction($function->toDeploymentArray());
+        $this->client->createNewFunction($function);
     }
 
     /**

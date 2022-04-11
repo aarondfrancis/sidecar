@@ -21,9 +21,28 @@ trait Primitives
 
     protected function request($method, $uri, array $options = [])
     {
+        // https://vercel.com/docs/rest-api#introduction/api-basics/authentication/accessing-resources-owned-by-a-team
+        if ($this->teamId) {
+            $options = array_merge_recursive($options, [
+                'query' => [
+                    'teamId' => $this->teamId
+                ]
+            ]);
+        }
+
         $response = $this->client->{$method}($uri, $options);
 
         return json_decode($response->getBody()->getContents(), JSON_OBJECT_AS_ARRAY);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Teams
+    |--------------------------------------------------------------------------
+    */
+    public function listTeams()
+    {
+        return $this->get("/v2/teams");
     }
 
     /*
@@ -41,6 +60,11 @@ trait Primitives
         return $this->post('/v8/projects', [
             'json' => $json,
         ]);
+    }
+
+    public function deleteProject($idOrName)
+    {
+        return $this->request('DELETE', "/v8/projects/$idOrName");
     }
 
     public function projectExists($idOrName)

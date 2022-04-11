@@ -45,6 +45,13 @@ trait HandlesLogging
         });
     }
 
+    public function addPhpUnitLogger()
+    {
+        $this->addLogger(function ($message, $level = 'info') {
+            fwrite(STDERR, "\n" . $message);
+        });
+    }
+
     /**
      * @param $message
      */

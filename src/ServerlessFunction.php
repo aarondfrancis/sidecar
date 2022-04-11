@@ -7,6 +7,7 @@ namespace Hammerstone\Sidecar;
 
 use Aws\Result;
 use GuzzleHttp\Promise\PromiseInterface;
+use Hammerstone\Sidecar\Concerns\ExecutionMethods;
 use Hammerstone\Sidecar\Exceptions\SidecarException;
 use Hammerstone\Sidecar\Results\PendingResult;
 use Hammerstone\Sidecar\Results\SettledResult;
@@ -15,66 +16,7 @@ use Illuminate\Support\Str;
 
 abstract class ServerlessFunction
 {
-    /**
-     * Execute the current function and return the response.
-     *
-     * @param  array  $payload
-     * @param  bool  $async
-     * @return SettledResult|PendingResult
-     */
-    public static function execute($payload = [], $async = false, $invocationType = 'RequestResponse')
-    {
-        return Sidecar::execute(static::class, $payload, $async, $invocationType);
-    }
-
-    /**
-     * Execute the current function and return the response.
-     *
-     * @param  array  $payload
-     * @return PendingResult
-     */
-    public static function executeAsync($payload = [])
-    {
-        return static::execute($payload, $async = true);
-    }
-
-    /**
-     * Execute the current function and return the response.
-     *
-     * @param $payloads
-     * @param  bool  $async
-     * @return array
-     *
-     * @throws \Throwable
-     */
-    public static function executeMany($payloads, $async = false)
-    {
-        return Sidecar::executeMany(static::class, $payloads, $async);
-    }
-
-    /**
-     * Execute the current function and return the response.
-     *
-     * @param $payloads
-     * @return array
-     *
-     * @throws \Throwable
-     */
-    public static function executeManyAsync($payloads)
-    {
-        return static::executeMany($payloads, $async = true);
-    }
-
-    /**
-     * Execute the current function asynchronously as an event. This is "fire-and-forget" style.
-     *
-     * @param  array  $payload
-     * @return PendingResult
-     */
-    public static function executeAsEvent($payload = [])
-    {
-        return static::execute($payload, $async = false, $invocationType = 'Event');
-    }
+    use ExecutionMethods;
 
     /**
      * Deploy this function only.
@@ -89,6 +31,12 @@ abstract class ServerlessFunction
             $deployment->activate();
         }
     }
+
+    public static function activate()
+    {
+        Deployment::make(static::class)->activate();
+    }
+
 
     /**
      * Used by Lambda to uniquely identify a function.
@@ -380,8 +328,8 @@ abstract class ServerlessFunction
                 ? $this->makePackage()->deploymentConfiguration()
                 : $this->package(),
             'Description' => $this->description(),
-            'Timeout' => (int)$this->timeout(),
-            'MemorySize' => (int)$this->memory(),
+            'Timeout' => (int) $this->timeout(),
+            'MemorySize' => (int) $this->memory(),
             'Layers' => $this->layers(),
             'Publish' => true,
             'PackageType' => $this->packageType(),

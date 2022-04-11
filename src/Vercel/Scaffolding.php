@@ -6,6 +6,8 @@
 namespace Hammerstone\Sidecar\Vercel;
 
 use Exception;
+use Hammerstone\Sidecar\Exceptions\ConfigurationException;
+use Hammerstone\Sidecar\Finder;
 use Hammerstone\Sidecar\ServerlessFunction;
 use Hammerstone\Sidecar\Runtime;
 use Illuminate\Support\Arr;
@@ -18,14 +20,24 @@ class Scaffolding
      */
     protected $function;
 
+    /**
+     * @var array
+     */
+    protected $configuration;
+
+    /**
+     * @param  ServerlessFunction  $function
+     * @throws Exception
+     */
     public function __construct(ServerlessFunction $function)
     {
         $this->function = $function;
+        $this->configuration = $this->configuration();
     }
 
     public function entry()
     {
-        return $this->configuration()['entry'];
+        return $this->configuration['entry'];
     }
 
     public function files()
@@ -57,7 +69,7 @@ class Scaffolding
 
     public function directory()
     {
-        $directory = __DIR__ . DIRECTORY_SEPARATOR . 'Scaffolding' . DIRECTORY_SEPARATOR . $this->configuration()['directory'];
+        $directory = __DIR__ . DIRECTORY_SEPARATOR . 'Scaffolding' . DIRECTORY_SEPARATOR . $this->configuration['directory'];
 
         if (!is_dir($directory)) {
             throw new Exception('Unable to find Vercel Scaffolding.');
@@ -68,10 +80,19 @@ class Scaffolding
 
     protected function replacements()
     {
+        $handler = $this->function->normalizedHandler();
+
+        if (!$handler) {
+            throw new ConfigurationException('Handler not set.');
+        }
+
+        $handler = explode('.', $handler);
+
         return [
-            'sc_replace__handler_file' => explode('.', $this->function->normalizedHandler())[0],
-            'sc_replace__handler_function' => explode('.', $this->function->normalizedHandler())[1],
-            'sc_replace__middleware_token' => $this->secret
+            'sc_replace__handler_file' => $handler[0],
+            'sc_replace__handler_function' => $handler[1],
+            'sc_replace__middleware_token' => config('sidecar.vercel_signing_secret'),
+            'sc_replace__runtime_version' => $this->configuration['runtime_version']
         ];
     }
 
@@ -79,7 +100,7 @@ class Scaffolding
     {
         $config = Arr::get($this->configurations(), $this->function->runtime());
 
-        if ($config) {
+        if (!$config) {
             throw new Exception("Unable to find Vercel scaffolding for the `{$this->function->runtime()}` runtime.");
         }
 
@@ -89,17 +110,18 @@ class Scaffolding
     protected function configurations()
     {
         return [
-            Runtime::NODEJS_14 => $this->js(),
-            Runtime::NODEJS_12 => $this->js(),
-            Runtime::NODEJS_10 => $this->js(),
+            Runtime::NODEJS_14 => $this->js('14.x'),
+            Runtime::NODEJS_12 => $this->js('12.x'),
+            Runtime::NODEJS_10 => $this->js('10.x'),
         ];
     }
 
-    protected function js()
+    protected function js($runtime)
     {
         return [
             'entry' => 'api/index.js',
-            'directory' => 'js'
+            'directory' => 'js',
+            'runtime_version' => $runtime,
         ];
     }
 

@@ -10,6 +10,7 @@ use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Events\AfterFunctionExecuted;
 use Hammerstone\Sidecar\Events\BeforeFunctionExecuted;
 use Hammerstone\Sidecar\Sidecar;
+use Hammerstone\Sidecar\Tests\BaseTest;
 use Hammerstone\Sidecar\Tests\Unit\Support\EmptyTestFunction;
 use Illuminate\Support\Facades\Event;
 

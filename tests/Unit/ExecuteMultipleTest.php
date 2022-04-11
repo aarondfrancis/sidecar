@@ -12,6 +12,7 @@ use Hammerstone\Sidecar\Events\AfterFunctionExecuted;
 use Hammerstone\Sidecar\Events\BeforeFunctionExecuted;
 use Hammerstone\Sidecar\Results\PendingResult;
 use Hammerstone\Sidecar\Sidecar;
+use Hammerstone\Sidecar\Tests\BaseTest;
 use Hammerstone\Sidecar\Tests\Unit\Support\EmptyTestFunction;
 use Illuminate\Support\Facades\Event;
 use Mockery;

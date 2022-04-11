@@ -6,6 +6,7 @@
 namespace Hammerstone\Sidecar\Tests\Unit;
 
 use Hammerstone\Sidecar\Package;
+use Hammerstone\Sidecar\Tests\BaseTest;
 use Hammerstone\Sidecar\Tests\Unit\Support\FakeStreamWrapper;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;

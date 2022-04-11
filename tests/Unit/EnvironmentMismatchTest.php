@@ -8,6 +8,7 @@ namespace Hammerstone\Sidecar\Tests\Unit;
 use Aws\Lambda\Exception\LambdaException;
 use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Exceptions\FunctionNotFoundException;
+use Hammerstone\Sidecar\Tests\BaseTest;
 use Hammerstone\Sidecar\Tests\Unit\Support\EmptyTestFunction;
 use Illuminate\Support\Facades\Event;
 use Mockery;

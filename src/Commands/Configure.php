@@ -11,6 +11,7 @@ use Hammerstone\Sidecar\Commands\Actions\CreateDeploymentUser;
 use Hammerstone\Sidecar\Commands\Actions\CreateExecutionRole;
 use Hammerstone\Sidecar\Commands\Actions\DestroyAdminKeys;
 use Hammerstone\Sidecar\Commands\Actions\DetermineRegion;
+use Hammerstone\Sidecar\Commands\Configurators\ConfigureVercel;
 use Illuminate\Console\Command;
 use Throwable;
 

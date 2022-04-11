@@ -7,7 +7,6 @@ namespace Hammerstone\Sidecar;
 
 use Aws\Lambda\Exception\LambdaException;
 use Closure;
-use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Concerns\HandlesLogging;
 use Hammerstone\Sidecar\Concerns\ManagesEnvironments;
 use Hammerstone\Sidecar\Events\AfterFunctionExecuted;

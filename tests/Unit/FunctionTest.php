@@ -5,6 +5,7 @@
 
 namespace Hammerstone\Sidecar\Tests\Unit;
 
+use Hammerstone\Sidecar\Tests\BaseTest;
 use Hammerstone\Sidecar\Tests\Unit\Support\EmptyTestFunction;
 
 class FunctionTest extends BaseTest

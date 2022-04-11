@@ -32,11 +32,17 @@ class Client implements FaasClient
      */
     protected $secret;
 
+    /**
+     * @var string|null
+     */
+    protected $teamId;
+
     public function __construct($config)
     {
         $this->client = new Guzzle($config);
         $this->seed = config('sidecar.vercel_domain_seed');
         $this->secret = config('sidecar.vercel_signing_secret');
+        $this->teamId = config('sidecar.vercel_team');
     }
 
     protected function validateConfiguration()
@@ -55,12 +61,12 @@ class Client implements FaasClient
 
     public function aliasVersion(ServerlessFunction $function, $alias, $version = null)
     {
+        $deploymentId = $version;
+
         // These don't ever get used by humans, so they
         // don't need to be decipherable.
         $domain = $this->domainForFunction($function, $alias);
-
-        // @TODO This doesnt seem right
-        $existing = $this->getDeploymentAliases($version);
+        $existing = $this->getDeploymentAliases($deploymentId);
 
         foreach ($existing['aliases'] as $assigned) {
             if ($assigned['alias'] === "$domain.vercel.app") {
@@ -91,15 +97,22 @@ class Client implements FaasClient
         $this->setProjectEnv($projectId, $variables);
     }
 
-
-    public function createFunction(array $args = [])
+    public function createNewFunction(ServerlessFunction $function)
     {
-        // @TODO args is function -> deployment config
-//        $response = $this->createProject([
-//            'name' => $function->nameWithPrefix(),
-//        ]);
+        $response = $this->createProject([
+            'name' => strtolower($function->nameWithPrefix()),
+        ]);
 
-        // @TODO deploy the first time.
+        if (!array_key_exists('id', $response)) {
+            throw new \Exception('Project not created on Vercel.');
+        }
+
+        return $this->deployProject($function);
+    }
+
+    public function deleteFunction(ServerlessFunction $function)
+    {
+        $this->deleteProject($function->nameWithPrefix());
     }
 
     public function functionExists(ServerlessFunction $function, $checksum = null)
@@ -110,11 +123,20 @@ class Client implements FaasClient
 
     public function updateExistingFunction(ServerlessFunction $function)
     {
+        $this->deployProject($function);
+    }
+
+    protected function deployProject(ServerlessFunction $function)
+    {
         if ($function->packageType() === 'Image') {
             throw new \Exception('Cannot deploy containers to Vercel. You must use a zip file.');
         }
 
-        // @TODO see if anything has changed.
+        if ($timeout = $function->timeout() > 60) {
+            $timeout = 60;
+
+            Sidecar::log('A Vercel function is limited to 60 seconds.');
+        }
 
         $response = $this->createDeployment([
             // Project name?
@@ -132,7 +154,7 @@ class Client implements FaasClient
                 // Universal shim entrypoint from our scaffolding.
                 "api/index.js" => [
                     "memory" => $function->memory(),
-                    "maxDuration" => $function->timeout(),
+                    "maxDuration" => $timeout,
                 ]
             ],
             "routes" => [
@@ -191,11 +213,11 @@ class Client implements FaasClient
         return $this->doInvocation($args, $async = true);
     }
 
-    public function executionUrl($function, $minutes)
+    public function executionUrl($function, $minutes = 60 * 4)
     {
         $domain = $this->domainForFunction($function, 'active');
         $timestamp = now()->addMinutes($minutes)->timestamp;
-        $digest = sha1("token{$timestamp}");
+        $digest = sha1($this->secret . $timestamp);
 
         return "https://$domain.vercel.app/tok-$digest-$timestamp/execute";
     }
@@ -223,9 +245,7 @@ class Client implements FaasClient
         ]);
 
         $response = $response->getBody()->getContents();
-        $response = json_decode($response);
-
-        dd($response);
+        return json_decode($response);
     }
 
     public function getVersions(ServerlessFunction $function, $marker = null)

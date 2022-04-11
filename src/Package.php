@@ -364,7 +364,7 @@ class Package
     {
         $stream = fopen($path, 'w');
 
-        $fileOptions = null;
+        $fileOptions = new FileOptions;
         $archiveOptions = new Archive;
         $archiveOptions->setEnableZip64(false);
         $archiveOptions->setOutputStream($stream);
