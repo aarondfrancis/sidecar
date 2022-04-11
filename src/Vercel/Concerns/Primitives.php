@@ -42,7 +42,7 @@ trait Primitives
     */
     public function listTeams()
     {
-        return $this->get("/v2/teams");
+        return $this->get('/v2/teams');
     }
 
     /*
@@ -88,13 +88,13 @@ trait Primitives
 
         foreach ($variables as $key => $value) {
             $mapped[] = [
-                "type" => "encrypted",
-                "key" => $key,
-                "value" => $value,
-                "target" => [
-                    "production",
-                    "preview",
-                    "development"
+                'type' => 'encrypted',
+                'key' => $key,
+                'value' => $value,
+                'target' => [
+                    'production',
+                    'preview',
+                    'development'
                 ]
             ];
         }
@@ -178,5 +178,4 @@ trait Primitives
     {
         return $this->get("/v11/deployments/$id/builds");
     }
-
 }

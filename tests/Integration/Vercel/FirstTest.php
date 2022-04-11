@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Http;
 
 class FirstTest extends BaseTest
 {
-
     /** @test */
     public function it_can_deploys()
     {
@@ -41,5 +40,4 @@ class FirstTest extends BaseTest
 
         dd($response);
     }
-
 }

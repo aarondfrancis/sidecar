@@ -10,7 +10,6 @@ use Hammerstone\Sidecar\ServerlessFunction;
 
 class BasicVercelFunction extends ServerlessFunction
 {
-
     public function name()
     {
         return 'Vercel-Test';

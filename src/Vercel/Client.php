@@ -140,31 +140,31 @@ class Client implements FaasClient
 
         $response = $this->createDeployment([
             // Project name?
-            "name" => $function->nameWithPrefix(),
+            'name' => $function->nameWithPrefix(),
             // Arbitrary KV Pairs
-            "meta" => (object) [
+            'meta' => (object) [
                 //
             ],
-            "projectSettings" => [
-                "sourceFilesOutsideRootDirectory" => true
+            'projectSettings' => [
+                'sourceFilesOutsideRootDirectory' => true
             ],
-            "source" => "cli",
-            "version" => 2,
-            "functions" => [
+            'source' => 'cli',
+            'version' => 2,
+            'functions' => [
                 // Universal shim entrypoint from our scaffolding.
-                "api/index.js" => [
-                    "memory" => $function->memory(),
-                    "maxDuration" => $timeout,
+                'api/index.js' => [
+                    'memory' => $function->memory(),
+                    'maxDuration' => $timeout,
                 ]
             ],
-            "routes" => [
+            'routes' => [
                 [
                     // Route everything to our entrypoint
-                    "src" => "/(.*)",
-                    "dest" => (new Scaffolding($function))->entry()
+                    'src' => '/(.*)',
+                    'dest' => (new Scaffolding($function))->entry()
                 ]
             ],
-            "files" => $this->uploadPackage($function)->toArray()
+            'files' => $this->uploadPackage($function)->toArray()
         ]);
 
         while (true) {
@@ -245,6 +245,7 @@ class Client implements FaasClient
         ]);
 
         $response = $response->getBody()->getContents();
+
         return json_decode($response);
     }
 
@@ -276,6 +277,7 @@ class Client implements FaasClient
 
         if (in_array($version, $keep)) {
             Sidecar::log("Not deleting version $keep, as it is currently active.");
+
             return;
         }
 
@@ -323,5 +325,4 @@ class Client implements FaasClient
             return $file;
         });
     }
-
 }

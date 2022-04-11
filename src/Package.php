@@ -356,6 +356,7 @@ class Package
      *
      * @param $path
      * @return array
+     *
      * @throws \ZipStream\Exception\FileNotFoundException
      * @throws \ZipStream\Exception\FileNotReadableException
      * @throws \ZipStream\Exception\OverflowException

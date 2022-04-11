@@ -5,8 +5,8 @@
 
 namespace Hammerstone\Sidecar\Tests\Unit\Support;
 
-use Hammerstone\Sidecar\ServerlessFunction;
 use Hammerstone\Sidecar\Package;
+use Hammerstone\Sidecar\ServerlessFunction;
 
 class DeploymentTestFunctionWithImage extends ServerlessFunction
 {

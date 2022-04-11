@@ -75,5 +75,4 @@ interface FaasClient
     public function invoke(array $args = []);
 
     public function invokeAsync(array $args = []);
-
 }

@@ -7,7 +7,6 @@ namespace Hammerstone\Sidecar;
 
 use Exception;
 use Hammerstone\Sidecar\Clients\LambdaClient;
-use Hammerstone\Sidecar\Clients\VercelClient;
 use Hammerstone\Sidecar\Contracts\FaasClient;
 use Hammerstone\Sidecar\Events\AfterFunctionsActivated;
 use Hammerstone\Sidecar\Events\AfterFunctionsDeployed;

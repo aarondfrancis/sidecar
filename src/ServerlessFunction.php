@@ -37,7 +37,6 @@ abstract class ServerlessFunction
         Deployment::make(static::class)->activate();
     }
 
-
     /**
      * Used by Lambda to uniquely identify a function.
      *

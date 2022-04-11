@@ -6,12 +6,10 @@
 namespace Hammerstone\Sidecar\Commands\Configurators;
 
 use Hammerstone\Sidecar\Vercel\Client;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 trait ConfigureVercel
 {
-
     public function configureVercel()
     {
         $this->line(str_repeat('-', $this->width));

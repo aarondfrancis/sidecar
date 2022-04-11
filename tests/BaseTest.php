@@ -5,7 +5,6 @@
 
 namespace Hammerstone\Sidecar\Tests;
 
-use Dotenv\Dotenv;
 use Hammerstone\Sidecar\Providers\SidecarServiceProvider;
 use Orchestra\Testbench\TestCase;
 

@@ -121,6 +121,7 @@ class LambdaClient extends BaseClient implements FaasClient
 
     /**
      * @param  ServerlessFunction  $function
+     *
      * @throws \Hammerstone\Sidecar\Exceptions\SidecarException
      */
     public function createNewFunction(ServerlessFunction $function)

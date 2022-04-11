@@ -5,9 +5,9 @@
 
 namespace Hammerstone\Sidecar\Events;
 
-use Hammerstone\Sidecar\ServerlessFunction;
 use Hammerstone\Sidecar\Results\PendingResult;
 use Hammerstone\Sidecar\Results\SettledResult;
+use Hammerstone\Sidecar\ServerlessFunction;
 
 class AfterFunctionExecuted
 {

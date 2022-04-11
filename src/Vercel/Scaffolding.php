@@ -8,8 +8,8 @@ namespace Hammerstone\Sidecar\Vercel;
 use Exception;
 use Hammerstone\Sidecar\Exceptions\ConfigurationException;
 use Hammerstone\Sidecar\Finder;
-use Hammerstone\Sidecar\ServerlessFunction;
 use Hammerstone\Sidecar\Runtime;
+use Hammerstone\Sidecar\ServerlessFunction;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -27,6 +27,7 @@ class Scaffolding
 
     /**
      * @param  ServerlessFunction  $function
+     *
      * @throws Exception
      */
     public function __construct(ServerlessFunction $function)
@@ -124,5 +125,4 @@ class Scaffolding
             'runtime_version' => $runtime,
         ];
     }
-
 }
