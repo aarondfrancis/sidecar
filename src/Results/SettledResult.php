@@ -272,7 +272,7 @@ class SettledResult implements Responsable, ResultContract
             'body' => $body
         ];
     }
-    
+
     protected function unknownLine($line)
     {
         return [
