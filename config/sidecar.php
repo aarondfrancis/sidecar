@@ -81,4 +81,14 @@ return [
      * See CreateExecutionRole::policy for the IAM policy.
      */
     'execution_role' => env('SIDECAR_EXECUTION_ROLE'),
+
+    /*
+     * This is the VPC Configuration for Lambda. VPCs are optional
+     * and may be left empty if there are no networking needs
+     * to place sidecar lambda functions inside a VPC.
+     */
+    'vpc' => [
+        'security_groups' => env('SIDECAR_VPC_SECURITY_GROUP'),
+        'subnets' => env('SIDECAR_VPC_SUBNETS'),
+    ]
 ];

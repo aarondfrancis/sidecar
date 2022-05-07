@@ -35,4 +35,37 @@ class FunctionTest extends BaseTest
         $this->assertSame(5, $array['Timeout']);
         $this->assertSame(500, $array['MemorySize']);
     }
+
+    /** @test */
+    public function test_lambda_function_inside_vpc()
+    {
+        config([
+            'sidecar.vpc' => [
+                'security_group' => ['sg-12345678'],
+                'subnets' => ['subnet-e000ab00'],
+            ],
+        ]);
+
+        $array = (new EmptyTestFunction)->toDeploymentArray();
+
+        $this->assertSame('sg-12345678', $array['VpcConfig']['SecurityGroupIds'][0]);
+        $this->assertSame('subnet-e000ab00', $array['VpcConfig']['SubnetIds'][0]);
+    }
+
+    /** @test */
+    public function test_let_user_define_single_subnet_and_sg()
+    {
+        config([
+            'sidecar.vpc' => [
+                'security_group' => 'sg-12345678',
+                'subnets' => 'subnet-e000ab00',
+            ],
+        ]);
+
+        $array = (new EmptyTestFunction)->toDeploymentArray();
+
+        $this->assertSame('sg-12345678', $array['VpcConfig']['SecurityGroupIds'][0]);
+        $this->assertSame('subnet-e000ab00', $array['VpcConfig']['SubnetIds'][0]);
+    }
+
 }
