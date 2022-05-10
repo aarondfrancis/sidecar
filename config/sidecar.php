@@ -31,6 +31,12 @@ return [
     'memory' => env('SIDECAR_MEMORY', 512),
 
     /*
+     * The default ephemeral storage for your functions, in megabytes.
+     * This can be overridden per function.
+     */
+    'storage' => env('SIDECAR_STORAGE', 512),
+
+    /*
      * The default architecture your function runs on.
      * Available options are: x86_64, arm64
      */
