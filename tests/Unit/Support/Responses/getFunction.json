@@ -9,6 +9,9 @@
         "Description": "Laravel [local]: Sidecar function `App\\Sidecar\\OgImage`. [ab0f64a5]",
         "Timeout": 300,
         "MemorySize": 512,
+        "EphemeralStorage": {
+            "Size": 512
+        },
         "LastModified": "2021-06-12T14:04:51.802+0000",
         "CodeSha256": "hHe3JC+E9cHvgZjRgf39adwq2yzNOftvN0qA\/1kaukU=",
         "Version": "$LATEST",
