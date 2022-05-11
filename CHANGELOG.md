@@ -1,6 +1,18 @@
 # Changelog
 ## Unreleased 
 
+## 0.3.9
+
+## What's Changed
+
+### Added
+- Add ECR permissions to deployment user by @bakerkretzmar in https://github.com/hammerstonedev/sidecar/pull/62
+- Add ability to configure ephemeral storage size by @bakerkretzmar in https://github.com/hammerstonedev/sidecar/pull/71
+
+### Fixed
+- Replace DIRECTORY_SEPARATOR with '/' by @w00key in https://github.com/hammerstonedev/sidecar/pull/69
+- Gracefully handle unexpected log output by @inxilpro in https://github.com/hammerstonedev/sidecar/pull/66
+
 ## 0.3.8 - 2022-02-15
 
 ### Added
