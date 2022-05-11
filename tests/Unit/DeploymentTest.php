@@ -57,6 +57,9 @@ class DeploymentTest extends BaseTest
             ],
             'Description' => 'test-Description',
             'Timeout' => 'test-Timeout',
+            'EphemeralStorage' => [
+                'Size' => 'test-EphemeralStorage'
+            ],
             'MemorySize' => 'test-MemorySize',
             'Layers' => 'test-Layers',
             'Publish' => 'test-Publish',

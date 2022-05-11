@@ -312,6 +312,16 @@ abstract class LambdaFunction
         return config('sidecar.timeout');
     }
 
+    /**
+     * The ephemeral storage, in MB, your Lambda function is given.
+     *
+     * @return int
+     */
+    public function storage()
+    {
+        return config('sidecar.storage');
+    }
+
     public function preparePayload($payload)
     {
         return $payload;
@@ -392,6 +402,9 @@ abstract class LambdaFunction
             'Description' => $this->description(),
             'Timeout' => (int)$this->timeout(),
             'MemorySize' => (int)$this->memory(),
+            'EphemeralStorage' => [
+                'Size' => (int)$this->storage(),
+            ],
             'Layers' => $this->layers(),
             'Publish' => true,
             'PackageType' => $this->packageType(),

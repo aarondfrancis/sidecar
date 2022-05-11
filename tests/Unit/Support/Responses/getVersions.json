@@ -9,6 +9,9 @@
         "Description": "Laravel [local]: Sidecar function `App\\Sidecar\\OgImage`. [ab0f64a5]",
         "Timeout": 300,
         "MemorySize": 512,
+        "EphemeralStorage": {
+            "Size": 512
+        },
         "LastModified": "2021-06-12T14:04:51.802+0000",
         "CodeSha256": "hHe3JC+E9cHvgZjRgf39adwq2yzNOftvN0qA\/1kaukU=",
         "Version": "$LATEST",
@@ -43,6 +46,9 @@
         "Description": "Laravel [local]: Sidecar function `App\\Sidecar\\OgImage`. [10f50c9b]",
         "Timeout": 300,
         "MemorySize": 512,
+        "EphemeralStorage": {
+            "Size": 512
+        },
         "LastModified": "2021-06-05T14:38:42.754+0000",
         "CodeSha256": "UarZwJqR+CAOmrPKvOaPS5qA3N6GYOZYc8Tx4\/CLH1Y=",
         "Version": "72",
@@ -72,6 +78,9 @@
         "Description": "Laravel [local]: Sidecar function `App\\Sidecar\\OgImage`. [de932341]",
         "Timeout": 300,
         "MemorySize": 512,
+        "EphemeralStorage": {
+            "Size": 512
+        },
         "LastModified": "2021-06-05T15:03:49.675+0000",
         "CodeSha256": "\/9Z\/nwfb62iCaiPi8\/l3Mo2PNl104vjRw3toastIcP8=",
         "Version": "73",
@@ -101,6 +110,9 @@
         "Description": "Laravel [local]: Sidecar function `App\\Sidecar\\OgImage`. [a5f20962]",
         "Timeout": 300,
         "MemorySize": 512,
+        "EphemeralStorage": {
+            "Size": 512
+        },
         "LastModified": "2021-06-05T20:37:19.818+0000",
         "CodeSha256": "JEc2\/ziCNUflfAu2nPlZ+iGVmj6u3w7GVNGyh\/Y\/crs=",
         "Version": "74",
@@ -130,6 +142,9 @@
         "Description": "Laravel [local]: Sidecar function `App\\Sidecar\\OgImage`. [1817e47e]",
         "Timeout": 300,
         "MemorySize": 512,
+        "EphemeralStorage": {
+            "Size": 512
+        },
         "LastModified": "2021-06-05T20:54:07.167+0000",
         "CodeSha256": "ei947HIjYFxiUN2kw4a21r8EwlP+ObLqU0c7kbV1Xe4=",
         "Version": "75",
@@ -159,6 +174,9 @@
         "Description": "Laravel [local]: Sidecar function `App\\Sidecar\\OgImage`. [0723af4c]",
         "Timeout": 300,
         "MemorySize": 512,
+        "EphemeralStorage": {
+            "Size": 512
+        },
         "LastModified": "2021-06-08T03:53:35.184+0000",
         "CodeSha256": "hHe3JC+E9cHvgZjRgf39adwq2yzNOftvN0qA\/1kaukU=",
         "Version": "76",
@@ -188,6 +206,9 @@
         "Description": "Laravel [local]: Sidecar function `App\\Sidecar\\OgImage`. [4a081bdf]",
         "Timeout": 300,
         "MemorySize": 512,
+        "EphemeralStorage": {
+            "Size": 512
+        },
         "LastModified": "2021-06-08T04:00:14.674+0000",
         "CodeSha256": "hHe3JC+E9cHvgZjRgf39adwq2yzNOftvN0qA\/1kaukU=",
         "Version": "77",
@@ -217,6 +238,9 @@
         "Description": "Laravel [local]: Sidecar function `App\\Sidecar\\OgImage`. [9fee3746]",
         "Timeout": 300,
         "MemorySize": 512,
+        "EphemeralStorage": {
+            "Size": 512
+        },
         "LastModified": "2021-06-08T04:08:39.862+0000",
         "CodeSha256": "hHe3JC+E9cHvgZjRgf39adwq2yzNOftvN0qA\/1kaukU=",
         "Version": "78",
@@ -251,6 +275,9 @@
         "Description": "Laravel [local]: Sidecar function `App\\Sidecar\\OgImage`. [ab0f64a5]",
         "Timeout": 300,
         "MemorySize": 512,
+        "EphemeralStorage": {
+            "Size": 512
+        },
         "LastModified": "2021-06-11T18:34:24.290+0000",
         "CodeSha256": "hHe3JC+E9cHvgZjRgf39adwq2yzNOftvN0qA\/1kaukU=",
         "Version": "79",
@@ -285,6 +312,9 @@
         "Description": "Laravel [local]: Sidecar function `App\\Sidecar\\OgImage`. [235d843a]",
         "Timeout": 300,
         "MemorySize": 512,
+        "EphemeralStorage": {
+            "Size": 512
+        },
         "LastModified": "2021-06-12T14:03:45.872+0000",
         "CodeSha256": "hHe3JC+E9cHvgZjRgf39adwq2yzNOftvN0qA\/1kaukU=",
         "Version": "80",
@@ -319,6 +349,9 @@
         "Description": "Laravel [local]: Sidecar function `App\\Sidecar\\OgImage`. [ab0f64a5]",
         "Timeout": 300,
         "MemorySize": 512,
+        "EphemeralStorage": {
+            "Size": 512
+        },
         "LastModified": "2021-06-12T14:04:51.802+0000",
         "CodeSha256": "hHe3JC+E9cHvgZjRgf39adwq2yzNOftvN0qA\/1kaukU=",
         "Version": "81",

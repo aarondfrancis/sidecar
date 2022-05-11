@@ -172,7 +172,7 @@ class LambdaClientTest extends BaseTest
         $this->lambda->shouldReceive('functionExists')
             ->once()
             ->withArgs(function ($f, $checksum) use ($function) {
-                return $f === $function && $checksum === 'b3422109';
+                return $f === $function && $checksum === 'e827998e';
             })
             ->andReturn(false);
 
@@ -183,8 +183,11 @@ class LambdaClientTest extends BaseTest
                 'Runtime' => 'test-Runtime',
                 'Role' => 'test-Role',
                 'Handler' => 'test-Handler',
-                'Description' => 'test-Description [b3422109]',
+                'Description' => 'test-Description [e827998e]',
                 'Timeout' => 'test-Timeout',
+                'EphemeralStorage' => [
+                    'Size' => 'test-EphemeralStorage'
+                ],
                 'MemorySize' => 'test-MemorySize',
                 'Layers' => 'test-Layers',
                 'Architectures' => [
@@ -221,9 +224,12 @@ class LambdaClientTest extends BaseTest
             ->with([
                 'FunctionName' => 'test-FunctionName',
                 'Role' => null,
-                'Description' => 'test-Description [57084773]',
+                'Description' => 'test-Description [ac420e45]',
                 'Timeout' => 300,
                 'MemorySize' => 512,
+                'EphemeralStorage' => [
+                    'Size' => 512
+                ],
                 'Layers' => [],
                 'PackageType' => 'Image',
                 'Architectures' => [
@@ -253,7 +259,7 @@ class LambdaClientTest extends BaseTest
         $this->lambda->shouldReceive('functionExists')
             ->once()
             ->withArgs(function ($f, $checksum) use ($function) {
-                return $f === $function && $checksum === 'b3422109';
+                return $f === $function && $checksum === 'e827998e';
             })
             ->andReturn(true);
 
