@@ -413,7 +413,7 @@ class Package
     {
         $path = $this->removeBasePath($path);
 
-        return $this->getBasePath() . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return $this->getBasePath() . ($path ? '/' . $path : $path);
     }
 
     /**
