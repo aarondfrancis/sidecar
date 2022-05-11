@@ -1,7 +1,7 @@
 # Changelog
 ## Unreleased 
 
-## 0.3.9
+## 0.3.10 - 2022-05-11
 
 ## What's Changed
 
@@ -12,6 +12,13 @@
 ### Fixed
 - Replace DIRECTORY_SEPARATOR with '/' by @w00key in https://github.com/hammerstonedev/sidecar/pull/69
 - Gracefully handle unexpected log output by @inxilpro in https://github.com/hammerstonedev/sidecar/pull/66
+
+## 0.3.9
+
+### Added
+
+- Add new runtimes to README by @datashaman in https://github.com/hammerstonedev/sidecar/pull/59
+- Add support for Guzzle v6 by @wilsenhc in https://github.com/hammerstonedev/sidecar/pull/58
 
 ## 0.3.8 - 2022-02-15
 
