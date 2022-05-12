@@ -4,6 +4,7 @@ namespace Hammerstone\Sidecar;
 
 abstract class Runtime
 {
+    public const NODEJS_16 = 'nodejs16.x';
     public const NODEJS_14 = 'nodejs14.x';
     public const NODEJS_12 = 'nodejs12.x';
     public const NODEJS_10 = 'nodejs10.x';

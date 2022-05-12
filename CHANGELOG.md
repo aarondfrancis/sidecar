@@ -1,6 +1,15 @@
 # Changelog
 ## Unreleased 
 
+## 0.3.11 - 2022-05-12
+
+## What's Changed
+
+### Added
+
+- Add [Node 16 runtime](https://aws.amazon.com/blogs/compute/node-js-16-x-runtime-now-available-in-aws-lambda/) const
+
+
 ## 0.3.10 - 2022-05-11
 
 ## What's Changed
