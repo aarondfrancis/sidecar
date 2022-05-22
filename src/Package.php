@@ -306,7 +306,7 @@ class Package
     /**
      * @return string
      */
-    public function normalizeSeparators($file) 
+    public function normalizeSeparators($file)
     {
         return str_replace(DIRECTORY_SEPARATOR, '/', $file);
     }
