@@ -305,6 +305,14 @@ class Package
 
     /**
      * @return string
+     */
+    public function normalizeSeparators($file) 
+    {
+        return str_replace(DIRECTORY_SEPARATOR, '/', $file);
+    }
+
+    /**
+     * @return string
      *
      * @throws \ZipStream\Exception
      */
@@ -350,19 +358,19 @@ class Package
             // Remove the base path so that everything inside
             // the zip is relative to the project root.
             $zip->addFileFromPath(
-                $this->removeBasePath($file), $file, $options
+                $this->normalizeSeparators($this->removeBasePath($file)), $file, $options
             );
         }
 
         foreach ($this->exactIncludes as $source => $destination) {
             $zip->addFileFromPath(
-                $destination, $source, $options
+                $this->normalizeSeparators($destination), $source, $options
             );
         }
 
         foreach ($this->stringContents as $destination => $stringContent) {
             $zip->addFile(
-                $destination, $stringContent, $options
+                $this->normalizeSeparators($destination), $stringContent, $options
             );
         }
 

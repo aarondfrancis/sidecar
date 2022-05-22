@@ -101,7 +101,7 @@ class Finder
                 continue;
             }
 
-            yield $file->getPath() . '/'. $file->getFilename();
+            yield $file->getPathname();
         }
     }
 
