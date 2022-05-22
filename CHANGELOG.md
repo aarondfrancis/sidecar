@@ -1,9 +1,18 @@
 # Changelog
 ## Unreleased 
 
-## 0.3.11 - 2022-05-12
+## 0.3.12 - 2022-05-22
 
-## What's Changed
+### Changed
+
+- Move `S3Client` to the container. by @lukeraymonddowning in https://github.com/hammerstonedev/sidecar/pull/72
+
+### Fixed
+
+- Fix for specifying a directory in a package when deploying from windows by @w00key
+  in https://github.com/hammerstonedev/sidecar/pull/73
+
+## 0.3.11 - 2022-05-12
 
 ### Added
 
@@ -11,8 +20,6 @@
 
 
 ## 0.3.10 - 2022-05-11
-
-## What's Changed
 
 ### Added
 - Add ECR permissions to deployment user by @bakerkretzmar in https://github.com/hammerstonedev/sidecar/pull/62
