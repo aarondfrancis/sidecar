@@ -5,13 +5,14 @@
 
 namespace Hammerstone\Sidecar;
 
-use Aws\S3\S3Client;
+use Hammerstone\Sidecar\Clients\S3Client;
 use Hammerstone\Sidecar\Exceptions\SidecarException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
+use ZipStream\Exception;
 use ZipStream\Option\Archive;
 use ZipStream\Option\File as FileOptions;
 use ZipStream\ZipStream;
@@ -281,7 +282,7 @@ class Package
     {
         try {
             $key = $this->upload();
-        } catch (\ZipStream\Exception $e) {
+        } catch (Exception $e) {
             throw new SidecarException('Sidecar could not create ZIP: ' . $e->getMessage());
         }
 
@@ -306,7 +307,7 @@ class Package
     /**
      * @return string
      *
-     * @throws \ZipStream\Exception
+     * @throws Exception
      */
     public function upload()
     {
@@ -442,21 +443,12 @@ class Package
     }
 
     /**
-     * @return string
+     * @return void
      */
     protected function registerStreamWrapper()
     {
         // Register the s3:// stream wrapper.
         // https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/s3-stream-wrapper.html
-        $client = new S3Client([
-            'version' => 'latest',
-            'region' => config('sidecar.aws_region'),
-            'credentials' => [
-                'key' => config('sidecar.aws_key'),
-                'secret' => config('sidecar.aws_secret'),
-            ]
-        ]);
-
-        $client->registerStreamWrapper();
+        app(S3Client::class)->registerStreamWrapper();
     }
 }
