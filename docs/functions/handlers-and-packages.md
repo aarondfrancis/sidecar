@@ -292,6 +292,10 @@ Consider instead making a new `package.json` solely for your Lambda functions. I
 
 This will give you a much smaller `node_modules` directory, that you may be able to ship directly to Lambda.
 
+### Deploying to Vapor with node_modules
+
+Vapor ignores any node_modules folders by default. When you deploy to Vapor, make sure you have `exclude-node-modules: false` inside your `vapor.yml` file at the top level. You can clean up node_modules that shouldn't be included with a build step.
+
 ### Compiling Your Handler with NCC
 
 Sometimes even when you separate your `node_modules`, you may still end up with hundreds of megabytes of module code that you don't necessarily need. If that's the case, your best option is going to be to use a tool called [NCC](https://github.com/vercel/ncc) to compile your entire handler + supporting code down to a _single_ file.
