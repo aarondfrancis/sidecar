@@ -18,7 +18,9 @@ use Illuminate\Support\Str;
 class LambdaClient extends BaseClient
 {
     const CREATED = 1;
+
     const UPDATED = 2;
+
     const NOOP = 3;
 
     public function __construct(array $args)

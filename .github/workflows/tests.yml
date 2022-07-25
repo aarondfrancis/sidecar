@@ -11,11 +11,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'ci skip')"
     strategy:
       fail-fast: false
       matrix:
-        php: [ 7.2, 7.3, 7.4, 8.0 ]
+        php: [ 7.2, 7.3, 7.4, 8.0, 8.1 ]
         laravel: [ 7.*, 8.*, 9.* ]
         guzzle: [ 6.*, 7.* ]
         dependency-version: [ prefer-lowest, prefer-stable ]
@@ -34,9 +33,17 @@ jobs:
             testbench: 7.*
 
         exclude:
+          - laravel: 7.*
+            php: 8.1
+            
             # Laravel 8 requires PHP 7.3.
           - laravel: 8.*
             php: 7.2
+
+          # PHP 8.1 requires Laravel 8.65, so skip lowest
+          - laravel: 8.*
+            php: 8.1
+            dependency-version: prefer-lowest
 
             # Laravel 9 requires PHP 8.0
           - laravel: 9.*
