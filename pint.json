@@ -7,6 +7,7 @@
         "phpdoc_summary": false,
         "concat_space": {
             "spacing": "one"
-        }
+        },
+        "trailing_comma_in_multiline": false
     }
 }
