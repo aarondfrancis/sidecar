@@ -4,6 +4,9 @@
         "not_operator_with_successor_space": false,
         "cast_spaces": false,
         "heredoc_to_nowdoc": false,
-        "phpdoc_summary": false
+        "phpdoc_summary": false,
+        "concat_space": {
+            "spacing": "one"
+        }
     }
 }
