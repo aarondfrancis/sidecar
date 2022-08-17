@@ -107,7 +107,7 @@ abstract class LambdaFunction
      */
     public function prefix()
     {
-        return 'SC-' . config('app.name') . '-' . Sidecar::getEnvironment() . '-';
+        return 'SC-' . config('sidecar.app_name') . '-' . Sidecar::getEnvironment() . '-';
     }
 
     /**
@@ -133,7 +133,7 @@ abstract class LambdaFunction
     public function description()
     {
         return sprintf('%s [%s]: Sidecar function `%s`.', ...[
-            config('app.name'),
+            config('sidecar.app_name'),
             config('app.env'),
             static::class,
         ]);

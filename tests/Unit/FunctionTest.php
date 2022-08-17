@@ -13,11 +13,34 @@ class FunctionTest extends BaseTest
     public function app_name_with_a_space_gets_dashed()
     {
         config([
+            'sidecar.app_name' => 'Amazing App'
+        ]);
+
+        $this->assertEquals(
+            'SC-Amazing-App-testing-ecar-Tests-Unit-Support-EmptyTestFunction',
+            (new EmptyTestFunction)->nameWithPrefix()
+        );
+    }
+
+    /** @test */
+    public function app_name_defaults_to_laravel_app_name_when_not_defined()
+    {
+        config([
             'app.name' => 'Amazing App'
         ]);
 
         $this->assertEquals(
             'SC-Amazing-App-testing-ecar-Tests-Unit-Support-EmptyTestFunction',
+            (new EmptyTestFunction)->nameWithPrefix()
+        );
+
+        config([
+            'app.name' => 'Laravel',
+            'sidecar.app_name' => 'Much Better App'
+        ]);
+
+        $this->assertEquals(
+            'SC-Much-Better-App-testing-ecar-Tests-Unit-Support-EmptyTestFunction',
             (new EmptyTestFunction)->nameWithPrefix()
         );
     }

@@ -42,10 +42,26 @@ return [
 ];
 ```
 
+config/sidecar.php {.filename}
+## Application name
+
+The name of the application will be used to generate the function name, if not provided, it will default to the value of `APP_NAME` environment variable.
+
+```php
+return [
+    /*
+     * The name of the application. This value will be used to name the functions
+     * when deploying. It defaults to the Laravel application's name.
+     */
+    'app_name' => env('SIDECAR_APP_NAME', env('APP_NAME')),
+];
+```
+
 ## Function Timeout & Memory
 
 The timeout and memory can be customized on a per-function basis, but if they aren't, the defaults from your `sidecar.php` file will be used.
 
+config/sidecar.php {.filename}
 ```php
 return [
     /*
@@ -66,6 +82,7 @@ return [
 
 The ephemeral storage can also be customized, and again, if it isn't, the default from your `sidecar.php` file will be used.
 
+config/sidecar.php {.filename}
 ```php
 return [
     /*
@@ -104,6 +121,7 @@ By default, the environment name that Sidecar uses is your `APP_ENV` from your `
 
 If you'd like to use something other than the `APP_ENV`, you can do so by providing a `SIDECAR_ENV` environment variable.
 
+config/sidecar.php {.filename}
 ```php
 return [
     /*
