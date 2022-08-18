@@ -23,25 +23,33 @@ class FunctionTest extends BaseTest
     }
 
     /** @test */
-    public function app_name_defaults_to_laravel_app_name_when_not_defined()
+    public function sidecar_app_name_ignores_laravel_app_name()
     {
         config([
-            'app.name' => 'Amazing App',
-            'sidecar.app_name' => null,
+            'app.name' => 'Laravel',
+            'sidecar.app_name' => 'Sidecar',
         ]);
 
         $this->assertEquals(
-            'SC-Amazing-App-testing-ecar-Tests-Unit-Support-EmptyTestFunction',
+            'SC-Sidecar-testing--Sidecar-Tests-Unit-Support-EmptyTestFunction',
             (new EmptyTestFunction)->nameWithPrefix()
         );
 
         config([
-            'app.name' => 'Laravel',
-            'sidecar.app_name' => 'Much Better App'
+            'app.name' => 'Hammerstone',
         ]);
 
         $this->assertEquals(
-            'SC-Much-Better-App-testing-ecar-Tests-Unit-Support-EmptyTestFunction',
+            'SC-Sidecar-testing--Sidecar-Tests-Unit-Support-EmptyTestFunction',
+            (new EmptyTestFunction)->nameWithPrefix()
+        );
+
+        config([
+            'sidecar.app_name' => 'Laravel',
+        ]);
+
+        $this->assertEquals(
+            'SC-Laravel-testing--Sidecar-Tests-Unit-Support-EmptyTestFunction',
             (new EmptyTestFunction)->nameWithPrefix()
         );
     }
