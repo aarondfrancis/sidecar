@@ -26,7 +26,8 @@ class FunctionTest extends BaseTest
     public function app_name_defaults_to_laravel_app_name_when_not_defined()
     {
         config([
-            'app.name' => 'Amazing App'
+            'app.name' => 'Amazing App',
+            'sidecar.app_name' => null,
         ]);
 
         $this->assertEquals(
