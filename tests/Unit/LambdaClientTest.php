@@ -280,7 +280,7 @@ class LambdaClientTest extends BaseTest
         $this->lambda->shouldReceive('createAlias')
             ->once()
             ->with([
-                'FunctionName' => 'SC-Laravel-testing--Sidecar-Tests-Unit-Support-EmptyTestFunction',
+                'FunctionName' => 'sc-laravel-testing-7a7aecar-tests-unit-support-emptytestfunction',
                 'Name' => 'active',
                 'FunctionVersion' => '82',
             ]);
@@ -300,7 +300,7 @@ class LambdaClientTest extends BaseTest
         $this->lambda->shouldReceive('updateAlias')
             ->once()
             ->with([
-                'FunctionName' => 'SC-Laravel-testing--Sidecar-Tests-Unit-Support-EmptyTestFunction',
+                'FunctionName' => 'sc-laravel-testing-7a7aecar-tests-unit-support-emptytestfunction',
                 'Name' => 'active',
                 'FunctionVersion' => '82',
             ]);
@@ -320,7 +320,7 @@ class LambdaClientTest extends BaseTest
         $this->lambda->shouldReceive('updateAlias')
             ->once()
             ->with([
-                'FunctionName' => 'SC-Laravel-testing--Sidecar-Tests-Unit-Support-EmptyTestFunction',
+                'FunctionName' => 'sc-laravel-testing-7a7aecar-tests-unit-support-emptytestfunction',
                 'Name' => 'foo',
                 'FunctionVersion' => '100',
             ]);
