@@ -28,7 +28,7 @@ class ExecuteMultipleTest extends BaseTest
     protected function expectedArgs($args = [])
     {
         return array_merge([
-            'FunctionName' => 'SC-Laravel-testing--Sidecar-Tests-Unit-Support-EmptyTestFunction:active',
+            'FunctionName' => 'sc-laravel-testing-7a7aecar-tests-unit-support-emptytestfunction:active',
             'InvocationType' => 'RequestResponse',
             'LogType' => 'Tail',
             'Payload' => '[]'

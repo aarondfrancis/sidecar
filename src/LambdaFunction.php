@@ -107,7 +107,11 @@ abstract class LambdaFunction
      */
     public function prefix()
     {
-        return 'SC-' . config('app.name') . '-' . Sidecar::getEnvironment() . '-';
+        return Str::slug(implode('-', [
+            config('sidecar.lambda_prefix', 'SC'),
+            config('app.name'),
+            Sidecar::getEnvironment()
+        ]));
     }
 
     /**
@@ -118,11 +122,32 @@ abstract class LambdaFunction
     public function nameWithPrefix()
     {
         $prefix = $this->prefix();
+        $name = $this->name();
 
-        // Names can only be 64 characters long.
-        $name = $prefix . substr($this->name(), -(64 - strlen($prefix)));
+        // Prefix is allowed to consume up to 32 characters
+        // of the name, if it's longer we chop off the
+        // end and add a hash for uniqueness.
+        if (strlen($prefix) > 32) {
+            $hash = substr(md5($prefix), 0, 4);
+            $prefix = substr($prefix, 0, 28);
+            $prefix = $prefix . $hash;
+        }
 
-        return str_replace(' ', '-', $name);
+        // The name is allowed to consume the rest of the 64
+        // characters allowed by AWS, save for 1 which goes
+        // to the delimiter between prefix and name.
+        $remainder = 64 - 1 - strlen($prefix);
+
+        if (strlen($name) > $remainder) {
+            $hash = substr(md5($name), 0, 4);
+            // Keep the end of the function name, as that's
+            // where the most valuable information usually
+            // lies. For the prefix, we kept the beginning.
+            $name = substr($name, -($remainder - 4));
+            $name = $hash . $name;
+        }
+
+        return Str::slug("$prefix-$name");
     }
 
     /**

@@ -17,8 +17,57 @@ class FunctionTest extends BaseTest
         ]);
 
         $this->assertEquals(
-            'SC-Amazing-App-testing-ecar-Tests-Unit-Support-EmptyTestFunction',
+            'sc-amazing-app-testing-7a7a-tests-unit-support-emptytestfunction',
             (new EmptyTestFunction)->nameWithPrefix()
+        );
+    }
+
+    /** @test */
+    public function function_names_over_64_get_limited_to_64()
+    {
+        config([
+            'app.name' => 'Amazing App Amazing App Amazing App Amazing App Amazing App Amazing App'
+        ]);
+
+        $function = new EmptyTestFunction;
+        $name = $function->nameWithPrefix();
+
+        $this->assertGreaterThan(32, strlen($function->name()));
+        $this->assertEquals(64, strlen($name));
+        $this->assertEquals('sc-amazing-app-amazing-app-a0528-7a7at-support-emptytestfunction', $name);
+    }
+
+    /** @test */
+    public function short_prefix_means_longer_name()
+    {
+        config([
+            'app.name' => 'A'
+        ]);
+
+        $function = new EmptyTestFunction;
+        $name = $function->nameWithPrefix();
+
+        $this->assertEquals(64, strlen($name));
+        $this->assertEquals('sc-a-testing-7a7ane-sidecar-tests-unit-support-emptytestfunction', $name);
+    }
+
+    /** @test */
+    public function changing_the_prefix_changes_the_prefix()
+    {
+        $function = (new EmptyTestFunction);
+
+        $this->assertEquals(
+            'sc-laravel-testing-7a7aecar-tests-unit-support-emptytestfunction',
+            $function->nameWithPrefix()
+        );
+
+        config([
+            'sidecar.lambda_prefix' => 'FOO',
+        ]);
+
+        $this->assertEquals(
+            'foo-laravel-testing-7a7acar-tests-unit-support-emptytestfunction',
+            $function->nameWithPrefix()
         );
     }
 
