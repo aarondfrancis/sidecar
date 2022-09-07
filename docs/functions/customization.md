@@ -7,6 +7,7 @@ The only two things _required_ for a Sidecar function are the [package and the h
 
 Lambda supports multiple languages through the use of runtimes. You can choose any of the following runtimes by returning its corresponding identifier:
 
+- Node.js 16: `nodejs16.x`
 - Node.js 14: `nodejs14.x`
 - Node.js 12: `nodejs12.x`
 - Node.js 10: `nodejs10.x`
@@ -229,4 +230,3 @@ You likely won't need to change this, but if you do, *you must include the envir
 ## Description
 
 The description is totally up to you, you'll likely not need to change it at all. We have provided a descriptive default. Sidecar doesn't do anything with it.
-
