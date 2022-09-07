@@ -18,8 +18,8 @@ abstract class LambdaFunction
     /**
      * Execute the current function and return the response.
      *
-     * @param array $payload
-     * @param bool $async
+     * @param  array  $payload
+     * @param  bool  $async
      * @return SettledResult|PendingResult
      */
     public static function execute($payload = [], $async = false)
@@ -30,7 +30,7 @@ abstract class LambdaFunction
     /**
      * Execute the current function and return the response.
      *
-     * @param array $payload
+     * @param  array  $payload
      * @return PendingResult
      */
     public static function executeAsync($payload = [])
@@ -42,7 +42,7 @@ abstract class LambdaFunction
      * Execute the current function and return the response.
      *
      * @param $payloads
-     * @param bool $async
+     * @param  bool  $async
      * @return array
      * @throws \Throwable
      */
@@ -65,7 +65,7 @@ abstract class LambdaFunction
 
     /**
      * Deploy this function only.
-     * @param bool $activate
+     * @param  bool  $activate
      */
     public static function deploy($activate = true)
     {
@@ -108,9 +108,32 @@ abstract class LambdaFunction
     public function nameWithPrefix()
     {
         $prefix = $this->prefix();
-        $trimmed_name = substr($this->name(), -(64 - strlen($prefix)));
-        
-        return Str::slug("{$prefix}-{$trimmed_name}");
+        $name = $this->name();
+
+        // Prefix is allowed to consume up to 32 characters
+        // of the name, if it's longer we chop off the
+        // end and add a hash for uniqueness.
+        if (strlen($prefix) > 32) {
+            $hash = substr(md5($prefix), 0, 4);
+            $prefix = substr($prefix, 0, 28);
+            $prefix = $prefix . $hash;
+        }
+
+        // The name is allowed to consume the rest of the 64
+        // characters allowed by AWS, save for 1 which goes
+        // to the delimiter between prefix and name.
+        $remainder = 64 - 1 - strlen($prefix);
+
+        if (strlen($name) > $remainder) {
+            $hash = substr(md5($name), 0, 4);
+            // Keep the end of the function name, as that's
+            // where the most valuable information usually
+            // lies. For the prefix, we kept the beginning.
+            $name = substr($name, -($remainder - 4));
+            $name = $hash . $name;
+        }
+
+        return Str::slug("$prefix-$name");
     }
 
     /**
@@ -142,7 +165,7 @@ abstract class LambdaFunction
      * The default representation of this function as an HTTP response.
      *
      * @param $request
-     * @param SettledResult $result
+     * @param  SettledResult  $result
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
@@ -154,7 +177,7 @@ abstract class LambdaFunction
     }
 
     /**
-     * @param Result|PromiseInterface $raw
+     * @param  Result|PromiseInterface  $raw
      * @return SettledResult|PendingResult
      * @throws SidecarException
      */
@@ -172,7 +195,7 @@ abstract class LambdaFunction
     }
 
     /**
-     * @param Result $raw
+     * @param  Result  $raw
      * @return SettledResult
      */
     public function toSettledResult(Result $raw)
@@ -181,7 +204,7 @@ abstract class LambdaFunction
     }
 
     /**
-     * @param PromiseInterface $raw
+     * @param  PromiseInterface  $raw
      * @return PendingResult
      */
     public function toPendingResult(PromiseInterface $raw)
@@ -345,8 +368,8 @@ abstract class LambdaFunction
                 ? $this->makePackage()->deploymentConfiguration()
                 : $this->package(),
             'Description' => $this->description(),
-            'Timeout' => (int)$this->timeout(),
-            'MemorySize' => (int)$this->memory(),
+            'Timeout' => (int) $this->timeout(),
+            'MemorySize' => (int) $this->memory(),
             'Layers' => $this->layers(),
             'Publish' => true,
             'PackageType' => $this->packageType(),
