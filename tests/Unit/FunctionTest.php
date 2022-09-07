@@ -52,6 +52,26 @@ class FunctionTest extends BaseTest
     }
 
     /** @test */
+    public function changing_the_prefix_changes_the_prefix()
+    {
+        $function = (new EmptyTestFunction);
+
+        $this->assertEquals(
+            'sc-laravel-testing-7a7aecar-tests-unit-support-emptytestfunction',
+            $function->nameWithPrefix()
+        );
+
+        config([
+            'sidecar.lambda_prefix' => 'FOO',
+        ]);
+
+        $this->assertEquals(
+            'foo-laravel-testing-7a7acar-tests-unit-support-emptytestfunction',
+            $function->nameWithPrefix()
+        );
+    }
+
+    /** @test */
     public function memory_and_timeout_get_cast_to_ints()
     {
         config([
