@@ -91,9 +91,6 @@ class CreateExecutionRole extends BaseAction
                     'logs:PutLogEvents',
                     'lambda:invokeFunction',
                     's3:*',
-                    'ses:*',
-                    'sqs:*',
-                    'dynamodb:*'
                 ],
             ]]
         ];

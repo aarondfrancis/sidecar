@@ -6,6 +6,7 @@
 namespace Hammerstone\Sidecar\Tests\Unit;
 
 use Aws\Lambda\Exception\LambdaException;
+use Hammerstone\Sidecar\Architecture;
 use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunction;
 use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunctionWithImage;
@@ -171,7 +172,7 @@ class LambdaClientTest extends BaseTest
         $this->lambda->shouldReceive('functionExists')
             ->once()
             ->withArgs(function ($f, $checksum) use ($function) {
-                return $f === $function && $checksum === '5000a525';
+                return $f === $function && $checksum === 'e827998e';
             })
             ->andReturn(false);
 
@@ -182,10 +183,16 @@ class LambdaClientTest extends BaseTest
                 'Runtime' => 'test-Runtime',
                 'Role' => 'test-Role',
                 'Handler' => 'test-Handler',
-                'Description' => 'test-Description [5000a525]',
+                'Description' => 'test-Description [e827998e]',
                 'Timeout' => 'test-Timeout',
+                'EphemeralStorage' => [
+                    'Size' => 'test-EphemeralStorage'
+                ],
                 'MemorySize' => 'test-MemorySize',
                 'Layers' => 'test-Layers',
+                'Architectures' => [
+                    Architecture::X86_64
+                ]
             ]);
 
         $this->lambda->shouldReceive('updateFunctionCode')
@@ -195,6 +202,9 @@ class LambdaClientTest extends BaseTest
                 'S3Bucket' => 'test-bucket',
                 'S3Key' => 'test-key',
                 'Publish' => 'test-Publish',
+                'Architectures' => [
+                    Architecture::X86_64
+                ]
             ]);
 
         $this->lambda->updateExistingFunction($function);
@@ -214,11 +224,17 @@ class LambdaClientTest extends BaseTest
             ->with([
                 'FunctionName' => 'test-FunctionName',
                 'Role' => null,
-                'Description' => 'test-Description [ffeb0fec]',
+                'Description' => 'test-Description [ac420e45]',
                 'Timeout' => 300,
                 'MemorySize' => 512,
+                'EphemeralStorage' => [
+                    'Size' => 512
+                ],
                 'Layers' => [],
                 'PackageType' => 'Image',
+                'Architectures' => [
+                    Architecture::X86_64
+                ]
             ]);
 
         $this->lambda->shouldReceive('updateFunctionCode')
@@ -227,6 +243,9 @@ class LambdaClientTest extends BaseTest
                 'FunctionName' => 'test-FunctionName',
                 'Publish' => 'test-Publish',
                 'ImageUri' => '123.dkr.ecr.us-west-2.amazonaws.com/image:latest',
+                'Architectures' => [
+                    Architecture::X86_64
+                ]
             ]);
 
         $this->lambda->updateExistingFunction($function);
@@ -240,7 +259,7 @@ class LambdaClientTest extends BaseTest
         $this->lambda->shouldReceive('functionExists')
             ->once()
             ->withArgs(function ($f, $checksum) use ($function) {
-                return $f === $function && $checksum === '5000a525';
+                return $f === $function && $checksum === 'e827998e';
             })
             ->andReturn(true);
 

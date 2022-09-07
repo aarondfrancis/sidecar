@@ -1,7 +1,7 @@
 
 # Configuring Sidecar
 
-After running `php artisan sidecar:install`, you should have a `sidecar.php` file in your `config` folder. 
+After running `php artisan sidecar:install`, you should have a `sidecar.php` file in your `config` folder.
 
 There are several configuration options in that file, which we'll cover in this section.
 
@@ -17,11 +17,11 @@ To get started, run the following command:
 php artisan sidecar:configure
 ```
 
-The first thing it will do is guide you through creating a new AWS user in the web interface, which it will then use to create everything else it needs. 
+The first thing it will do is guide you through creating a new AWS user in the web interface, which it will then use to create everything else it needs.
 
 Note that this won't start any services, it just creates some policies in IAM.
 
-This is the same general method that Laravel Vapor uses: you provide it with Admin Access and then it configures itself. Sidecar takes it a step further and provides you the option to self-destruct the admin keys once it has configured itself. 
+This is the same general method that Laravel Vapor uses: you provide it with Admin Access and then it configures itself. Sidecar takes it a step further and provides you the option to self-destruct the admin keys once it has configured itself.
 
 If you'd like to manually set everything up, take a look at the command to see exactly what it's doing, and you can recreate it in the IAM portal.
 
@@ -62,15 +62,29 @@ return [
 ];
 ```
 
+## Function Storage
+
+The ephemeral storage can also be customized, and again, if it isn't, the default from your `sidecar.php` file will be used.
+
+```php
+return [
+    /*
+     * The default ephemeral storage for your functions, in megabytes.
+     * This can be overridden per function.
+     */
+    'storage' => env('SIDECAR_STORAGE', 512),
+];
+```
+
 ## Package Base Path
 
-By default, all of your Lambda resources are going to be relative to the `base_path()` of your application. That means when you're defining your code packages, you'll use the root of your application as the starting point. 
+By default, all of your Lambda resources are going to be relative to the `base_path()` of your application. That means when you're defining your code packages, you'll use the root of your application as the starting point.
 
 If all of your Lambda code lives in e.g. `resources/lambda`, then you can update your `package_base_path` to reflect that.
 
 config/sidecar.php {.filename}
 ```php
-return [ 
+return [
     /*
      * The base path for your package files. If you e.g. keep
      * all your Lambda package files in your resource path,
@@ -91,8 +105,8 @@ By default, the environment name that Sidecar uses is your `APP_ENV` from your `
 If you'd like to use something other than the `APP_ENV`, you can do so by providing a `SIDECAR_ENV` environment variable.
 
 ```php
-return [ 
-    /*  
+return [
+    /*
      * Sidecar separates functions by environment. If you'd like to change
      * your Sidecar environment without changing your entire application
      * environment, you may do so here.
@@ -100,5 +114,5 @@ return [
     'env' => env('SIDECAR_ENV', env('APP_ENV')),
 ];
 ```
-    
+
 To learn much more about environments and how to use them, see the [Environments](/environments) section.

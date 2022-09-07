@@ -31,11 +31,26 @@ class DestroyAdminKeys extends BaseAction
 
         $name = $user['User']['UserName'];
 
+        $isSidecar = $name === 'sidecar-cli-helper';
+
+        if (!$isSidecar) {
+            $this->command->info('');
+            $this->command->error(' ********************************************************************************* ');
+            $this->command->error(' *                                                                               * ');
+            $this->command->error(' *  The admin keys you provided are not Sidecar specific. Be cautious deleting.  * ');
+            $this->command->error(' *                                                                               * ');
+            $this->command->error(' ********************************************************************************* ');
+        }
+
         $question = '' .
             "Now that everything is setup, would you like to remove the admin access keys for user `$name` from AWS? \n" .
             ' Sidecar no longer needs them.';
 
-        if (!$this->command->confirm($question, $default = true)) {
+        // If the keys were created specifically for us, we can default to `true`,
+        // because that is most safe. If not, defaulting to `false` is most safe!
+        if (!$this->command->confirm($question, $default = $isSidecar)) {
+            $this->progress('Not deleting keys');
+
             return;
         }
 

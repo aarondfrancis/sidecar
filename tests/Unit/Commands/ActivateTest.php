@@ -25,7 +25,7 @@ class ActivateTest extends BaseTest
 
         Event::fake();
 
-        $this->lambda = $this->mock(LambdaClient::class);
+        $this->lambda = $this->partialMock(LambdaClient::class);
     }
 
     public function mockActivating()
@@ -118,6 +118,8 @@ class ActivateTest extends BaseTest
         $this->lambda->shouldReceive('aliasVersion')
             ->andReturn(LambdaClient::UPDATED);
 
+        $this->lambda->shouldReceive('waitUntil')->once();
+
         config()->set('sidecar.functions', [
             DeploymentTestFunction::class
         ]);
@@ -126,7 +128,7 @@ class ActivateTest extends BaseTest
     }
 
     /** @test */
-    public function it_should_not_pre_warm_functions_if_the_latest_version_is_different()
+    public function it_should_not_pre_warm_functions_if_the_latest_version_is_the_same()
     {
         $this->lambda->shouldReceive('latestVersionHasAlias')
             ->andReturn(true);
@@ -139,6 +141,8 @@ class ActivateTest extends BaseTest
 
         $this->lambda->shouldReceive('aliasVersion')
             ->andReturn(LambdaClient::UPDATED);
+
+        $this->lambda->shouldReceive('waitUntil')->once();
 
         config()->set('sidecar.functions', [
             DeploymentTestFunction::class

@@ -162,6 +162,10 @@ class ExampleFunction extends LambdaFunction
 }
 ```
 
+> Note; if you are using any external dependencies (i.e packages installed in your `node_modules`), you need to ship the dependencies also.
+> For example, if you have installed some Javascript packages for your Javascript function, and these were installed alongside your function in the `resources/lambda` folder, then you would need to include the whole directory as detailed above.
+> See the section below on "Strategies for Dealing With node_modules" for more control over this
+
 ## The Package Class
 
 If you need a little more fine-grained control over the packaging process, you can use the `Package` class instead of the simpler array format.
@@ -246,7 +250,7 @@ As Sidecar is building your package to be uploaded to S3, it creates a hash of t
 
 ## Package Limitations
 
-There is a 250mb hard upper limit of imposed by Amazon on the size of your Lambda package. That means that when your package is _uncompressed_ it must be smaller that 250mb, _including_ all of your layers.
+There is a 250mb hard upper limit imposed by Amazon on the size of your Lambda package. That means that when your package is _uncompressed_ it must be smaller that 250mb, _including_ all of your layers.
 
 You can read it the official docs [here](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) or in a good real-world boundary-testing article [here](https://hackernoon.com/exploring-the-aws-lambda-deployment-limits-9a8384b0bec3).
 

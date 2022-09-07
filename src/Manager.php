@@ -15,6 +15,7 @@ use Hammerstone\Sidecar\Events\BeforeFunctionExecuted;
 use Hammerstone\Sidecar\Exceptions\FunctionNotFoundException;
 use Hammerstone\Sidecar\Results\PendingResult;
 use Hammerstone\Sidecar\Results\SettledResult;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Traits\Macroable;
 use Throwable;
@@ -30,7 +31,7 @@ class Manager
 
     /**
      * @param $version
-     * @param null $callback
+     * @param  null  $callback
      * @return Closure
      */
     public function overrideExecutionVersion($version, $callback = null)
@@ -54,14 +55,15 @@ class Manager
     }
 
     /**
-     * @param string|LambdaFunction $function
-     * @param array $payload
-     * @param bool $async
+     * @param  string|LambdaFunction  $function
+     * @param  array  $payload
+     * @param  bool  $async
      * @return PendingResult|SettledResult
+     *
      * @throws Exceptions\SidecarException
      * @throws FunctionNotFoundException
      */
-    public function execute($function, $payload = [], $async = false)
+    public function execute($function, $payload = [], $async = false, $invocationType = 'RequestResponse')
     {
         // Could be a FQCN.
         if (is_string($function)) {
@@ -69,6 +71,10 @@ class Manager
         }
 
         $payload = $function->preparePayload($payload);
+
+        if ($payload instanceof Arrayable) {
+            $payload = $payload->toArray();
+        }
 
         $method = $async ? 'invokeAsync' : 'invoke';
 
@@ -84,7 +90,7 @@ class Manager
                 // `RequestResponse` is a synchronous call, vs `Event` which
                 // is a fire-and-forget, we can make it async by using the
                 // invokeAsync method.
-                'InvocationType' => 'RequestResponse',
+                'InvocationType' => $invocationType,
 
                 // Include the execution log in the response.
                 'LogType' => 'Tail',
@@ -112,8 +118,9 @@ class Manager
 
     /**
      * @param $function
-     * @param array $payload
+     * @param  array  $payload
      * @return PendingResult|Results\SettledResult
+     *
      * @throws Exceptions\SidecarException
      * @throws FunctionNotFoundException
      */
@@ -125,8 +132,9 @@ class Manager
     /**
      * @param $function
      * @param $payloads
-     * @param bool $async
+     * @param  bool  $async
      * @return array
+     *
      * @throws Exceptions\SidecarException
      * @throws FunctionNotFoundException
      */
@@ -154,6 +162,7 @@ class Manager
     /**
      * @param $params
      * @return array
+     *
      * @throws Exceptions\SidecarException
      * @throws FunctionNotFoundException
      */
@@ -163,9 +172,22 @@ class Manager
     }
 
     /**
+     * @param $function
+     * @param  array  $payload
+     * @return PendingResult|SettledResult
+     *
+     * @throws Exceptions\SidecarException
+     * @throws FunctionNotFoundException
+     */
+    public function executeAsEvent($function, $payload = [])
+    {
+        return $this->execute($function, $payload, $async = false, $invocationType = 'Event');
+    }
+
+    /**
      * Get an array of instantiated functions.
      *
-     * @param null $functions
+     * @param  null  $functions
      * @return array
      */
     public function instantiatedFunctions($functions = null)
@@ -180,7 +202,8 @@ class Manager
     /**
      * Warm functions by firing a set of async requests at them.
      *
-     * @param null|array $functions
+     * @param  null|array  $functions
+     *
      * @throws Throwable
      */
     public function warm($functions = null)
@@ -193,10 +216,11 @@ class Manager
     /**
      * Warm a single function, with the option to override the version.
      *
-     * @param LambdaFunction $function
-     * @param bool $async
-     * @param string $version
+     * @param  LambdaFunction  $function
+     * @param  bool  $async
+     * @param  string  $version
      * @return array
+     *
      * @throws Throwable
      */
     public function warmSingle(LambdaFunction $function, $async = true, $version = 'active')

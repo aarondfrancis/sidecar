@@ -195,4 +195,79 @@ class ExecuteTest extends BaseTest
 
         $this->assertEvents();
     }
+
+    /** @test */
+    public function event_invocation_execution_by_function()
+    {
+        $this->mockInvoke([
+            'InvocationType' => 'Event',
+            'Payload' => '{"foo":"bar"}'
+        ]);
+
+        EmptyTestFunction::execute([
+            'foo' => 'bar'
+        ], $async = false, $invocationType = 'Event');
+
+        $this->assertEvents();
+    }
+
+    /** @test */
+    public function event_invocation_execution_by_function_with_event_helper()
+    {
+        $this->mockInvoke([
+            'InvocationType' => 'Event',
+            'Payload' => '{"foo":"bar"}'
+        ]);
+
+        EmptyTestFunction::executeAsEvent([
+            'foo' => 'bar'
+        ]);
+
+        $this->assertEvents();
+    }
+
+    /** @test */
+    public function event_invocation_execution_by_facade()
+    {
+        $this->mockInvoke([
+            'InvocationType' => 'Event',
+            'Payload' => '{"foo":"bar"}'
+        ]);
+
+        Sidecar::execute(EmptyTestFunction::class, [
+            'foo' => 'bar'
+        ], $async = false, $invocationType = 'Event');
+
+        $this->assertEvents();
+    }
+
+    /** @test */
+    public function event_invocation_execution_by_facade_directly()
+    {
+        $this->mockInvoke([
+            'InvocationType' => 'Event',
+            'Payload' => '{"foo":"bar"}'
+        ]);
+
+        Sidecar::executeAsEvent(EmptyTestFunction::class, [
+            'foo' => 'bar'
+        ]);
+
+        $this->assertEvents();
+    }
+
+    /** @test */
+    public function event_invocation_execution_by_facade_with_instantiated_class()
+    {
+        $this->mockInvoke([
+            'InvocationType' => 'Event',
+            'Payload' => '{"foo":"bar"}'
+        ]);
+
+        Sidecar::execute(new EmptyTestFunction, [
+            'foo' => 'bar'
+        ], $async = false, $invocationType = 'Event');
+
+        $this->assertEvents();
+    }
 }

@@ -13,12 +13,14 @@ class Install extends Command
 {
     /**
      * The name and signature of the console command.
+     *
      * @var string
      */
     protected $signature = 'sidecar:install';
 
     /**
      * The console command description.
+     *
      * @var string
      */
     protected $description = 'Install the Sidecar config file into your app.';

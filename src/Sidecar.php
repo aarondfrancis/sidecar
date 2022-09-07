@@ -11,6 +11,7 @@ class Sidecar extends Facade
 {
     /**
      * @see \Hammerstone\Sidecar\Manager
+     *
      * @return string
      */
     protected static function getFacadeAccessor()

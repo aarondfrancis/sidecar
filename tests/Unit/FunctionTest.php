@@ -72,16 +72,18 @@ class FunctionTest extends BaseTest
     }
 
     /** @test */
-    public function memory_and_timeout_get_cast_to_ints()
+    public function memory_and_timeout_and_storage_get_cast_to_ints()
     {
         config([
             'sidecar.timeout' => '5',
-            'sidecar.memory' => '500'
+            'sidecar.memory' => '500',
+            'sidecar.storage' => '1024'
         ]);
 
         $array = (new EmptyTestFunction)->toDeploymentArray();
 
         $this->assertSame(5, $array['Timeout']);
         $this->assertSame(500, $array['MemorySize']);
+        $this->assertSame(1024, $array['EphemeralStorage']['Size']);
     }
 }

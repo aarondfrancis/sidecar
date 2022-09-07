@@ -46,8 +46,12 @@ class DeploymentTestFunction extends LambdaFunction
             'Description' => 'test-Description',
             'Timeout' => 'test-Timeout',
             'MemorySize' => 'test-MemorySize',
+            'EphemeralStorage' => [
+                'Size' => 'test-EphemeralStorage'
+            ],
             'Layers' => 'test-Layers',
             'Publish' => 'test-Publish',
+            'Architectures' => ['x86_64'],
         ];
     }
 }

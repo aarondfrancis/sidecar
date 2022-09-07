@@ -13,6 +13,7 @@ use Hammerstone\Sidecar\LambdaFunction;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Throwable;
 
 class SettledResult implements Responsable, ResultContract
 {
@@ -78,8 +79,9 @@ class SettledResult implements Responsable, ResultContract
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     *
      * @throws Exception
      */
     public function toResponse($request)
@@ -107,7 +109,7 @@ class SettledResult implements Responsable, ResultContract
     /**
      * The Payload of the result is always JSON encoded, even if it's not JSON.
      *
-     * @param int $options
+     * @param  int  $options
      * @return mixed
      */
     public function body($options = JSON_OBJECT_AS_ARRAY)
@@ -185,7 +187,7 @@ class SettledResult implements Responsable, ResultContract
         return Arr::get($this->body(), 'trace', []);
     }
 
-    protected function errorAsString()
+    public function errorAsString()
     {
         if (!$this->isError()) {
             return '';
@@ -210,29 +212,33 @@ class SettledResult implements Responsable, ResultContract
         $lines = explode("\n", $lines);
 
         $lines = array_map(function ($line) use (&$reportLineReached) {
-            if ($reportLineReached) {
-                return null;
+            try {
+                if ($reportLineReached) {
+                    return null;
+                }
+
+                if (Str::startsWith($line, 'START RequestId:')) {
+                    return $this->parseStartLine($line);
+                }
+
+                if (Str::startsWith($line, 'END RequestId:')) {
+                    return null;
+                }
+
+                if (Str::startsWith($line, 'REPORT RequestId')) {
+                    $reportLineReached = true;
+
+                    return $this->parseReportLine($line);
+                }
+
+                if ($line === '') {
+                    return null;
+                }
+
+                return $this->parseInfoLine($line);
+            } catch (Throwable $exception) {
+                return $this->unknownLine($line);
             }
-
-            if (Str::startsWith($line, 'START RequestId:')) {
-                return $this->parseStartLine($line);
-            }
-
-            if (Str::startsWith($line, 'END RequestId:')) {
-                return null;
-            }
-
-            if (Str::startsWith($line, 'REPORT RequestId')) {
-                $reportLineReached = true;
-
-                return $this->parseReportLine($line);
-            }
-
-            if ($line === '') {
-                return null;
-            }
-
-            return $this->parseInfoLine($line);
         }, $lines);
 
         return array_values(array_filter($lines));
@@ -250,12 +256,8 @@ class SettledResult implements Responsable, ResultContract
     {
         $parts = explode("\t", $line);
 
-        if (count($parts) === 1) {
-            return [
-                'timestamp' => now()->timestamp,
-                'level' => 'UNKNOWN',
-                'body' => $parts[0]
-            ];
+        if (count($parts) < 4) {
+            return $this->unknownLine($line);
         }
 
         $body = $parts[3];
@@ -268,6 +270,15 @@ class SettledResult implements Responsable, ResultContract
             'timestamp' => Carbon::make($parts[0])->timestamp,
             'level' => $parts[2],
             'body' => $body
+        ];
+    }
+
+    protected function unknownLine($line)
+    {
+        return [
+            'timestamp' => now()->timestamp,
+            'level' => 'UNKNOWN',
+            'body' => $line,
         ];
     }
 

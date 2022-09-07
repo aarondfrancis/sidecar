@@ -1,5 +1,7 @@
 <?php
 
+use Hammerstone\Sidecar\Architecture;
+
 return [
     /*
      * All of your function classes that you'd like to deploy go here.
@@ -27,6 +29,18 @@ return [
      * This can be overridden per function.
      */
     'memory' => env('SIDECAR_MEMORY', 512),
+
+    /*
+     * The default ephemeral storage for your functions, in megabytes.
+     * This can be overridden per function.
+     */
+    'storage' => env('SIDECAR_STORAGE', 512),
+
+    /*
+     * The default architecture your function runs on.
+     * Available options are: x86_64, arm64
+     */
+    'architecture' => env('SIDECAR_ARCH', Architecture::X86_64),
 
     /*
      * The base path for your package files. If you e.g. keep

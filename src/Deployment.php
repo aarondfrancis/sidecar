@@ -28,6 +28,7 @@ class Deployment
     /**
      * @param $functions
      * @return static
+     *
      * @throws NoFunctionsRegisteredException
      */
     public static function make($functions = null)
@@ -37,6 +38,7 @@ class Deployment
 
     /**
      * @param $functions
+     *
      * @throws NoFunctionsRegisteredException
      */
     public function __construct($functions = null)
@@ -55,6 +57,7 @@ class Deployment
      * functions where necessary.
      *
      * @return Deployment
+     *
      * @throws Exception
      */
     public function deploy()
@@ -78,7 +81,7 @@ class Deployment
     /**
      * Activate the latest versions of each function.
      *
-     * @param bool $prewarm
+     * @param  bool  $prewarm
      * @return Deployment
      */
     public function activate($prewarm = false)
@@ -98,12 +101,14 @@ class Deployment
     }
 
     /**
-     * @param LambdaFunction $function
+     * @param  LambdaFunction  $function
+     *
      * @throws Exception
      */
     protected function deploySingle(LambdaFunction $function)
     {
         Sidecar::log('Environment: ' . Sidecar::getEnvironment());
+        Sidecar::log('Architecture: ' . $function->architecture());
         Sidecar::log('Package Type: ' . $function->packageType());
         if ($function->packageType() === 'Zip') {
             Sidecar::log('Runtime: ' . $function->runtime());
@@ -119,8 +124,8 @@ class Deployment
     }
 
     /**
-     * @param LambdaFunction $function
-     * @param bool $prewarm
+     * @param  LambdaFunction  $function
+     * @param  bool  $prewarm
      */
     protected function activateSingle(LambdaFunction $function, $prewarm)
     {
@@ -138,7 +143,8 @@ class Deployment
     }
 
     /**
-     * @param LambdaFunction $function
+     * @param  LambdaFunction  $function
+     *
      * @throws Exception
      */
     protected function createNewFunction(LambdaFunction $function)
@@ -149,7 +155,8 @@ class Deployment
     }
 
     /**
-     * @param LambdaFunction $function
+     * @param  LambdaFunction  $function
+     *
      * @throws Exception
      */
     protected function updateExistingFunction(LambdaFunction $function)
@@ -166,33 +173,26 @@ class Deployment
     /**
      * Add environment variables to the Lambda function, if they are provided.
      *
-     * @param LambdaFunction $function
+     * @param  LambdaFunction  $function
      */
     protected function setEnvironmentVariables(LambdaFunction $function)
     {
-        $variables = $function->variables();
-
-        if (!is_array($variables)) {
+        if (!is_array($function->variables())) {
             return Sidecar::log('Environment variables not managed by Sidecar. Skipping.');
         }
 
-        Sidecar::log('Updating environment variables.');
-
-        $this->lambda->updateFunctionConfiguration([
-            'FunctionName' => $function->nameWithPrefix(),
-            'Environment' => [
-                'Variables' => $variables,
-            ],
-        ]);
+        $this->lambda->updateFunctionVariables($function);
     }
 
     /**
      * Send warming requests to the latest version.
      *
-     * @param LambdaFunction $function
+     * @param  LambdaFunction  $function
      */
     protected function warmLatestVersion(LambdaFunction $function)
     {
+        $this->lambda->waitUntilFunctionUpdated($function);
+
         if ($this->lambda->latestVersionHasAlias($function, 'active')) {
             Sidecar::log('Active version unchanged, no need to warm.');
 
@@ -218,7 +218,7 @@ class Deployment
     /**
      * Alias the latest version of a function as the "active" one.
      *
-     * @param LambdaFunction $function
+     * @param  LambdaFunction  $function
      */
     protected function aliasLatestVersion(LambdaFunction $function)
     {
@@ -237,7 +237,7 @@ class Deployment
     /**
      * Remove old, outdated versions of a function.
      *
-     * @param LambdaFunction $function
+     * @param  LambdaFunction  $function
      */
     protected function sweep(LambdaFunction $function)
     {
@@ -253,7 +253,7 @@ class Deployment
         }
 
         // Skip the $LATEST at the beginning and remove the
-        // ten good ones at the end.
+        // `$keep` good ones at the end.
         $outdated = array_splice($versions, 1, -$keep);
 
         // Only do five at a time for each function, as

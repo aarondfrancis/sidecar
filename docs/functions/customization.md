@@ -7,6 +7,7 @@ The only two things _required_ for a Sidecar function are the [package and the h
 
 Lambda supports multiple languages through the use of runtimes. You can choose any of the following runtimes by returning its corresponding identifier:
 
+- Node.js 16: `nodejs16.x`
 - Node.js 14: `nodejs14.x`
 - Node.js 12: `nodejs12.x`
 - Node.js 10: `nodejs10.x`
@@ -78,6 +79,25 @@ class ExampleFunction extends LambdaFunction
 }
 ```
 
+## Storage
+
+Lambda functions can configure the amount of ephemeral storage available to them in the `/tmp` directory. This storage is shared between function instances, which means it persists across _invocations_ of a single warm Lambda function instance but is cleaned up everywhere else (e.g. between cold starts, when scaling up to more concurrent invocations, etc.).
+
+Sidecar uses the storage value from you `sidecar.php` configuration file, which defaults to 512MB.
+
+You are free to change this per function by returning a value from the `storage` method.
+
+```php
+class ExampleFunction extends LambdaFunction
+{
+    public function storage() // [tl! focus:4]
+    {
+        // 2 GB
+        return 2048;
+    }
+}
+```
+
 ## Layers
 
 Some functions require extra code or data beyond what is in your code package. From [Amazon's documentation](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html):
@@ -139,7 +159,7 @@ class ExampleFunction extends LambdaFunction
 }
 ```
 
-It is **very important** to note that if you allow Sidecar to manage your Lambda's environment variables, any changes made to environment variables in the AWS UI will be overwritten next time you deploy your function. 
+It is **very important** to note that if you allow Sidecar to manage your Lambda's environment variables, any changes made to environment variables in the AWS UI will be overwritten next time you deploy your function.
 
 By default, Sidecar doesn't touch your Lambda's environment at all. Only when you return an array from `variables` will Sidecar take control of the env vars.
 
@@ -162,7 +182,7 @@ class ExampleFunction extends LambdaFunction
 
     public function variables()  // [tl! focus:start]
     {
-        // Values will come from the "activating" machine. 
+        // Values will come from the "activating" machine.
         return [
             'aws_key' => config('services.aws.key'),
             'aws_secret' => config('services.aws.secret'),
@@ -210,4 +230,3 @@ You likely won't need to change this, but if you do, *you must include the envir
 ## Description
 
 The description is totally up to you, you'll likely not need to change it at all. We have provided a descriptive default. Sidecar doesn't do anything with it.
-

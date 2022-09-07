@@ -22,9 +22,9 @@ abstract class LambdaFunction
      * @param  bool  $async
      * @return SettledResult|PendingResult
      */
-    public static function execute($payload = [], $async = false)
+    public static function execute($payload = [], $async = false, $invocationType = 'RequestResponse')
     {
-        return Sidecar::execute(static::class, $payload, $async);
+        return Sidecar::execute(static::class, $payload, $async, $invocationType);
     }
 
     /**
@@ -44,6 +44,7 @@ abstract class LambdaFunction
      * @param $payloads
      * @param  bool  $async
      * @return array
+     *
      * @throws \Throwable
      */
     public static function executeMany($payloads, $async = false)
@@ -56,6 +57,7 @@ abstract class LambdaFunction
      *
      * @param $payloads
      * @return array
+     *
      * @throws \Throwable
      */
     public static function executeManyAsync($payloads)
@@ -64,7 +66,19 @@ abstract class LambdaFunction
     }
 
     /**
+     * Execute the current function asynchronously as an event. This is "fire-and-forget" style.
+     *
+     * @param  array  $payload
+     * @return PendingResult
+     */
+    public static function executeAsEvent($payload = [])
+    {
+        return static::execute($payload, $async = false, $invocationType = 'Event');
+    }
+
+    /**
      * Deploy this function only.
+     *
      * @param  bool  $activate
      */
     public static function deploy($activate = true)
@@ -167,6 +181,7 @@ abstract class LambdaFunction
      * @param $request
      * @param  SettledResult  $result
      * @return \Illuminate\Http\Response
+     *
      * @throws \Exception
      */
     public function toResponse($request, SettledResult $result)
@@ -179,6 +194,7 @@ abstract class LambdaFunction
     /**
      * @param  Result|PromiseInterface  $raw
      * @return SettledResult|PendingResult
+     *
      * @throws SidecarException
      */
     public function toResult($raw)
@@ -216,11 +232,22 @@ abstract class LambdaFunction
      * The runtime environment for the Lambda function.
      *
      * @see https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+     *
      * @return string
      */
     public function runtime()
     {
-        return 'nodejs14.x';
+        return Runtime::NODEJS_14;
+    }
+
+    /**
+     * The architecture for the Lambda function.
+     *
+     * @return string
+     */
+    public function architecture()
+    {
+        return config('sidecar.architecture', Architecture::X86_64);
     }
 
     /**
@@ -228,6 +255,7 @@ abstract class LambdaFunction
      * image and set Zip for .zip file archive.
      *
      * @see https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-lambda-2015-03-31.html#createfunction
+     *
      * @return string
      */
     public function packageType()
@@ -273,6 +301,7 @@ abstract class LambdaFunction
      *
      * @see https://hammerstone.dev/sidecar/docs/main/functions/handlers-and-packages
      * @see https://docs.aws.amazon.com/aws-sdk-php/v2/api/class-Aws.Lambda.LambdaClient.html#_createFunction
+     *
      * @return string
      */
     abstract public function handler();
@@ -306,6 +335,16 @@ abstract class LambdaFunction
     public function timeout()
     {
         return config('sidecar.timeout');
+    }
+
+    /**
+     * The ephemeral storage, in MB, your Lambda function is given.
+     *
+     * @return int
+     */
+    public function storage()
+    {
+        return config('sidecar.storage');
     }
 
     public function preparePayload($payload)
@@ -344,6 +383,23 @@ abstract class LambdaFunction
     }
 
     /**
+     * @return array
+     */
+    public function normalizedHandler()
+    {
+        $handler = $this->handler();
+
+        // Allow an at-sign to separate the file and function. This
+        // matches the Laravel ecosystem better: `image@handler`
+        // and `image.handler` will work the exact same way.
+        if (is_string($handler) && Str::contains($handler, '@')) {
+            $handler = Str::replace('@', '.', $handler);
+        }
+
+        return $handler;
+    }
+
+    /**
      * @return Package
      */
     public function makePackage()
@@ -355,6 +411,7 @@ abstract class LambdaFunction
 
     /**
      * @return array
+     *
      * @throws SidecarException
      */
     public function toDeploymentArray()
@@ -363,16 +420,20 @@ abstract class LambdaFunction
             'FunctionName' => $this->nameWithPrefix(),
             'Runtime' => $this->runtime(),
             'Role' => config('sidecar.execution_role'),
-            'Handler' => $this->handler(),
+            'Handler' => $this->normalizedHandler(),
             'Code' => $this->packageType() === 'Zip'
                 ? $this->makePackage()->deploymentConfiguration()
                 : $this->package(),
             'Description' => $this->description(),
-            'Timeout' => (int) $this->timeout(),
-            'MemorySize' => (int) $this->memory(),
+            'Timeout' => (int)$this->timeout(),
+            'MemorySize' => (int)$this->memory(),
+            'EphemeralStorage' => [
+                'Size' => (int)$this->storage(),
+            ],
             'Layers' => $this->layers(),
             'Publish' => true,
             'PackageType' => $this->packageType(),
+            'Architectures' => [$this->architecture()]
         ];
 
         // For container image packages, we need to remove the Runtime

@@ -37,7 +37,7 @@ exports.handler = async function (event) {
 }
 ```
 
-## Sync vs. Async
+## Sync vs. Async vs. Event
 
 By default, all executions of Sidecar functions are synchronous, meaning script execution will stop while the Lambda finishes and returns its result. This is the simplest method and probably fine for the majority of use cases. 
 
@@ -62,6 +62,20 @@ $result = Sidecar::execute(OgImage::class, $payload = [], $async = true);
 echo 'Image may or may not have finished generating yet!';
 ```
 
+Whilst the execution is asynchronous, it is expected that you wait for the response, which is documented more in the next section below. If you're looking for "fire-and-forget" style execution, where you don't care about the response and are happy for execution to occur in the background then you'll need to execute your function as an event.
+
+```php
+// Event execution using the class. 
+$result = OgImage::executeAsEvent();
+$result = OgImage::execute($payload = [], $async = false, $invocationType = 'Event');
+
+// Event execution using the facade.
+$result = Sidecar::executeAsEvent(OgImage::class);
+$result = Sidecar::execute(OgImage::class, $payload = [], $async = false, $invocationType = 'Event');
+
+echo 'Image may or may not have finished generating yet!';
+```
+
 ### Settled Results
 
 When your function is executed using one of the sync methods, the return value will be an instance of `SettledResult`. The Settled Result class is responsible for delivering the result of your Lambda, along with the logs and information about duration, memory used, etc.
@@ -70,7 +84,7 @@ You can read more about that in the [body](#result-body) and [logs & timing](#lo
 
 ### Pending Results
 
-If you function is invoked using one of the async methods, the return value will be an instance of `PendingResult`. This class is a thin wrapper around a Guzzle promise that represents your pending function execution.
+If your function is invoked using one of the async methods, the return value will be an instance of `PendingResult`. This class is a thin wrapper around a Guzzle promise that represents your pending function execution.
 
 Given a Pending Result, if you'd like to pause execution until the promise is settled, you can call `settled`. This will return a `SettledResult`.
 
@@ -89,6 +103,8 @@ $result = $result->settled();
 dump($result instanceof SettledResult);
 // true
 ```
+
+Using the async methods is powered by Guzzle promises. Given the limitations of the Guzzle async implementation, as it stands today, you need to wait for the response to ensure all your requests have been made.
 
 ### Working With Either
 

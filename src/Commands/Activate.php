@@ -13,12 +13,14 @@ class Activate extends EnvironmentAwareCommand
 {
     /**
      * The name and signature of the console command.
+     *
      * @var string
      */
     protected $signature = 'sidecar:activate {--pre-warm}';
 
     /**
      * The console command description.
+     *
      * @var string
      */
     protected $description = 'Activate Sidecar functions that have already been deployed.';

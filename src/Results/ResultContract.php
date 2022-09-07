@@ -11,12 +11,12 @@ interface ResultContract
 {
     /**
      * @param $raw
-     * @param LambdaFunction $function
+     * @param  LambdaFunction  $function
      */
     public function __construct($raw, LambdaFunction $function);
 
     /**
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function toResponse($response);

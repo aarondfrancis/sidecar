@@ -1,12 +1,13 @@
 
 # Sidecar for Laravel Overview
 
-Sidecar packages, deploys, and executes AWS Lambda functions from your Laravel application. {.text-xl .font-bold} 
+Sidecar packages, deploys, and executes AWS Lambda functions from your Laravel application. {.text-xl .font-bold}
 
-It works with _any_ Laravel 7 or Laravel 8 application, hosted _anywhere_, including your local machine. {.font-bold} 
+It works with _any_ Laravel 7 or Laravel 8 application, hosted _anywhere_, including your local machine. {.font-bold}
 
 You can write functions in any of the following runtimes and execute them straight from PHP:
 
+- Node.js 16
 - Node.js 14
 - Node.js 12
 - Node.js 10
@@ -20,7 +21,7 @@ You can write functions in any of the following runtimes and execute them straig
 - Java 8
 - Go 1.x
 - .NET Core 3.1
-- .NET Core 2.1 
+- .NET Core 2.1
 
 Any runtime that [Lambda supports](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html), you can use!
 
@@ -43,8 +44,8 @@ class OgImage extends LambdaFunction
 {
     public function handler()
     {
-        // Define your handler function. 
-        // (Javascript file + export name.) 
+        // Define your handler function.
+        // (Javascript file + export name.)
         return 'resources/lambda/image.handler';
     }
 
@@ -75,10 +76,10 @@ exports.handler = async function (event) {
     context.font = 'bold 70pt Helvetica'
     context.textAlign = 'center'
     context.fillStyle = '#3574d4'
-    
+
     // Read the text out of the event passed in from PHP.
     context.fillText(event.text, 600, 170);
-    
+
     // Return an image.
     return canvas.toDataURL('image/jpeg');
 }
@@ -109,13 +110,13 @@ Sidecar passes the payload from `execute` over to your Javascript function. Your
 
 [Laravel Vapor](https://vapor.laravel.com/) brought that power to Laravel. Using Vapor, you can run your plain ol' Laravel apps on a serverless platform and get incredible speed, security, and reliability.
 
-Using Lambda through Vapor is a wonderful developer experience, but there are times when building your applications that you need to run just _one or two_ Node functions for some reason. Common use cases could be taking screenshots with headless Chrome, generating images, or doing server-side rendering of your Javascript frontend. 
+Using Lambda through Vapor is a wonderful developer experience, but there are times when building your applications that you need to run just _one or two_ Node functions for some reason. Common use cases could be taking screenshots with headless Chrome, generating images, or doing server-side rendering of your Javascript frontend.
 
 Or maybe you want to run a Python script without configuring a server? Or a single Ruby script. Or even Java!
 
 When running on a serverless platform, it's not quite as easy as installing Node and running your functions. You don't have access to the server! So you end up deploying a single Vercel or Netlify function and calling it over HTTP, or just forgetting the thing altogether.
 
-Sidecar brings the ease of Vapor to those non-PHP functions. 
+Sidecar brings the ease of Vapor to those non-PHP functions.
 
 
 ## What Sidecar Doesn't Do
@@ -127,4 +128,4 @@ If you need other services, you are encouraged to use the instances that Vapor h
 **Sidecar does not provide a way to execute a function via HTTP. You must execute it from your Laravel app through the provided methods.**
 
 
-Finally, Sidecar doesn't replace Vapor in any way. In fact, PHP is not even one of the default AWS supported runtimes! 
+Finally, Sidecar doesn't replace Vapor in any way. In fact, PHP is not even one of the default AWS supported runtimes!

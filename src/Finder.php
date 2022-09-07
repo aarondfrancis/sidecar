@@ -3,6 +3,7 @@
 /**
  * @author Spatie bvba info@spatie.be
  * @license MIT
+ *
  * @see https://github.com/spatie/laravel-backup/blob/master/src/Tasks/Backup/FileSelection.php
  */
 
@@ -23,8 +24,8 @@ class Finder
     protected $shouldFollowLinks = false;
 
     /**
-     * @param array $include
-     * @param array $exclude
+     * @param  array  $include
+     * @param  array  $exclude
      * @return Finder
      */
     public static function create($include = [], $exclude = [])
@@ -33,8 +34,8 @@ class Finder
     }
 
     /**
-     * @param array $include
-     * @param array $exclude
+     * @param  array  $include
+     * @param  array  $exclude
      */
     public function __construct($include = [], $exclude = [])
     {
@@ -45,8 +46,7 @@ class Finder
     /**
      * Do not included the given files and directories.
      *
-     * @param array|string $excludeFilesAndDirectories
-     *
+     * @param  array|string  $excludeFilesAndDirectories
      * @return Finder
      */
     public function excludeFilesFrom($excludeFilesAndDirectories)
@@ -145,8 +145,7 @@ class Finder
     }
 
     /**
-     * @param string|array $paths
-     *
+     * @param  string|array  $paths
      * @return \Illuminate\Support\Collection
      */
     protected function sanitize($paths)

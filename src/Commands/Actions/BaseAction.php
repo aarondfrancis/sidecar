@@ -21,7 +21,7 @@ abstract class BaseAction
 
     /**
      * @param $region
-     * @param Configure $command
+     * @param  Configure  $command
      */
     public function __construct($region, Configure $command)
     {
