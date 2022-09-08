@@ -93,4 +93,10 @@ return [
      * See CreateExecutionRole::policy for the IAM policy.
      */
     'execution_role' => env('SIDECAR_EXECUTION_ROLE'),
+
+    /**
+     * Customize your Lambdas prefix
+     */
+    'lambda_prefix' => env('SIDECAR_LAMBDA_PREFIX', 'SC'),
+
 ];

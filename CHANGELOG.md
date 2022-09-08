@@ -1,6 +1,9 @@
 # Changelog
 ## Unreleased 
 
+### Changed
+- [BREAKING] Function naming algorithm was changed to support long prefixes, long function names, and previously invalid characters. This is a breaking change because the names of your current functions _might_ change with using the new naming scheme.  
+
 ## 0.3.12 - 2022-05-22
 
 ### Changed
