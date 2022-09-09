@@ -108,7 +108,7 @@ abstract class LambdaFunction
     public function prefix()
     {
         return Str::slug(implode('-', [
-            config('sidecar.lambda_prefix', 'SC'),
+            config('sidecar.lambda_prefix'),
             config('sidecar.app_name'),
             Sidecar::getEnvironment()
         ]));

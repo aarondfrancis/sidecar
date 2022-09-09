@@ -26,7 +26,7 @@ class FunctionTest extends BaseTest
     public function function_names_over_64_get_limited_to_64()
     {
         config([
-            'app.name' => 'Amazing App Amazing App Amazing App Amazing App Amazing App Amazing App'
+            'sidecar.app_name' => 'Amazing App Amazing App Amazing App Amazing App Amazing App Amazing App'
         ]);
 
         $function = new EmptyTestFunction;
@@ -41,7 +41,7 @@ class FunctionTest extends BaseTest
     public function short_prefix_means_longer_name()
     {
         config([
-            'app.name' => 'A'
+            'sidecar.app_name' => 'A'
         ]);
 
         $function = new EmptyTestFunction;
@@ -76,29 +76,19 @@ class FunctionTest extends BaseTest
     {
         config([
             'app.name' => 'Laravel',
-            'sidecar.app_name' => 'Sidecar',
         ]);
 
         $this->assertEquals(
-            'SC-Sidecar-testing--Sidecar-Tests-Unit-Support-EmptyTestFunction',
+            'sc-laravel-testing-7a7aecar-tests-unit-support-emptytestfunction',
             (new EmptyTestFunction)->nameWithPrefix()
         );
 
         config([
-            'app.name' => 'Hammerstone',
+            'sidecar.app_name' => 'Hammerstone',
         ]);
 
         $this->assertEquals(
-            'SC-Sidecar-testing--Sidecar-Tests-Unit-Support-EmptyTestFunction',
-            (new EmptyTestFunction)->nameWithPrefix()
-        );
-
-        config([
-            'sidecar.app_name' => 'Laravel',
-        ]);
-
-        $this->assertEquals(
-            'SC-Laravel-testing--Sidecar-Tests-Unit-Support-EmptyTestFunction',
+            'sc-hammerstone-testing-7a7a-tests-unit-support-emptytestfunction',
             (new EmptyTestFunction)->nameWithPrefix()
         );
     }
