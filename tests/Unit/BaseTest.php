@@ -16,7 +16,7 @@ abstract class BaseTest extends TestCase
      * @param  \Illuminate\Foundation\Application  $app
      * @return void
      */
-    protected function defineEnvironment($app)
+    protected function getEnvironmentSetup($app)
     {
         $app['config']->set('sidecar.app_name', 'Laravel');
     }
