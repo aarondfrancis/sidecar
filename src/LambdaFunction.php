@@ -326,7 +326,7 @@ abstract class LambdaFunction
     }
 
     /**
-     * The function execution time, in MS, at which Lambda should terminate the function.
+     * The function execution time, in seconds, at which Lambda should terminate the function.
      * Because the execution time has cost implications, we recommend you set this
      * value based on your expected execution time.
      *
