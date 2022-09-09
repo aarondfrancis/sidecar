@@ -6,7 +6,9 @@
 
 > Read the full docs at [hammerstone.dev/sidecar/docs](https://hammerstone.dev/sidecar/docs/main/overview).
 
-Follow me on Twitter for more updates: [twitter.com/aarondfrancis](https://twitter.com/aarondfrancis)
+Follow me on Twitter for more updates: [twitter.com/aarondfrancis](https://twitter.com/aarondfrancis).
+
+If you're a visual learner, watch the [Laracasts series](https://laracasts.com/series/developing-serverless-functions-in-laravel).
 
 To install, simply require the package from composer: `composer require hammerstone/sidecar`
 
