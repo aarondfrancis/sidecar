@@ -10,6 +10,17 @@ use Orchestra\Testbench\TestCase;
 
 abstract class BaseTest extends TestCase
 {
+    /**
+     * Define environment setup.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return void
+     */
+    protected function getEnvironmentSetup($app)
+    {
+        $app['config']->set('sidecar.app_name', 'Laravel');
+    }
+
     protected function getPackageProviders($app)
     {
         return [

@@ -108,8 +108,8 @@ abstract class LambdaFunction
     public function prefix()
     {
         return Str::slug(implode('-', [
-            config('sidecar.lambda_prefix', 'SC'),
-            config('app.name'),
+            config('sidecar.lambda_prefix'),
+            config('sidecar.app_name'),
             Sidecar::getEnvironment()
         ]));
     }
@@ -158,7 +158,7 @@ abstract class LambdaFunction
     public function description()
     {
         return sprintf('%s [%s]: Sidecar function `%s`.', ...[
-            config('app.name'),
+            config('sidecar.app_name'),
             config('app.env'),
             static::class,
         ]);
