@@ -52,6 +52,19 @@ class FunctionTest extends BaseTest
     }
 
     /** @test */
+    public function a_pipe_in_the_app_name_is_ok()
+    {
+        config([
+            'sidecar.app_name' => 'Vriend van de Show | Local'
+        ]);
+
+        $function = new EmptyTestFunction;
+        $name = $function->nameWithPrefix();
+
+        $this->assertEquals('sc-vriend-van-de-show-local-55c0-7a7at-support-emptytestfunction', $name);
+    }
+
+    /** @test */
     public function changing_the_prefix_changes_the_prefix()
     {
         $function = (new EmptyTestFunction);
