@@ -225,7 +225,7 @@ class LambdaClientTest extends BaseTest
             ->with([
                 'FunctionName' => 'test-FunctionName',
                 'Role' => null,
-                'Description' => 'test-Description [ac420e45]',
+                'Description' => 'test-Description [e280b565]',
                 'Timeout' => 300,
                 'MemorySize' => 512,
                 'EphemeralStorage' => [
