@@ -274,33 +274,30 @@ class DeploymentTest extends BaseTest
     /** @test */
     public function it_sets_function_tags()
     {
-        $this->lambda->shouldReceive('functionExists')->andReturn(true);
+        $this->lambda->shouldReceive('functionExists')->andReturn(false);
         $this->lambda->shouldReceive('getVersions')->andReturn([]);
-        $this->lambda->shouldReceive('updateExistingFunction')->once()->withArgs(function ($function) {
-            return $function instanceof DeploymentTestFunctionWithTags;
-        });
-
-        $this->lambda->shouldReceive('getFunctionConfiguration')->andReturn([
+        $this->lambda->shouldReceive('createFunction')->once()->with([
+            'FunctionName' => 'test-FunctionName',
+            'Runtime' => 'test-Runtime',
+            'Role' => 'test-Role',
+            'Handler' => 'test-Handler',
+            'Code' => [
+                'S3Bucket' => 'test-bucket',
+                'S3Key' => 'test-key',
+            ],
+            'Description' => 'test-Description',
+            'Timeout' => 'test-Timeout',
+            'MemorySize' => 'test-MemorySize',
+            'EphemeralStorage' => [
+                'Size' => 'test-EphemeralStorage'
+            ],
+            'Layers' => 'test-Layers',
+            'Publish' => 'test-Publish',
+            'Architectures' => ['x86_64'],
             'Tags' => [
-                'Project' => 'Super Secret Project'
+                'Project' => 'Super Secret Project',
             ],
         ]);
-
-        $this->lambda->shouldReceive('updateFunctionConfiguration')
-            ->with([
-                'FunctionName' => 'test-FunctionName',
-                'Tags' => [
-                    'Project' => 'Super Secret Project'
-                ],
-            ]);
-
-        $this->lambda->shouldReceive('publishVersion')
-            ->once()
-            ->with([
-                'FunctionName' => 'test-FunctionName',
-            ]);
-
-        $this->mockActivating();
 
         DeploymentTestFunctionWithTags::deploy($activate = true);
 
