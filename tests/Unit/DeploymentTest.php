@@ -14,6 +14,7 @@ use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
 use Hammerstone\Sidecar\Events\BeforeFunctionsDeployed;
 use Hammerstone\Sidecar\Exceptions\NoFunctionsRegisteredException;
 use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunction;
+use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunctionWithTags;
 use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunctionWithVariables;
 use Illuminate\Support\Facades\Event;
 use Mockery;
@@ -63,7 +64,8 @@ class DeploymentTest extends BaseTest
             'MemorySize' => 'test-MemorySize',
             'Layers' => 'test-Layers',
             'Publish' => 'test-Publish',
-            'Architectures' => ['x86_64']
+            'Architectures' => ['x86_64'],
+            'Tags' => [],
         ]);
 
         $this->lambda->shouldNotReceive('updateFunctionConfiguration');
@@ -265,6 +267,42 @@ class DeploymentTest extends BaseTest
         $this->mockActivating();
 
         DeploymentTestFunctionWithVariables::deploy($activate = true);
+
+        $this->assertEvents($deployed = true, $activated = true);
+    }
+
+    /** @test */
+    public function it_sets_function_tags()
+    {
+        $this->lambda->shouldReceive('functionExists')->andReturn(true);
+        $this->lambda->shouldReceive('getVersions')->andReturn([]);
+        $this->lambda->shouldReceive('updateExistingFunction')->once()->withArgs(function ($function) {
+            return $function instanceof DeploymentTestFunctionWithTags;
+        });
+
+        $this->lambda->shouldReceive('getFunctionConfiguration')->andReturn([
+            'Tags' => [
+                'Project' => 'Super Secret Project'
+            ],
+        ]);
+
+        $this->lambda->shouldReceive('updateFunctionConfiguration')
+            ->with([
+                'FunctionName' => 'test-FunctionName',
+                'Tags' => [
+                    'Project' => 'Super Secret Project'
+                ],
+            ]);
+
+        $this->lambda->shouldReceive('publishVersion')
+            ->once()
+            ->with([
+                'FunctionName' => 'test-FunctionName',
+            ]);
+
+        $this->mockActivating();
+
+        DeploymentTestFunctionWithTags::deploy($activate = true);
 
         $this->assertEvents($deployed = true, $activated = true);
     }
