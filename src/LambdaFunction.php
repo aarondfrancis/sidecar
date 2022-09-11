@@ -326,6 +326,16 @@ abstract class LambdaFunction
     }
 
     /**
+     * A list of tags to apply to the function.
+     *
+     * @return array
+     */
+    public function tags()
+    {
+        return [];
+    }
+
+    /**
      * The function execution time, in seconds, at which Lambda should terminate the function.
      * Because the execution time has cost implications, we recommend you set this
      * value based on your expected execution time.
@@ -433,7 +443,8 @@ abstract class LambdaFunction
             'Layers' => $this->layers(),
             'Publish' => true,
             'PackageType' => $this->packageType(),
-            'Architectures' => [$this->architecture()]
+            'Architectures' => [$this->architecture()],
+            'Tags' => $this->tags(),
         ];
 
         // For container image packages, we need to remove the Runtime

@@ -50,7 +50,7 @@ To change the allocated memory of your function, return the number in megabytes.
 ```php
 class ExampleFunction extends LambdaFunction
 {
-    public function memory() //  [tl! focus:4]
+    public function memory() // [tl! focus:4]
     {
         // 2GB of memory
         return 2048;
@@ -225,6 +225,25 @@ You likely won't need to change this, but if you do, *you must include the envir
             return 'My App ' . Sidecar::getEnvironment()
         }
     }
+```
+
+## Tags
+
+A key-value array of strings of tags to be applied to your function, this can be used to organize your functions by owner, project or departement.
+
+You should note that there are some [restrictions](https://docs.aws.amazon.com/lambda/latest/dg/configuration-tags.html#configuration-tags-restrictions) that apply when adding tags.
+
+```php
+class ExampleFunction extends LambdaFunction
+{
+    public function tags() // [tl! focus:start]
+    {
+        return [
+            'Project' => 'Super Secret Project',
+            'Department' => 'Logistics',
+        ];
+    } // [tl! focus:end]
+}
 ```
 
 ## Description
