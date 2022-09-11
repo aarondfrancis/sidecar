@@ -276,6 +276,7 @@ class DeploymentTest extends BaseTest
     {
         $this->lambda->shouldReceive('functionExists')->andReturn(false);
         $this->lambda->shouldReceive('getVersions')->andReturn([]);
+
         $this->lambda->shouldReceive('createFunction')->once()->with([
             'FunctionName' => 'test-FunctionName',
             'Runtime' => 'test-Runtime',
@@ -298,6 +299,25 @@ class DeploymentTest extends BaseTest
                 'Project' => 'Super Secret Project',
             ],
         ]);
+
+        $this->lambda->shouldNotReceive('updateFunctionConfiguration');
+        $this->lambda->shouldNotReceive('updateFunctionCode');
+
+        $this->lambda->shouldReceive('getLatestVersion')
+            ->once()
+            ->withArgs(function ($function) {
+                return $function instanceof DeploymentTestFunctionWithTags;
+            })
+            ->andReturn('10');
+
+        $this->lambda->shouldReceive('aliasVersion')
+            ->once()
+            ->withArgs(function ($function, $alias, $version) {
+                return $function instanceof DeploymentTestFunctionWithTags
+                    && $alias === 'active'
+                    && $version === '10';
+            })
+            ->andReturn(LambdaClient::CREATED);
 
         DeploymentTestFunctionWithTags::deploy($activate = true);
 
