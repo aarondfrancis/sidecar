@@ -30,7 +30,5 @@ abstract class Runtime
 
     public const DOT_NET_31 = 'dotnetcore3.1';
 
-    public const DOT_NET_21 = 'dotnetcore2.1';
-
     public const PROVIDED_AL2 = 'provided.al2';
 }
