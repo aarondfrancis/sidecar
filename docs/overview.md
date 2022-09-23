@@ -10,18 +10,13 @@ You can write functions in any of the following runtimes and execute them straig
 - Node.js 16
 - Node.js 14
 - Node.js 12
-- Node.js 10
 - Python 3.8
 - Python 3.7
-- Python 3.6
-- Python 2.7
 - Ruby 2.7
-- Ruby 2.5
 - Java 11
 - Java 8
 - Go 1.x
 - .NET Core 3.1
-- .NET Core 2.1
 
 Any runtime that [Lambda supports](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html), you can use!
 
