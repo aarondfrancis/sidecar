@@ -1,12 +1,6 @@
 name: Tests
 
-on:
-  push:
-    branches:
-      - main
-
-  pull_request:
-    types: [ opened, synchronize, reopened ]
+on: push
 
 jobs:
   test:
@@ -14,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 7.2, 7.3, 7.4, 8.0, 8.1 ]
+        php: [ 7.2, 7.3, 7.4, 8.0, 8.1, 8.2 ]
         laravel: [ 7.*, 8.*, 9.* ]
         guzzle: [ 6.*, 7.* ]
         dependency-version: [ prefer-lowest, prefer-stable ]
@@ -35,12 +29,11 @@ jobs:
         exclude:
           - laravel: 7.*
             php: 8.1
-            
             # Laravel 8 requires PHP 7.3.
           - laravel: 8.*
             php: 7.2
 
-          # PHP 8.1 requires Laravel 8.65, so skip lowest
+            # PHP 8.1 requires Laravel 8.65, so skip lowest
           - laravel: 8.*
             php: 8.1
             dependency-version: prefer-lowest
@@ -56,6 +49,17 @@ jobs:
             # Laravel 9 requires Guzzle ^7.2
           - laravel: 9.*
             guzzle: 6.*
+
+            # Only test PHP 8.2 with Laravel 9
+          - laravel: 7.*
+            php: 8.2
+          - laravel: 8.*
+            php: 8.2
+
+            # PHP 8.2 requires Laravel 9.33 at least, so skip lowest
+          - laravel: 9.*
+            php: 8.2
+            dependency-version: prefer-lowest
 
     name: P${{ matrix.php }} / L${{ matrix.laravel }} / G${{ matrix.guzzle }} / ${{ matrix.dependency-version }}
 
