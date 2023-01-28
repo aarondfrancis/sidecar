@@ -72,7 +72,7 @@ jobs:
 
             # Laravel 10 requires Guzzle ^7.2
           - laravel: 10.*
-            guzzle: 6.*
+            guzzle: 7.*
 
     name: P${{ matrix.php }} / L${{ matrix.laravel }} / G${{ matrix.guzzle }} / ${{ matrix.dependency-version }}
 
