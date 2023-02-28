@@ -12,6 +12,7 @@ use Hammerstone\Sidecar\Events\AfterFunctionsDeployed;
 use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
 use Hammerstone\Sidecar\Events\BeforeFunctionsDeployed;
 use Hammerstone\Sidecar\Exceptions\NoFunctionsRegisteredException;
+use Illuminate\Support\Str;
 
 class Deployment
 {
@@ -26,7 +27,6 @@ class Deployment
     protected $lambda;
 
     /**
-     * @param $functions
      * @return static
      *
      * @throws NoFunctionsRegisteredException
@@ -37,8 +37,6 @@ class Deployment
     }
 
     /**
-     * @param $functions
-     *
      * @throws NoFunctionsRegisteredException
      */
     public function __construct($functions = null)
@@ -101,8 +99,6 @@ class Deployment
     }
 
     /**
-     * @param  LambdaFunction  $function
-     *
      * @throws Exception
      */
     protected function deploySingle(LambdaFunction $function)
@@ -124,7 +120,6 @@ class Deployment
     }
 
     /**
-     * @param  LambdaFunction  $function
      * @param  bool  $prewarm
      */
     protected function activateSingle(LambdaFunction $function, $prewarm)
@@ -143,8 +138,6 @@ class Deployment
     }
 
     /**
-     * @param  LambdaFunction  $function
-     *
      * @throws Exception
      */
     protected function createNewFunction(LambdaFunction $function)
@@ -155,8 +148,6 @@ class Deployment
     }
 
     /**
-     * @param  LambdaFunction  $function
-     *
      * @throws Exception
      */
     protected function updateExistingFunction(LambdaFunction $function)
@@ -172,8 +163,6 @@ class Deployment
 
     /**
      * Add environment variables to the Lambda function, if they are provided.
-     *
-     * @param  LambdaFunction  $function
      */
     protected function setEnvironmentVariables(LambdaFunction $function)
     {
@@ -186,8 +175,6 @@ class Deployment
 
     /**
      * Send warming requests to the latest version.
-     *
-     * @param  LambdaFunction  $function
      */
     protected function warmLatestVersion(LambdaFunction $function)
     {
@@ -209,7 +196,7 @@ class Deployment
         $results = Sidecar::warmSingle($function, $async = false, $version);
 
         if ($warmed = count($results)) {
-            Sidecar::log("Warmed $warmed instances.");
+            Sidecar::log("Warmed $warmed " . Str::plural('instance', $warmed));
         } else {
             Sidecar::log('No instances warmed. If this is unexpected, confirm your `warmingConfig` method is set up correctly.');
         }
@@ -217,8 +204,6 @@ class Deployment
 
     /**
      * Alias the latest version of a function as the "active" one.
-     *
-     * @param  LambdaFunction  $function
      */
     protected function aliasLatestVersion(LambdaFunction $function)
     {
@@ -236,8 +221,6 @@ class Deployment
 
     /**
      * Remove old, outdated versions of a function.
-     *
-     * @param  LambdaFunction  $function
      */
     protected function sweep(LambdaFunction $function)
     {

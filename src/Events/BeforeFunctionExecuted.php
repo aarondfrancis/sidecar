@@ -19,10 +19,6 @@ class BeforeFunctionExecuted
      */
     public $payload;
 
-    /**
-     * @param $payload
-     * @param $function
-     */
     public function __construct($function, $payload)
     {
         $this->payload = $payload;

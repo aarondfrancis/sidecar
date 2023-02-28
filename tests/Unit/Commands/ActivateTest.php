@@ -15,7 +15,7 @@ use Hammerstone\Sidecar\Sidecar;
 use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunction;
 use Illuminate\Support\Facades\Event;
 
-class ActivateTest extends BaseTest
+class ActivateTest extends Base
 {
     protected $lambda;
 

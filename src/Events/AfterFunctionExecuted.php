@@ -26,11 +26,6 @@ class AfterFunctionExecuted
      */
     public $result;
 
-    /**
-     * @param $function
-     * @param $payload
-     * @param $result
-     */
     public function __construct($function, $payload, $result)
     {
         $this->payload = $payload;

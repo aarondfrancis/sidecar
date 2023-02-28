@@ -16,7 +16,7 @@ use Hammerstone\Sidecar\Tests\Unit\Support\EmptyTestFunction;
 use Illuminate\Support\Facades\Event;
 use Mockery;
 
-class ExecuteMultipleTest extends BaseTest
+class ExecuteMultipleTest extends Base
 {
     protected function setUp(): void
     {

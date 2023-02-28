@@ -19,7 +19,7 @@ use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunctionWithVariables;
 use Illuminate\Support\Facades\Event;
 use Mockery;
 
-class DeploymentTest extends BaseTest
+class DeploymentTest extends Base
 {
     protected $lambda;
 

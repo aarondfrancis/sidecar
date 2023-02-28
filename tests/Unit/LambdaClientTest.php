@@ -14,7 +14,7 @@ use Hammerstone\Sidecar\Tests\Unit\Support\EmptyTestFunction;
 use Illuminate\Support\Facades\Event;
 use Mockery;
 
-class LambdaClientTest extends BaseTest
+class LambdaClientTest extends Base
 {
     protected $lambda;
 
