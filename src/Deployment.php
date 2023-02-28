@@ -6,13 +6,13 @@
 namespace Hammerstone\Sidecar;
 
 use Exception;
-use Illuminate\Support\Str;
 use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Events\AfterFunctionsActivated;
 use Hammerstone\Sidecar\Events\AfterFunctionsDeployed;
 use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
 use Hammerstone\Sidecar\Events\BeforeFunctionsDeployed;
 use Hammerstone\Sidecar\Exceptions\NoFunctionsRegisteredException;
+use Illuminate\Support\Str;
 
 class Deployment
 {
@@ -196,7 +196,7 @@ class Deployment
         $results = Sidecar::warmSingle($function, $async = false, $version);
 
         if ($warmed = count($results)) {
-            Sidecar::log("Warmed $warmed " . Str::plural("instance", $warmed));
+            Sidecar::log("Warmed $warmed " . Str::plural('instance', $warmed));
         } else {
             Sidecar::log('No instances warmed. If this is unexpected, confirm your `warmingConfig` method is set up correctly.');
         }

@@ -17,7 +17,7 @@ abstract class Runtime
     public const PYTHON_37 = 'python3.7';
 
     public const RUBY_27 = 'ruby2.7';
-    
+
     public const JAVA_11 = 'java11';
 
     public const JAVA_8_LINUX2 = 'java8.al2';
