@@ -9,10 +9,6 @@ use Hammerstone\Sidecar\LambdaFunction;
 
 interface ResultContract
 {
-    /**
-     * @param $raw
-     * @param  LambdaFunction  $function
-     */
     public function __construct($raw, LambdaFunction $function);
 
     /**

@@ -203,9 +203,6 @@ class ConfigureTest extends BaseTest
         $artisan->expectsOutput('SIDECAR_EXECUTION_ROLE=arn:aws:iam::XXX:role/sidecar-execution-role');
     }
 
-    /**
-     * @param $mock
-     */
     protected function mockDeploymentUserNotFound($mock): void
     {
         $mock->shouldReceive('getUser')
@@ -218,9 +215,6 @@ class ConfigureTest extends BaseTest
             );
     }
 
-    /**
-     * @param $mock
-     */
     protected function mockCreateDeploymentUser($mock): void
     {
         $mock->shouldReceive('createUser')
@@ -230,9 +224,6 @@ class ConfigureTest extends BaseTest
             ]);
     }
 
-    /**
-     * @param $mock
-     */
     protected function mockPutDeploymentUserPolicy($mock): void
     {
         $mock->shouldReceive('putUserPolicy')
@@ -286,9 +277,6 @@ class ConfigureTest extends BaseTest
             ]);
     }
 
-    /**
-     * @param $mock
-     */
     protected function mockListAccessKeys($mock): void
     {
         $mock->shouldReceive('listAccessKeys')
@@ -299,9 +287,6 @@ class ConfigureTest extends BaseTest
             ->andReturn([]);
     }
 
-    /**
-     * @param $mock
-     */
     protected function mockCreateAccessKeys($mock): void
     {
         $mock->shouldReceive('createAccessKey')
@@ -317,9 +302,6 @@ class ConfigureTest extends BaseTest
             ]);
     }
 
-    /**
-     * @param $mock
-     */
     protected function mockWhoAmI($mock): void
     {
         $mock->shouldReceive('getUser')

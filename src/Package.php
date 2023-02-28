@@ -90,7 +90,6 @@ class Package
     }
 
     /**
-     * @param $paths
      * @return $this
      */
     public function include($paths)
@@ -151,8 +150,6 @@ class Package
      * Include a string as a file. The path is the
      * destination within the zip file.
      *
-     * @param $path
-     * @param $contents
      * @return $this
      */
     public function includeString($path, $contents)
@@ -179,7 +176,6 @@ class Package
     }
 
     /**
-     * @param $paths
      * @return $this
      */
     public function exclude($paths)
@@ -220,7 +216,6 @@ class Package
     }
 
     /**
-     * @param $path
      * @return $this
      */
     public function setBasePath($path)
@@ -396,7 +391,6 @@ class Package
     }
 
     /**
-     * @param $paths
      * @return array
      */
     protected function pathsForMerging($paths)
@@ -415,7 +409,6 @@ class Package
     }
 
     /**
-     * @param $path
      * @return string
      */
     protected function prependBasePath($path)
@@ -426,7 +419,6 @@ class Package
     }
 
     /**
-     * @param $path
      * @return string
      */
     protected function removeBasePath($path)

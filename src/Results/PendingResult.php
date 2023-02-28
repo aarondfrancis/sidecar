@@ -28,7 +28,6 @@ class PendingResult implements Responsable, ResultContract
 
     /**
      * @param  PromiseInterface  $raw
-     * @param  LambdaFunction  $function
      */
     public function __construct($raw, LambdaFunction $function)
     {

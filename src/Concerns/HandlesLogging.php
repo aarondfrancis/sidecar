@@ -21,7 +21,6 @@ trait HandlesLogging
     protected $sublog = false;
 
     /**
-     * @param $closure
      * @return $this
      */
     public function addLogger($closure)
@@ -31,9 +30,6 @@ trait HandlesLogging
         return $this;
     }
 
-    /**
-     * @param  Command  $command
-     */
     public function addCommandLogger(Command $command)
     {
         $this->addLogger(function ($message, $level = 'info') use ($command) {
@@ -45,26 +41,16 @@ trait HandlesLogging
         });
     }
 
-    /**
-     * @param $message
-     */
     public function log($message)
     {
         $this->write($message, 'info');
     }
 
-    /**
-     * @param $message
-     */
     public function warning($message)
     {
         $this->write($message, 'warning');
     }
 
-    /**
-     * @param $message
-     * @param $level
-     */
     protected function write($message, $level)
     {
         foreach ($this->loggers as $logger) {
@@ -73,7 +59,6 @@ trait HandlesLogging
     }
 
     /**
-     * @param $callback
      * @return mixed|Closure
      */
     public function sublog($callback)

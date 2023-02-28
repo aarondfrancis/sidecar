@@ -31,7 +31,6 @@ class LambdaClient extends BaseClient
     }
 
     /**
-     * @param  LambdaFunction  $function
      * @return string
      */
     public function getLatestVersion(LambdaFunction $function)
@@ -42,8 +41,6 @@ class LambdaClient extends BaseClient
     /**
      * Test whether the latest deployed version is the one that is aliased.
      *
-     * @param  LambdaFunction  $function
-     * @param $alias
      * @return bool
      */
     public function latestVersionHasAlias(LambdaFunction $function, $alias)
@@ -56,7 +53,6 @@ class LambdaClient extends BaseClient
     }
 
     /**
-     * @param  LambdaFunction  $function
      * @param  null|string  $marker
      * @return \Aws\Result
      */
@@ -78,7 +74,6 @@ class LambdaClient extends BaseClient
     }
 
     /**
-     * @param  LambdaFunction  $function
      * @param  string  $alias
      * @param  string|null  $version
      * @return int
@@ -112,8 +107,6 @@ class LambdaClient extends BaseClient
     }
 
     /**
-     * @param  LambdaFunction  $function
-     * @param $name
      * @return \Aws\Result|false
      */
     public function getAliasWithoutException(LambdaFunction $function, $name)
@@ -133,7 +126,6 @@ class LambdaClient extends BaseClient
     }
 
     /**
-     * @param  LambdaFunction  $function
      * @return int
      *
      * @throws Exception
@@ -269,7 +261,6 @@ class LambdaClient extends BaseClient
     /**
      * Delete a particular version of a function.
      *
-     * @param  LambdaFunction  $function
      * @param  string  $version
      */
     public function deleteFunctionVersion(LambdaFunction $function, $version)
@@ -281,7 +272,6 @@ class LambdaClient extends BaseClient
     }
 
     /**
-     * @param  LambdaFunction  $function
      * @param  null  $checksum
      * @return bool
      */

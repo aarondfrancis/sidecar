@@ -41,7 +41,6 @@ abstract class LambdaFunction
     /**
      * Execute the current function and return the response.
      *
-     * @param $payloads
      * @param  bool  $async
      * @return array
      *
@@ -55,7 +54,6 @@ abstract class LambdaFunction
     /**
      * Execute the current function and return the response.
      *
-     * @param $payloads
      * @return array
      *
      * @throws \Throwable
@@ -178,8 +176,6 @@ abstract class LambdaFunction
     /**
      * The default representation of this function as an HTTP response.
      *
-     * @param $request
-     * @param  SettledResult  $result
      * @return \Illuminate\Http\Response
      *
      * @throws \Exception
@@ -211,7 +207,6 @@ abstract class LambdaFunction
     }
 
     /**
-     * @param  Result  $raw
      * @return SettledResult
      */
     public function toSettledResult(Result $raw)
@@ -220,7 +215,6 @@ abstract class LambdaFunction
     }
 
     /**
-     * @param  PromiseInterface  $raw
      * @return PendingResult
      */
     public function toPendingResult(PromiseInterface $raw)
