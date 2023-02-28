@@ -14,6 +14,7 @@ use Hammerstone\Sidecar\Events\BeforeFunctionsActivated;
 use Hammerstone\Sidecar\Events\BeforeFunctionsDeployed;
 use Hammerstone\Sidecar\Exceptions\NoFunctionsRegisteredException;
 use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunction;
+use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunctionWithTags;
 use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunctionWithVariables;
 use Illuminate\Support\Facades\Event;
 use Mockery;
@@ -63,7 +64,8 @@ class DeploymentTest extends Base
             'MemorySize' => 'test-MemorySize',
             'Layers' => 'test-Layers',
             'Publish' => 'test-Publish',
-            'Architectures' => ['x86_64']
+            'Architectures' => ['x86_64'],
+            'Tags' => [],
         ]);
 
         $this->lambda->shouldNotReceive('updateFunctionConfiguration');
@@ -265,6 +267,59 @@ class DeploymentTest extends Base
         $this->mockActivating();
 
         DeploymentTestFunctionWithVariables::deploy($activate = true);
+
+        $this->assertEvents($deployed = true, $activated = true);
+    }
+
+    /** @test */
+    public function it_sets_function_tags()
+    {
+        $this->lambda->shouldReceive('functionExists')->andReturn(false);
+        $this->lambda->shouldReceive('getVersions')->andReturn([]);
+
+        $this->lambda->shouldReceive('createFunction')->once()->with([
+            'FunctionName' => 'test-FunctionName',
+            'Runtime' => 'test-Runtime',
+            'Role' => 'test-Role',
+            'Handler' => 'test-Handler',
+            'Code' => [
+                'S3Bucket' => 'test-bucket',
+                'S3Key' => 'test-key',
+            ],
+            'Description' => 'test-Description',
+            'Timeout' => 'test-Timeout',
+            'MemorySize' => 'test-MemorySize',
+            'EphemeralStorage' => [
+                'Size' => 'test-EphemeralStorage'
+            ],
+            'Layers' => 'test-Layers',
+            'Publish' => 'test-Publish',
+            'Architectures' => ['x86_64'],
+            'Tags' => [
+                'Project' => 'Super Secret Project',
+            ],
+        ]);
+
+        $this->lambda->shouldNotReceive('updateFunctionConfiguration');
+        $this->lambda->shouldNotReceive('updateFunctionCode');
+
+        $this->lambda->shouldReceive('getLatestVersion')
+            ->once()
+            ->withArgs(function ($function) {
+                return $function instanceof DeploymentTestFunctionWithTags;
+            })
+            ->andReturn('10');
+
+        $this->lambda->shouldReceive('aliasVersion')
+            ->once()
+            ->withArgs(function ($function, $alias, $version) {
+                return $function instanceof DeploymentTestFunctionWithTags
+                    && $alias === 'active'
+                    && $version === '10';
+            })
+            ->andReturn(LambdaClient::CREATED);
+
+        DeploymentTestFunctionWithTags::deploy($activate = true);
 
         $this->assertEvents($deployed = true, $activated = true);
     }

@@ -172,7 +172,7 @@ class LambdaClientTest extends Base
         $this->lambda->shouldReceive('functionExists')
             ->once()
             ->withArgs(function ($f, $checksum) use ($function) {
-                return $f === $function && $checksum === 'e827998e';
+                return $f === $function && $checksum === '4ec93448';
             })
             ->andReturn(false);
 
@@ -183,7 +183,7 @@ class LambdaClientTest extends Base
                 'Runtime' => 'test-Runtime',
                 'Role' => 'test-Role',
                 'Handler' => 'test-Handler',
-                'Description' => 'test-Description [e827998e]',
+                'Description' => 'test-Description [4ec93448]',
                 'Timeout' => 'test-Timeout',
                 'EphemeralStorage' => [
                     'Size' => 'test-EphemeralStorage'
@@ -192,7 +192,8 @@ class LambdaClientTest extends Base
                 'Layers' => 'test-Layers',
                 'Architectures' => [
                     Architecture::X86_64
-                ]
+                ],
+                'Tags' => [],
             ]);
 
         $this->lambda->shouldReceive('updateFunctionCode')
@@ -224,7 +225,7 @@ class LambdaClientTest extends Base
             ->with([
                 'FunctionName' => 'test-FunctionName',
                 'Role' => null,
-                'Description' => 'test-Description [ac420e45]',
+                'Description' => 'test-Description [e280b565]',
                 'Timeout' => 300,
                 'MemorySize' => 512,
                 'EphemeralStorage' => [
@@ -234,7 +235,8 @@ class LambdaClientTest extends Base
                 'PackageType' => 'Image',
                 'Architectures' => [
                     Architecture::X86_64
-                ]
+                ],
+                'Tags' => [],
             ]);
 
         $this->lambda->shouldReceive('updateFunctionCode')
@@ -259,7 +261,7 @@ class LambdaClientTest extends Base
         $this->lambda->shouldReceive('functionExists')
             ->once()
             ->withArgs(function ($f, $checksum) use ($function) {
-                return $f === $function && $checksum === 'e827998e';
+                return $f === $function && $checksum === '4ec93448';
             })
             ->andReturn(true);
 

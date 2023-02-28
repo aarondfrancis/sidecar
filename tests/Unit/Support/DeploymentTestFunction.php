@@ -52,6 +52,7 @@ class DeploymentTestFunction extends LambdaFunction
             'Layers' => 'test-Layers',
             'Publish' => 'test-Publish',
             'Architectures' => ['x86_64'],
+            'Tags' => $this->tags(),
         ];
     }
 }
