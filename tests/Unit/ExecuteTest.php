@@ -13,7 +13,7 @@ use Hammerstone\Sidecar\Sidecar;
 use Hammerstone\Sidecar\Tests\Unit\Support\EmptyTestFunction;
 use Illuminate\Support\Facades\Event;
 
-class ExecuteTest extends BaseTest
+class ExecuteTest extends Base
 {
     protected function setUp(): void
     {

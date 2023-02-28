@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Mockery;
 
-class PackageTest extends BaseTest
+class PackageTest extends Base
 {
     public function getEnvironmentSetUp($app)
     {

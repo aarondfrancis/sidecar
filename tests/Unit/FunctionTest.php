@@ -7,7 +7,7 @@ namespace Hammerstone\Sidecar\Tests\Unit;
 
 use Hammerstone\Sidecar\Tests\Unit\Support\EmptyTestFunction;
 
-class FunctionTest extends BaseTest
+class FunctionTest extends Base
 {
     /** @test */
     public function app_name_with_a_space_gets_dashed()

@@ -7,7 +7,7 @@ namespace Hammerstone\Sidecar\Tests\Unit;
 
 use Hammerstone\Sidecar\Sidecar;
 
-class EnvironmentTest extends BaseTest
+class EnvironmentTest extends Base
 {
     /** @test */
     public function it_can_be_overridden()

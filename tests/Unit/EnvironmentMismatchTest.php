@@ -12,7 +12,7 @@ use Hammerstone\Sidecar\Tests\Unit\Support\EmptyTestFunction;
 use Illuminate\Support\Facades\Event;
 use Mockery;
 
-class EnvironmentMismatchTest extends BaseTest
+class EnvironmentMismatchTest extends Base
 {
     protected $lambda;
 

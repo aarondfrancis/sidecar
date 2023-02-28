@@ -13,7 +13,7 @@ use Aws\S3\S3Client;
 use Illuminate\Support\Carbon;
 use Mockery;
 
-class ConfigureTest extends BaseTest
+class ConfigureTest extends Base
 {
     protected function setUp(): void
     {

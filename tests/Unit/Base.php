@@ -8,7 +8,7 @@ namespace Hammerstone\Sidecar\Tests\Unit;
 use Hammerstone\Sidecar\Providers\SidecarServiceProvider;
 use Orchestra\Testbench\TestCase;
 
-abstract class BaseTest extends TestCase
+abstract class Base extends TestCase
 {
     /**
      * Define environment setup.
