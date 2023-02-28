@@ -19,10 +19,6 @@ abstract class BaseAction
      */
     public $region;
 
-    /**
-     * @param $region
-     * @param  Configure  $command
-     */
     public function __construct($region, Configure $command)
     {
         $this->region = $region;
@@ -32,9 +28,6 @@ abstract class BaseAction
 
     abstract public function invoke();
 
-    /**
-     * @param $message
-     */
     protected function progress($message)
     {
         $this->command->text("==> $message");

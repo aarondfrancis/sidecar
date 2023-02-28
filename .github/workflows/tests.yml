@@ -14,41 +14,29 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 7.2, 7.3, 7.4, 8.0, 8.1, 8.2 ]
-        laravel: [ 7.*, 8.*, 9.* ]
+        php: [  7.3, 7.4, 8.0, 8.1, 8.2 ]
+        laravel: [ 8.*, 9.*, 10.* ]
         guzzle: [ 6.*, 7.* ]
         dependency-version: [ prefer-lowest, prefer-stable ]
         include:
-          - laravel: 7.*
-            testbench: 5.*
-
-          - laravel: 7.*
-            dependency-version: prefer-lowest
-            composer-version: --1
-
           - laravel: 8.*
             testbench: 6.*
 
           - laravel: 9.*
             testbench: 7.*
 
-        exclude:
-          - laravel: 7.*
-            php: 8.1
-            # Laravel 8 requires PHP 7.3.
-          - laravel: 8.*
-            php: 7.2
+          - laravel: 10.*
+            testbench: 8.*
 
+        exclude:
             # PHP 8.1 requires Laravel 8.65, so skip lowest
           - laravel: 8.*
             php: 8.1
             dependency-version: prefer-lowest
 
-            # Laravel 9 requires PHP 8.0
-          - laravel: 9.*
-            php: 7.2
           - laravel: 9.*
             php: 7.3
+
           - laravel: 9.*
             php: 7.4
 
@@ -57,8 +45,6 @@ jobs:
             guzzle: 6.*
 
             # Only test PHP 8.2 with Laravel 9
-          - laravel: 7.*
-            php: 8.2
           - laravel: 8.*
             php: 8.2
 
@@ -66,6 +52,18 @@ jobs:
           - laravel: 9.*
             php: 8.2
             dependency-version: prefer-lowest
+
+            # Laravel 10 requires PHP 8.1
+          - laravel: 10.*
+            php: 7.3
+          - laravel: 10.*
+            php: 7.4
+          - laravel: 10.*
+            php: 8.0
+
+            # Laravel 10 requires Guzzle ^7.2
+          - laravel: 10.*
+            guzzle: 7.*
 
     name: P${{ matrix.php }} / L${{ matrix.laravel }} / G${{ matrix.guzzle }} / ${{ matrix.dependency-version }}
 

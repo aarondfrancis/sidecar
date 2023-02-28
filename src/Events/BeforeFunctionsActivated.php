@@ -9,9 +9,6 @@ class BeforeFunctionsActivated
 {
     public $functions = [];
 
-    /**
-     * @param $functions
-     */
     public function __construct($functions)
     {
         $this->functions = $functions;

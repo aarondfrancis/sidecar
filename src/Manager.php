@@ -30,7 +30,6 @@ class Manager
     public $executionVersion = 'active';
 
     /**
-     * @param $version
      * @param  null  $callback
      * @return Closure
      */
@@ -117,7 +116,6 @@ class Manager
     }
 
     /**
-     * @param $function
      * @param  array  $payload
      * @return PendingResult|Results\SettledResult
      *
@@ -130,8 +128,6 @@ class Manager
     }
 
     /**
-     * @param $function
-     * @param $payloads
      * @param  bool  $async
      * @return array
      *
@@ -160,7 +156,6 @@ class Manager
     }
 
     /**
-     * @param $params
      * @return array
      *
      * @throws Exceptions\SidecarException
@@ -172,7 +167,6 @@ class Manager
     }
 
     /**
-     * @param $function
      * @param  array  $payload
      * @return PendingResult|SettledResult
      *
@@ -216,7 +210,6 @@ class Manager
     /**
      * Warm a single function, with the option to override the version.
      *
-     * @param  LambdaFunction  $function
      * @param  bool  $async
      * @param  string  $version
      * @return array
