@@ -16,7 +16,8 @@ class Activate extends EnvironmentAwareCommand
      *
      * @var string
      */
-    protected $signature = 'sidecar:activate {--pre-warm}';
+    protected $signature = 'sidecar:activate
+                            {--pre-warm : Send warming requests to Sidecar functions}';
 
     /**
      * The console command description.
