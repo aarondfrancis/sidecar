@@ -28,7 +28,7 @@ class Configure extends Command
      *
      * @var string
      */
-    protected $description = 'Interactively configure your Sidecar AWS environment variables.';
+    protected $description = 'Interactively configure your Sidecar AWS environment variables';
 
     /**
      * @var string
@@ -70,11 +70,11 @@ class Configure extends Command
 
         $this->line(' ');
         $this->info('Done! Here are your environment variables:');
-        $this->line('SIDECAR_ACCESS_KEY_ID=' . $credentials['key']);
-        $this->line('SIDECAR_SECRET_ACCESS_KEY=' . $credentials['secret']);
-        $this->line('SIDECAR_REGION=' . $this->region);
-        $this->line('SIDECAR_ARTIFACT_BUCKET_NAME=' . $bucket);
-        $this->line('SIDECAR_EXECUTION_ROLE=' . $role);
+        $this->line('SIDECAR_ACCESS_KEY_ID='.$credentials['key']);
+        $this->line('SIDECAR_SECRET_ACCESS_KEY='.$credentials['secret']);
+        $this->line('SIDECAR_REGION='.$this->region);
+        $this->line('SIDECAR_ARTIFACT_BUCKET_NAME='.$bucket);
+        $this->line('SIDECAR_EXECUTION_ROLE='.$role);
         $this->line(' ');
         $this->info('They will work in any environment.');
     }
@@ -92,9 +92,9 @@ class Configure extends Command
                 'version' => 'latest',
                 'credentials' => [
                     'key' => $this->key,
-                    'secret' => $this->secret
-                ]
-            ]
+                    'secret' => $this->secret,
+                ],
+            ],
         ]);
     }
 

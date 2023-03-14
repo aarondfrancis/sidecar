@@ -23,7 +23,7 @@ class Activate extends EnvironmentAwareCommand
      *
      * @var string
      */
-    protected $description = 'Activate Sidecar functions that have already been deployed.';
+    protected $description = 'Activate Sidecar functions that have already been deployed';
 
     /**
      * @throws NoFunctionsRegisteredException

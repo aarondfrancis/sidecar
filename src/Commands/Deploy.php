@@ -23,7 +23,7 @@ class Deploy extends EnvironmentAwareCommand
      *
      * @var string
      */
-    protected $description = 'Deploy Sidecar functions.';
+    protected $description = 'Deploy Sidecar functions';
 
     /**
      * @throws NoFunctionsRegisteredException
