@@ -16,14 +16,16 @@ class Deploy extends EnvironmentAwareCommand
      *
      * @var string
      */
-    protected $signature = 'sidecar:deploy {--activate} {--pre-warm}';
+    protected $signature = 'sidecar:deploy 
+                            {--activate : Activate the deployment after deploying} 
+                            {--pre-warm : Send warming requests to Sidecar functions}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Deploy Sidecar functions.';
+    protected $description = 'Deploy Sidecar functions';
 
     /**
      * @throws NoFunctionsRegisteredException

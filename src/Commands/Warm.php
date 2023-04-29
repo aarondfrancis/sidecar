@@ -22,7 +22,7 @@ class Warm extends EnvironmentAwareCommand
      *
      * @var string
      */
-    protected $description = 'Send warming requests to Sidecar functions.';
+    protected $description = 'Send warming requests to Sidecar functions';
 
     /**
      * @throws Exception

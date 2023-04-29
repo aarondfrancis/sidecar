@@ -23,7 +23,7 @@ class Install extends Command
      *
      * @var string
      */
-    protected $description = 'Install the Sidecar config file into your app.';
+    protected $description = 'Install the Sidecar config file into your app';
 
     public function __construct()
     {
@@ -40,7 +40,7 @@ class Install extends Command
     public function handle()
     {
         Artisan::call('vendor:publish', [
-            '--provider' => SidecarServiceProvider::class
+            '--provider' => SidecarServiceProvider::class,
         ]);
 
         $this->info('Config file published!');
