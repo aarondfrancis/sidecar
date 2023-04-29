@@ -202,9 +202,17 @@ class Manager
      */
     public function warm($functions = null)
     {
-        array_map(function (LambdaFunction $function) {
-            $this->warmSingle($function);
+        $results = array_map(function (LambdaFunction $function) {
+            return $this->warmSingle($function);
         }, $this->instantiatedFunctions($functions));
+
+        $results = Arr::flatten($results, 1);
+
+        // The requests will never be sent unless we wait for them to
+        // settle, because of how Guzzle handles async requests.
+        array_map(function ($result) {
+            return $result->settled();
+        }, $results);
     }
 
     /**
