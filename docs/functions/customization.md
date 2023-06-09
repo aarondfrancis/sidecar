@@ -7,21 +7,24 @@ The only two things _required_ for a Sidecar function are the [package and the h
 
 Lambda supports multiple languages through the use of runtimes. You can choose any of the following runtimes by returning its corresponding identifier:
 
+- Node.js 18: `nodejs18.x`
 - Node.js 16: `nodejs16.x`
 - Node.js 14: `nodejs14.x`
-- Node.js 12: `nodejs12.x`
-- Node.js 10: `nodejs10.x`
+- Python 3.10: `python3.10`
+- Python 3.9: `python3.9`
 - Python 3.8: `python3.8`
 - Python 3.7: `python3.7`
-- Python 3.6: `python3.6`
-- Python 2.7: `python2.7`
+- Ruby 3.2: `ruby3.2`
 - Ruby 2.7: `ruby2.7`
-- Ruby 2.5: `ruby2.5`
+- Java 17: `java17`
 - Java 11: `java11`
 - Java 8: `java8`
+- Java 8 Linux 2: `java8.al2`
 - Go 1.x: `go1.x`
-- .NET Core 3.1: `dotnetcore3.1`
-- .NET Core 2.1: `dotnetcore2.1`
+- .NET 7: `dotnet7`
+- .NET 6: `dotnet6`
+- Custom runntime: `provided.al2`
+- Custom runntime: `provided`
 
 E.g. to use the Go runtime, you would return `go1.x`:
 

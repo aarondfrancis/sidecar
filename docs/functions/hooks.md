@@ -44,7 +44,7 @@ With this in place, you'll see something like this in your logs:
 ```text
 [Sidecar] Deploying App\Sidecar\Example to Lambda as `SC-App-local-Sidecar-Example`.
           ↳ Environment: local
-          ↳ Runtime: nodejs14.x
+          ↳ Runtime: nodejs18.x
           ↳ Compiling bundle with NCC.  [tl! focus]
           ↳ Running `ncc build resources/lambda/image.js -o resources/lambda/dist`  [tl! focus]
           ↳ Bundle compiled!  [tl! focus]

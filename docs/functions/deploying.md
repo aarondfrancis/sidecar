@@ -172,7 +172,7 @@ In the event that neither the code nor function configuration have changed, Side
 You will see output similar to the following:
 
 ```text
-[Sidecar] Deploying App\Sidecar\OgImage to Lambda. (Runtime nodejs12.x.)
+[Sidecar] Deploying App\Sidecar\OgImage to Lambda. (Runtime nodejs18.x.)
           ↳ Function already exists, potentially updating code and configuration.
           ↳ Packaging function code.
           ↳ Package unchanged, reusing previous code package at s3://sidecar-us-east-2-XXX/sidecar/001-79a5915eaec296be04a0f4fb7cc80e40.zip.
