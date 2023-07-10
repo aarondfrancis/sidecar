@@ -43,7 +43,7 @@ class MakeLambdaFunction extends GeneratorCommand
      */
     protected function getStub()
     {
-        return $this->resolveStubPath('/../../stubs/lambda-function.stub');
+        return $this->resolveStubPath('/stubs/lambda-function.stub');
     }
 
     /**
