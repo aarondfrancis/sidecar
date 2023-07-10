@@ -5,6 +5,7 @@
 
 namespace Hammerstone\Sidecar\Commands;
 
+use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
@@ -12,26 +13,28 @@ use Symfony\Component\Console\Input\InputOption;
 #[AsCommand(name: 'make:lambda-function')]
 class MakeLambdaFunction extends GeneratorCommand
 {
+    use CreatesMatchingTest;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'make:lambda-function';
+    protected $signature = 'make:lambda-function {name} {--runtime= : The runtime that will be used to create the lambda function}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Creates a new Sidecar Lambda function class';
+    protected $description = 'Create a new Sidecar Lambda function class';
 
     /**
      * The type of class being generated.
      *
      * @var string
      */
-    protected $type = 'LambdaFunction';
+    protected $type = 'Lambda';
 
     /**
      * Get the stub file for the generator.
@@ -40,7 +43,20 @@ class MakeLambdaFunction extends GeneratorCommand
      */
     protected function getStub()
     {
-        return base_path('stubs/lambda-function.stub');
+        return $this->resolveStubPath('/../../stubs/lambda-function.stub');
+    }
+
+    /**
+     * Resolve the fully-qualified path to the stub.
+     *
+     * @param  string  $stub
+     * @return string
+     */
+    protected function resolveStubPath($stub)
+    {
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+            ? $customPath
+            : __DIR__.$stub;
     }
 
     /**
@@ -75,7 +91,7 @@ class MakeLambdaFunction extends GeneratorCommand
      *
      * @return array
      */
-    protected function getOptions()
+    protected function getArguments()
     {
         return [
             ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the lambda function already exists'],
