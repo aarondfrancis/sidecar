@@ -13,6 +13,7 @@ use Hammerstone\Sidecar\Commands\Activate;
 use Hammerstone\Sidecar\Commands\Configure;
 use Hammerstone\Sidecar\Commands\Deploy;
 use Hammerstone\Sidecar\Commands\Install;
+use Hammerstone\Sidecar\Commands\MakeLambdaFunction;
 use Hammerstone\Sidecar\Commands\Warm;
 use Hammerstone\Sidecar\Contracts\AwsClientConfiguration as AwsClientConfigurationContract;
 use Hammerstone\Sidecar\Manager;
@@ -55,6 +56,7 @@ class SidecarServiceProvider extends ServiceProvider
                 Warm::class,
                 Deploy::class,
                 Install::class,
+                MakeLambdaFunction::class,
             ]);
         }
 
