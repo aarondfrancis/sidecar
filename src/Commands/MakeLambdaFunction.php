@@ -5,7 +5,6 @@
 
 namespace Hammerstone\Sidecar\Commands;
 
-use Illuminate\Console\Concerns\CreatesMatchingTest;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
@@ -13,8 +12,6 @@ use Symfony\Component\Console\Input\InputOption;
 #[AsCommand(name: 'make:lambda-function')]
 class MakeLambdaFunction extends GeneratorCommand
 {
-    use CreatesMatchingTest;
-
     /**
      * The name and signature of the console command.
      *
