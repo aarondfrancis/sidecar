@@ -10,6 +10,7 @@ Lambda supports multiple languages through the use of runtimes. You can choose a
 - Node.js 18: `nodejs18.x`
 - Node.js 16: `nodejs16.x`
 - Node.js 14: `nodejs14.x`
+- Python 3.11: `python3.11`
 - Python 3.10: `python3.10`
 - Python 3.9: `python3.9`
 - Python 3.8: `python3.8`

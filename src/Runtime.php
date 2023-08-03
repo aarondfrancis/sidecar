@@ -10,6 +10,8 @@ abstract class Runtime
 
     public const NODEJS_14 = 'nodejs14.x';
 
+    public const PYTHON_311 = 'python3.11';
+
     public const PYTHON_310 = 'python3.10';
 
     public const PYTHON_39 = 'python3.9';
