@@ -78,9 +78,9 @@ class MakeLambdaFunction extends GeneratorCommand
     {
         $stub = parent::replaceClass($stub, $name);
 
-        $runtime = $this->option('runtime') ?: 'nodejs18.x';
+        $runtime = $this->option('runtime') ?: 'nodejs20.x';
 
-        return str_replace(['nodejs18.x', '{{ runtime }}'], $runtime, $stub);
+        return str_replace(['nodejs20.x', '{{ runtime }}'], $runtime, $stub);
     }
 
     /**

@@ -27,7 +27,7 @@ The make command will create a new function class in your `app/Sidecar` director
 php artisan make:lambda-function MyFunction
 ```
 
-You can also pass a `--runtime=` flag to specify the runtime you want to use. The default runtime for newly created functions is `nodejs18.x`.
+You can also pass a `--runtime=` flag to specify the runtime you want to use. The default runtime for newly created functions is `nodejs20.x`.
 To see a list of available runtimes, see the [Runtime](functions/customization#runtime) section.
 
 ```text
