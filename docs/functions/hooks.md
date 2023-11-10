@@ -11,7 +11,7 @@ The following four methods are available to you on every Sidecar function:
 - `beforeActivation`
 - `afterActivation`
 
-## Example: Before Deployment 
+## Example: Before Deployment
 
 The `beforeDeployment` hook is a great place to run a build step if your function requires it. We'll be using the `ncc build` command mentioned in the [Handlers & Packages](handlers-and-packages#compiling-your-handler-with-ncc) section for this example.
 
@@ -44,7 +44,7 @@ With this in place, you'll see something like this in your logs:
 ```text
 [Sidecar] Deploying App\Sidecar\Example to Lambda as `SC-App-local-Sidecar-Example`.
           ↳ Environment: local
-          ↳ Runtime: nodejs18.x
+          ↳ Runtime: nodejs20.x
           ↳ Compiling bundle with NCC.  [tl! focus]
           ↳ Running `ncc build resources/lambda/image.js -o resources/lambda/dist`  [tl! focus]
           ↳ Bundle compiled!  [tl! focus]
