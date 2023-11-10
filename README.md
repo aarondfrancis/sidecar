@@ -20,6 +20,7 @@ Sidecar packages, creates, deploys, and executes Lambda functions from your Lara
 
 You can write functions in any of the following runtimes and execute them straight from PHP:
 
+- Node.js 20
 - Node.js 18
 - Node.js 16
 - Node.js 14

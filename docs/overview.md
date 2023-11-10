@@ -7,6 +7,7 @@ It works with _any_ Laravel 7, 8, 9 or 10 application, hosted _anywhere_, includ
 
 You can write functions in any of the following runtimes and execute them straight from PHP:
 
+- Node.js 20
 - Node.js 18
 - Node.js 16
 - Node.js 14

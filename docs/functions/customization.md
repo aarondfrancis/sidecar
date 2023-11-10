@@ -7,6 +7,7 @@ The only two things _required_ for a Sidecar function are the [package and the h
 
 Lambda supports multiple languages through the use of runtimes. You can choose any of the following runtimes by returning its corresponding identifier:
 
+- Node.js 20: `nodejs20.x`
 - Node.js 18: `nodejs18.x`
 - Node.js 16: `nodejs16.x`
 - Node.js 14: `nodejs14.x`

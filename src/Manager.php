@@ -22,7 +22,7 @@ use Throwable;
 
 class Manager
 {
-    use Macroable, HandlesLogging, ManagesEnvironments;
+    use HandlesLogging, Macroable, ManagesEnvironments;
 
     /**
      * @var string
