@@ -137,7 +137,7 @@ class Configure extends Command
         $this->text(' --> Click "Create access key"');
         $this->line(str_repeat('-', $this->width));
 
-        $this->key = $this->ask('Enter the Access key ID');
+        $this->key = $this->ask('Enter the Access key');
         $this->secret = $this->secret('Enter the Secret access key');
 
         if ($this->key && $this->secret) {
