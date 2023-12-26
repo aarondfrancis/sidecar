@@ -119,7 +119,7 @@ class Configure extends Command
         $this->text(' --> Click "Create user"');
         $this->text(' ');
         $this->text(' --> Enter "sidecar-cli-helper" as the name.');
-        $this->text(' --> Press "Next"');
+        $this->text(' --> Click "Next"');
         $this->text(' ');
         $this->text(' --> Choose "Attach existing policies directly."');
         $this->text(' --> Select "AdministratorAccess."');
