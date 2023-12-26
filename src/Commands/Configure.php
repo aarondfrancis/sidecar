@@ -116,10 +116,10 @@ class Configure extends Command
         $this->text('We will only use these for this session, then they will be forgotten.');
         $this->line('');
         $this->text('Visit this link: https://console.aws.amazon.com/iam/home#/users');
-        $this->text(' --> Click "Add User."');
+        $this->text(' --> Click "Create user"');
         $this->text(' ');
         $this->text(' --> Enter "sidecar-cli-helper" as the name.');
-        $this->text(' --> Press "Next: Permissions."');
+        $this->text(' --> Press "Next"');
         $this->text(' ');
         $this->text(' --> Choose "Attach existing policies directly."');
         $this->text(' --> Select "AdministratorAccess."');
