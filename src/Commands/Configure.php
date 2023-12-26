@@ -121,17 +121,20 @@ class Configure extends Command
         $this->text(' --> Enter "sidecar-cli-helper" as the name.');
         $this->text(' --> Click "Next"');
         $this->text(' ');
-        $this->text(' --> Choose "Attach existing policies directly."');
-        $this->text(' --> Select "AdministratorAccess."');
+        $this->text(' --> Choose "Attach policies directly"');
+        $this->text(' --> Select "AdministratorAccess"');
         $this->text(' ');
-        $this->text(' --> Click "Create user."');
-        $this->text('');
+        $this->text(' --> Click "Next"');
+        $this->text(' ');
+        $this->text(' --> Click "Create user"');
+        $this->text(' ');
         $this->text(' --> Navigate to the "sidecar-cli-helper" user.');
         $this->text(' --> Click "Security Credentials."');
-        $this->text(' --> Scroll down and click "Create access key."');
-        $this->text(' --> Select "Application running outside AWS."');
-        $this->text(' --> Click "Next."');
-        $this->text(' --> Click "Create access key."');
+        $this->text(' --> Scroll down to "Access keys" and click "Create access key"');
+        $this->text(' --> Select "Application running outside AWS"');
+        $this->text(' --> Click "Next"');
+        $this->text(' ');
+        $this->text(' --> Click "Create access key"');
         $this->line(str_repeat('-', $this->width));
 
         $this->key = $this->ask('Enter the Access key ID');
