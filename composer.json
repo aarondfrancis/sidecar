@@ -11,8 +11,8 @@
     ],
     "require": {
         "php": "^8.0",
-        "illuminate/filesystem": "^^9.0|^10",
-        "illuminate/console": "^^9.0|^10",
+        "illuminate/filesystem": "^9.0|^10",
+        "illuminate/console": "^9.0|^10",
         "maennchen/zipstream-php": "^3.1",
         "guzzlehttp/guzzle": "^7.2",
         "aws/aws-sdk-php": "^3.216.1"
