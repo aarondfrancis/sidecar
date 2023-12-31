@@ -336,15 +336,17 @@ class Package
         // a writeable local disk!
         $stream = fopen($path, 'w');
 
-        $options = new Archive;
-        $options->setEnableZip64(false);
-        $options->setOutputStream($stream);
+//        $options = new Archive;
+//        $options->setEnableZip64(false);
+//        $options->setOutputStream($stream);
+//
+//        $zip = new ZipStream($name = null, $options);
+        $zip = new ZipStream(enableZip64: false, outputStream: $stream, outputName: null);
 
-        $zip = new ZipStream($name = null, $options);
-
+        $time = Carbon::now();
         // Set the time to now so that hashes are
         // stable during testing.
-        $options = tap(new FileOptions)->setTime(Carbon::now());
+//        $options = tap(new FileOptions)->setTime(Carbon::now());
 
         foreach ($this->files() as $file) {
             // Add the base path so that ZipStream can
@@ -353,20 +355,30 @@ class Package
 
             // Remove the base path so that everything inside
             // the zip is relative to the project root.
+//            $zip->addFileFromPath(
+//                $this->normalizeSeparators($this->removeBasePath($file)), $file, $options
+//            );
+
             $zip->addFileFromPath(
-                $this->normalizeSeparators($this->removeBasePath($file)), $file, $options
+                fileName: $this->normalizeSeparators($this->removeBasePath($file)),
+                path: $file,
+                lastModificationDateTime: $time,
             );
         }
 
         foreach ($this->exactIncludes as $source => $destination) {
             $zip->addFileFromPath(
-                $this->normalizeSeparators($destination), $source, $options
+                fileName: $this->normalizeSeparators($this->removeBasePath($destination)),
+                path: $source,
+                lastModificationDateTime: $time
             );
         }
 
         foreach ($this->stringContents as $destination => $stringContent) {
             $zip->addFile(
-                $this->normalizeSeparators($destination), $stringContent, $options
+                fileName: $this->normalizeSeparators($this->removeBasePath($destination)),
+                data: $stringContent,
+                lastModificationDateTime: $time
             );
         }
 

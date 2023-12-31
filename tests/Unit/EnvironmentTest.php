@@ -26,9 +26,9 @@ class EnvironmentTest extends Base
     /** @test */
     public function precedence_is_correct()
     {
-        config(['app.env' => 'app_env']);
+        config(['app.env' => 'testing']);
 
-        $this->assertEquals('app_env', Sidecar::getEnvironment());
+        $this->assertEquals('testing', Sidecar::getEnvironment());
 
         config(['sidecar.env' => 'sidecar_env']);
 
