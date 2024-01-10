@@ -10,32 +10,29 @@ Lambda supports multiple languages through the use of runtimes. You can choose a
 - Node.js 20: `nodejs20.x`
 - Node.js 18: `nodejs18.x`
 - Node.js 16: `nodejs16.x`
-- Node.js 14: `nodejs14.x`
+- Python 3.12: `python3.12`
 - Python 3.11: `python3.11`
 - Python 3.10: `python3.10`
 - Python 3.9: `python3.9`
 - Python 3.8: `python3.8`
-- Python 3.7: `python3.7`
-- Ruby 3.2: `ruby3.2`
-- Ruby 2.7: `ruby2.7`
+- Java 21: `java21`
 - Java 17: `java17`
 - Java 11: `java11`
-- Java 8: `java8`
-- Java 8 Linux 2: `java8.al2`
-- Go 1.x: `go1.x`
+- Java 8: `java8.al2`
 - .NET 7: `dotnet7`
 - .NET 6: `dotnet6`
-- Custom runntime: `provided.al2`
-- Custom runntime: `provided`
+- Ruby 3.2: `ruby3.2`
+- OS-only runtime (Amazon Linux 2023): `provided.al2023`
+- OS-only runtime (Amazon Linux 2): `provided.al2`
 
-E.g. to use the Go runtime, you would return `go1.x`:
+E.g. to use the Python 3.12 runtime, you would return `python3.12`:
 
 ```php
 class ExampleFunction extends LambdaFunction
 {
     public function runtime() // [tl! focus:3]
     {
-        return 'go1.x';
+        return 'python3.12';
     }
 }
 ```

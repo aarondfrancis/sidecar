@@ -10,21 +10,20 @@ You can write functions in any of the following runtimes and execute them straig
 - Node.js 20
 - Node.js 18
 - Node.js 16
-- Node.js 14
+- Python 3.12
 - Python 3.11
 - Python 3.10
 - Python 3.9
 - Python 3.8
-- Python 3.7
-- Ruby 3.2
-- Ruby 2.7
+- Java 21
 - Java 17
 - Java 11
 - Java 8
-- Go 1.x
 - .NET 7
 - .NET 6
-- Custom runtime
+- Ruby 3.2
+- OS-only runtime (Amazon Linux 2023)
+- OS-only runtime (Amazon Linux 2)
 
 Any runtime that [Lambda supports](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html), you can use!
 
