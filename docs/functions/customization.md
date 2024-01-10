@@ -7,30 +7,32 @@ The only two things _required_ for a Sidecar function are the [package and the h
 
 Lambda supports multiple languages through the use of runtimes. You can choose any of the following runtimes by returning its corresponding identifier:
 
+- Node.js 20: `nodejs20.x`
+- Node.js 18: `nodejs18.x`
 - Node.js 16: `nodejs16.x`
-- Node.js 14: `nodejs14.x`
-- Node.js 12: `nodejs12.x`
-- Node.js 10: `nodejs10.x`
+- Python 3.12: `python3.12`
+- Python 3.11: `python3.11`
+- Python 3.10: `python3.10`
+- Python 3.9: `python3.9`
 - Python 3.8: `python3.8`
-- Python 3.7: `python3.7`
-- Python 3.6: `python3.6`
-- Python 2.7: `python2.7`
-- Ruby 2.7: `ruby2.7`
-- Ruby 2.5: `ruby2.5`
+- Java 21: `java21`
+- Java 17: `java17`
 - Java 11: `java11`
-- Java 8: `java8`
-- Go 1.x: `go1.x`
-- .NET Core 3.1: `dotnetcore3.1`
-- .NET Core 2.1: `dotnetcore2.1`
+- Java 8: `java8.al2`
+- .NET 7: `dotnet7`
+- .NET 6: `dotnet6`
+- Ruby 3.2: `ruby3.2`
+- OS-only runtime (Amazon Linux 2023): `provided.al2023`
+- OS-only runtime (Amazon Linux 2): `provided.al2`
 
-E.g. to use the Go runtime, you would return `go1.x`:
+E.g. to use the Python 3.12 runtime, you would return `python3.12`:
 
 ```php
 class ExampleFunction extends LambdaFunction
 {
     public function runtime() // [tl! focus:3]
     {
-        return 'go1.x';
+        return 'python3.12';
     }
 }
 ```

@@ -22,7 +22,7 @@ When you run that, you'll see an output log similar to the one below:
           ↳ Activating Version 1 of SC-Laravel-local-Sidecar-OgImage.
 ```
 
-The deployment process consists of 
+The deployment process consists of
 - zipping the handler code
 - uploading the zip file to S3
 - creating the Lambda function if it doesn't exist
@@ -37,7 +37,7 @@ There are two required steps in order to make your functions live and usable.
 
 Because your handler code may require you to `npm install`, `bundle install`, or something similar, you may be building and deploying your handler code in CI or from your local computer.
 
-Once that handler code is all bundled and deployed to Lambda, there may be a secondary step required to deploy your main application. 
+Once that handler code is all bundled and deployed to Lambda, there may be a secondary step required to deploy your main application.
 
 During this secondary step, your Lambda functions are going to be updated but your application code will not be, which could lead to errors for your users.
 
@@ -75,15 +75,15 @@ environments:
       - 'php artisan sidecar:deploy --env=production' # [tl! ~~]
     deploy: # [tl! ~~]
       - 'php artisan sidecar:activate' # [tl! ~~]
-```  
+```
 
 Your functions would be built and deployed on whatever machine is handling the Vapor deploy process, and then would be activated as Vapor activates your newest application code.
 
 > Note that in this example we're setting the environment to "production" in the build, because it's likely that your "build" step is running in an environment that doesn't have it's ENV set to "production." See below for more details.
 
 ## Faking the Environment
- 
-Sidecar names your function based on environment, to prevent collisions between local, staging, production, etc. This could pose a problem if you are deploying your production functions from your build or CI server. 
+
+Sidecar names your function based on environment, to prevent collisions between local, staging, production, etc. This could pose a problem if you are deploying your production functions from your build or CI server.
 
 If you need to deploy an environment other than the one you are in, you can override the environment from the config by passing an `--env` flag to the Deploy and Activate commands.
 
@@ -96,7 +96,7 @@ To read more about environments, head to the [Environments section](../environme
 
 ## Setting Environment Variables
 
-This is covered in the [Environment Variables](customization#environment-variables) section of the Customization docs, but we'll cover strategies around env vars and deployment here. 
+This is covered in the [Environment Variables](customization#environment-variables) section of the Customization docs, but we'll cover strategies around env vars and deployment here.
 
 Some of your functions will require environment variables, either from your Laravel application or something completely distinct. In some cases, you may need to set a static variable so that some library will work [(LibreOffice example)](https://github.com/hammerstonedev/sidecar/issues/24):
 
@@ -159,7 +159,7 @@ Sidecar sets the environment variables _upon activation_. If you are deploying f
 
 Environment variables are set before activation, and before any pre-warming takes place.
 
-And remember! If Sidecar manages the environment variables for a function, it will clobber any changes you make in the AWS UI, so you cannot use both methods simultaneously.  
+And remember! If Sidecar manages the environment variables for a function, it will clobber any changes you make in the AWS UI, so you cannot use both methods simultaneously.
 
 ## Reusing Package Files
 
@@ -172,15 +172,11 @@ In the event that neither the code nor function configuration have changed, Side
 You will see output similar to the following:
 
 ```text
-[Sidecar] Deploying App\Sidecar\OgImage to Lambda. (Runtime nodejs12.x.)
+[Sidecar] Deploying App\Sidecar\OgImage to Lambda. (Runtime nodejs20.x.)
           ↳ Function already exists, potentially updating code and configuration.
           ↳ Packaging function code.
           ↳ Package unchanged, reusing previous code package at s3://sidecar-us-east-2-XXX/sidecar/001-79a5915eaec296be04a0f4fb7cc80e40.zip.
           ↳ Function code and configuration are unchanged! Not updating anything. [tl! focus]
 [Sidecar] Activating function App\Sidecar\OgImage.
           ↳ Activating Version 1 of SC-Laravel-local-Sidecar-OgImage.
-``` 
-
-
-
-
+```
