@@ -33,7 +33,6 @@
             "Hammerstone\\Sidecar\\Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
     "extra": {
         "laravel": {
             "providers": [
