@@ -11,16 +11,17 @@
     ],
     "require": {
         "php": "^8.0",
-        "illuminate/filesystem": "^9.0|^10",
-        "illuminate/console": "^9.0|^10",
+        "illuminate/filesystem": "^9.0|^10|^11",
+        "illuminate/console": "^9.0|^10|^11",
         "maennchen/zipstream-php": "^3.1",
         "guzzlehttp/guzzle": "^7.2",
-        "aws/aws-sdk-php": "^3.216.1"
+        "aws/aws-sdk-php": "^3.216.1",
+        "illuminate/support": "10.*",
+        "orchestra/testbench": "8.*"
     },
     "require-dev": {
-        "orchestra/testbench": "^8",
         "mockery/mockery": "^1.6.0",
-        "phpunit/phpunit": "^10"
+        "phpunit/phpunit": "^10|^11"
     },
     "autoload": {
         "psr-4": {

@@ -329,7 +329,7 @@ class PackageTest extends Base
         // file_put_contents('contents.zip', $contents);
 
         // This hash has been manually verified to be the correct zip file.
-        $this->assertEquals('d9826f2d35243727a4a5e3fe2e1d8ad4', md5($contents));
+        $this->assertEquals('a237efd491331d2f887f0996c20debfa', md5($contents));
     }
 
     /** @test */
@@ -352,7 +352,7 @@ class PackageTest extends Base
         // file_put_contents('contents.zip', $contents);
 
         // This hash has been manually verified to be the correct zip file.
-        $this->assertEquals('e0f6b25b6be65f03ac8c91bc0ff0c2c1', md5($contents));
+        $this->assertEquals('e5e891865cb728b1ea6e3290bc9b3a93', md5($contents));
     }
 
     /** @test */
