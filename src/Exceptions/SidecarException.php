@@ -5,6 +5,8 @@
 
 namespace Hammerstone\Sidecar\Exceptions;
 
-class SidecarException extends \Exception
+use Exception;
+
+class SidecarException extends Exception
 {
 }
