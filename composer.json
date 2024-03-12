@@ -16,7 +16,7 @@
         "maennchen/zipstream-php": "^3.1",
         "guzzlehttp/guzzle": "^7.2",
         "aws/aws-sdk-php": "^3.216.1",
-        "illuminate/support": "10.*",
+        "illuminate/support": "10.* | 11.*",
         "orchestra/testbench": "^8.0|^9.0"
     },
     "require-dev": {
