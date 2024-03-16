@@ -9,15 +9,18 @@
 
 namespace Hammerstone\Sidecar;
 
+use Exception;
+use Generator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 class Finder
 {
-    /** @var \Illuminate\Support\Collection */
+    /** @var Collection */
     protected $includeFilesAndDirectories;
 
-    /** @var \Illuminate\Support\Collection */
+    /** @var Collection */
     protected $excludeFilesAndDirectories;
 
     /** @var bool */
@@ -69,7 +72,7 @@ class Finder
     }
 
     /**
-     * @return \Generator|string[]
+     * @return Generator|string[]
      */
     protected function yieldSelectedFiles()
     {
@@ -110,7 +113,7 @@ class Finder
         return $this->includeFilesAndDirectories
             ->each(function ($path) {
                 if (!is_file($path) && !is_dir($path)) {
-                    throw new \Exception($path . ' is neither a file nor a directory.');
+                    throw new Exception($path . ' is neither a file nor a directory.');
                 }
             })
             ->filter(function ($path) {
@@ -124,7 +127,7 @@ class Finder
         return $this->includeFilesAndDirectories
             ->each(function ($path) {
                 if (!is_file($path) && !is_dir($path)) {
-                    throw new \Exception($path . ' is neither a file nor a directory.');
+                    throw new Exception($path . ' is neither a file nor a directory.');
                 }
             })
             ->reject(function ($path) {
@@ -146,7 +149,7 @@ class Finder
 
     /**
      * @param  string|array  $paths
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     protected function sanitize($paths)
     {

@@ -54,7 +54,7 @@ class LambdaClient extends BaseClient
 
     /**
      * @param  null|string  $marker
-     * @return \Aws\Result
+     * @return Result
      */
     public function getVersions(LambdaFunction $function, $marker = null)
     {
@@ -107,7 +107,7 @@ class LambdaClient extends BaseClient
     }
 
     /**
-     * @return \Aws\Result|false
+     * @return Result|false
      */
     public function getAliasWithoutException(LambdaFunction $function, $name)
     {
