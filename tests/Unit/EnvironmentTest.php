@@ -27,7 +27,7 @@ class EnvironmentTest extends Base
     public function precedence_is_correct()
     {
         Sidecar::clearEnvironment();
-        
+
         config([
             'sidecar.env' => null,
             'app.env' => 'app_env'
