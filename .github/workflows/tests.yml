@@ -14,8 +14,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 7.4, 8.0, 8.1, 8.2 ]
-        laravel: [ 8.*, 9.*, 10.* ]
+        php: [ 7.4, 8.0, 8.1, 8.2, 8.3 ]
+        laravel: [ 8.*, 9.*, 10.*, 11.* ]
         guzzle: [ 6.*, 7.* ]
         dependency-version: [ prefer-lowest, prefer-stable ]
         include:
@@ -27,6 +27,9 @@ jobs:
 
           - laravel: 10.*
             testbench: 8.*
+
+          - laravel: 11.*
+            testbench: 9.*
 
         exclude:
             # PHP 8.1 requires Laravel 8.65, so skip lowest
@@ -58,6 +61,18 @@ jobs:
 
             # Laravel 10 requires Guzzle ^7.2
           - laravel: 10.*
+            guzzle: 6.*
+
+            # Laravel 11 requires PHP 8.2
+          - laravel: 11.*
+            php: 7.4
+          - laravel: 11.*
+            php: 8.0
+          - laravel: 11.*
+            php: 8.1
+
+            # Laravel 11 requires Guzzle ^7.2
+          - laravel: 11.*
             guzzle: 6.*
 
     name: P${{ matrix.php }} / L${{ matrix.laravel }} / G${{ matrix.guzzle }} / ${{ matrix.dependency-version }}
