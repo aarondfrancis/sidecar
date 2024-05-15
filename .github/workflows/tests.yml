@@ -43,6 +43,8 @@ jobs:
             php: 8.1
 
           # Guzzle restrictions
+          - laravel: 9.*
+            guzzle: 6.*
           - laravel: 10.*
             guzzle: 6.*
           - laravel: 11.*
