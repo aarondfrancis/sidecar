@@ -30,7 +30,7 @@ class EnvironmentTest extends Base
 
         config([
             'sidecar.env' => null,
-            'app.env' => 'app_env'
+            'app.env' => 'testing'
         ]);
 
         $this->assertEquals('testing', Sidecar::getEnvironment());
