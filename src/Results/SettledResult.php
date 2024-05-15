@@ -11,6 +11,8 @@ use Exception;
 use Hammerstone\Sidecar\Exceptions\LambdaExecutionException;
 use Hammerstone\Sidecar\LambdaFunction;
 use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Throwable;
@@ -79,8 +81,8 @@ class SettledResult implements Responsable, ResultContract
     }
 
     /**
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return Response
      *
      * @throws Exception
      */
@@ -90,11 +92,13 @@ class SettledResult implements Responsable, ResultContract
     }
 
     /**
+     * @param  ?int  $numberOfBacktraces
+     *
      * Throw an exception if there was an error, otherwise do nothing.
      *
      * @throws Exception
      */
-    public function throw()
+    public function throw(?int $numberOfBacktraces)
     {
         if (!$this->isError()) {
             return $this;
@@ -102,7 +106,7 @@ class SettledResult implements Responsable, ResultContract
 
         throw new LambdaExecutionException(sprintf('Lambda Execution Exception for %s: "%s".', ...[
             get_class($this->function),
-            $this->errorAsString()
+            $this->errorAsString($numberOfBacktraces)
         ]));
     }
 
@@ -187,7 +191,7 @@ class SettledResult implements Responsable, ResultContract
         return Arr::get($this->body(), 'trace', []);
     }
 
-    public function errorAsString()
+    public function errorAsString(int $numberOfBacktraces = 2)
     {
         if (!$this->isError()) {
             return '';
@@ -195,8 +199,8 @@ class SettledResult implements Responsable, ResultContract
 
         $message = Arr::get($this->body(), 'errorMessage', 'Unknown error.');
 
-        // Only the first two backtraces (plus the error) for the string.
-        $trace = array_slice($this->trace(), 0, 3);
+        // Only the number of backtraces (plus the error) for the string.
+        $trace = array_slice($this->trace(), 0, $numberOfBacktraces + 1);
         $trace = implode(' ', array_map('trim', $trace));
 
         if ($trace) {

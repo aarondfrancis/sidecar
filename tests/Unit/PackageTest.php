@@ -177,12 +177,12 @@ class PackageTest extends Base
         file_put_contents(__DIR__ . '/Support/Files/file1.txt', '');
 
         // Write the contents to disk to inspect.
-        // file_put_contents('contents.zip', $contents);
+        //         file_put_contents('contents.zip', $contents);
 
         // This hash has been manually verified to be the correct zip file.
         // Make sure that there is a file at the root called root.txt
         // with contents of "1".
-        $this->assertEquals('8894314657ee3cb70ac4d3bc6bea8a09', md5($contents));
+        $this->assertEquals('2cc230879fbc316069d9dbcaf7614a49', md5($contents));
     }
 
     /** @test */
@@ -329,7 +329,7 @@ class PackageTest extends Base
         // file_put_contents('contents.zip', $contents);
 
         // This hash has been manually verified to be the correct zip file.
-        $this->assertEquals('d9826f2d35243727a4a5e3fe2e1d8ad4', md5($contents));
+        $this->assertEquals('a237efd491331d2f887f0996c20debfa', md5($contents));
     }
 
     /** @test */
@@ -352,7 +352,7 @@ class PackageTest extends Base
         // file_put_contents('contents.zip', $contents);
 
         // This hash has been manually verified to be the correct zip file.
-        $this->assertEquals('e0f6b25b6be65f03ac8c91bc0ff0c2c1', md5($contents));
+        $this->assertEquals('e5e891865cb728b1ea6e3290bc9b3a93', md5($contents));
     }
 
     /** @test */

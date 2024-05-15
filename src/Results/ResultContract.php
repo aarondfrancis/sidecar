@@ -6,14 +6,16 @@
 namespace Hammerstone\Sidecar\Results;
 
 use Hammerstone\Sidecar\LambdaFunction;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 interface ResultContract
 {
     public function __construct($raw, LambdaFunction $function);
 
     /**
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return Response
      */
     public function toResponse($response);
 
