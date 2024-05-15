@@ -6,12 +6,15 @@
 namespace Hammerstone\Sidecar;
 
 use Aws\Result;
+use Exception;
 use GuzzleHttp\Promise\PromiseInterface;
 use Hammerstone\Sidecar\Exceptions\SidecarException;
 use Hammerstone\Sidecar\Results\PendingResult;
 use Hammerstone\Sidecar\Results\SettledResult;
+use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Throwable;
 
 abstract class LambdaFunction
 {
@@ -44,7 +47,7 @@ abstract class LambdaFunction
      * @param  bool  $async
      * @return array
      *
-     * @throws \Throwable
+     * @throws Throwable
      */
     public static function executeMany($payloads, $async = false)
     {
@@ -56,7 +59,7 @@ abstract class LambdaFunction
      *
      * @return array
      *
-     * @throws \Throwable
+     * @throws Throwable
      */
     public static function executeManyAsync($payloads)
     {
@@ -176,9 +179,9 @@ abstract class LambdaFunction
     /**
      * The default representation of this function as an HTTP response.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function toResponse($request, SettledResult $result)
     {

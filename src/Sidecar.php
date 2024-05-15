@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Facade;
 class Sidecar extends Facade
 {
     /**
-     * @see \Hammerstone\Sidecar\Manager
+     * @see Manager
      *
      * @return string
      */

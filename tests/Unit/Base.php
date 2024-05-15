@@ -6,6 +6,7 @@
 namespace Hammerstone\Sidecar\Tests\Unit;
 
 use Hammerstone\Sidecar\Providers\SidecarServiceProvider;
+use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase;
 
 abstract class Base extends TestCase
@@ -13,7 +14,7 @@ abstract class Base extends TestCase
     /**
      * Define environment setup.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  Application  $app
      * @return void
      */
     protected function getEnvironmentSetup($app)
