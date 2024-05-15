@@ -19,8 +19,10 @@ Lambda supports multiple languages through the use of runtimes. You can choose a
 - Java 17: `java17`
 - Java 11: `java11`
 - Java 8: `java8.al2`
+- .NET 8: `dotnet8`
 - .NET 7: `dotnet7`
 - .NET 6: `dotnet6`
+- Ruby 3.3: `ruby3.3`
 - Ruby 3.2: `ruby3.2`
 - OS-only runtime (Amazon Linux 2023): `provided.al2023`
 - OS-only runtime (Amazon Linux 2): `provided.al2`

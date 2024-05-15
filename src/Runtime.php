@@ -37,9 +37,13 @@ abstract class Runtime
     /** @deprecated */
     public const JAVA_8 = 'java8';
 
+    public const DOT_NET_8 = 'dotnet8';
+
     public const DOT_NET_7 = 'dotnet7';
 
     public const DOT_NET_6 = 'dotnet6';
+
+    public const RUBY_33 = 'ruby3.3';
 
     public const RUBY_32 = 'ruby3.2';
 
