@@ -13,8 +13,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 use ZipStream\Exception;
-use ZipStream\Option\Archive;
-use ZipStream\Option\File as FileOptions;
 use ZipStream\ZipStream;
 
 class Package
