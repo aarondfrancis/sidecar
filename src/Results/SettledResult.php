@@ -92,7 +92,7 @@ class SettledResult implements Responsable, ResultContract
     }
 
     /**
-     * @param ?int $numberOfBacktraces
+     * @param  ?int  $numberOfBacktraces
      *
      * Throw an exception if there was an error, otherwise do nothing.
      *
