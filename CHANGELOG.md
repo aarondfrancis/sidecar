@@ -1,6 +1,13 @@
 # Changelog
 ## Unreleased 
 
+## v0.6.0
+
+### Changed
+- [BREAKING] The default runtime for functions has been changed from Node 14 to Node 20. If you haven't explicitly declared the runtime in your function, this will change it to Node 20!
+
+## v0.4.0
+
 ### Changed
 - [BREAKING] Function naming algorithm was changed to support long prefixes, long function names, and previously invalid characters. This is a breaking change because the names of your current functions _might_ change with using the new naming scheme.  
 
