@@ -178,7 +178,7 @@ class ConfigureTest extends Base
 
         $artisan = $this->artisan('sidecar:configure');
 
-        $artisan->expectsQuestion('Enter the Access key ID', 'id');
+        $artisan->expectsQuestion('Enter the Access key', 'id');
         $artisan->expectsQuestion('Enter the Secret access key', 'secret');
         $artisan->expectsQuestion('What AWS region would you like your functions to be deployed in?', 'us-east-1');
 
