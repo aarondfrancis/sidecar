@@ -336,7 +336,12 @@ class Package
         // a writeable local disk!
         $stream = fopen($path, 'w');
 
-        $zip = new ZipStream(enableZip64: false, outputStream: $stream, outputName: null);
+        $zip = new ZipStream(
+            outputStream: $stream,
+            enableZip64: false,
+            sendHttpHeaders: false,
+            outputName: null
+        );
 
         // Set the time to now so that hashes are
         // stable during testing.
