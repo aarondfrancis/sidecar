@@ -41,13 +41,15 @@ jobs:
 
           - laravel: 10.*
             php: 8.0
-          - laravel: 10.*
-            guzzle: 6.*
 
           - laravel: 11.*
             php: 8.0
           - laravel: 11.*
             php: 8.1
+
+          # Guzzle restrictions
+          - laravel: 10.*
+            guzzle: 6.*
           - laravel: 11.*
             guzzle: 6.*
 
