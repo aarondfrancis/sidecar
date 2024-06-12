@@ -39,6 +39,7 @@ abstract class Runtime
 
     public const DOT_NET_8 = 'dotnet8';
 
+    /** @deprecated */
     public const DOT_NET_7 = 'dotnet7';
 
     public const DOT_NET_6 = 'dotnet6';
