@@ -9,7 +9,6 @@ Lambda supports multiple languages through the use of runtimes. You can choose a
 
 - Node.js 20: `nodejs20.x`
 - Node.js 18: `nodejs18.x`
-- Node.js 16: `nodejs16.x`
 - Python 3.12: `python3.12`
 - Python 3.11: `python3.11`
 - Python 3.10: `python3.10`
@@ -20,7 +19,6 @@ Lambda supports multiple languages through the use of runtimes. You can choose a
 - Java 11: `java11`
 - Java 8: `java8.al2`
 - .NET 8: `dotnet8`
-- .NET 7: `dotnet7`
 - .NET 6: `dotnet6`
 - Ruby 3.3: `ruby3.3`
 - Ruby 3.2: `ruby3.2`
