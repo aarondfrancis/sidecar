@@ -5,6 +5,4 @@
 
 namespace Hammerstone\Sidecar\Exceptions;
 
-class LambdaExecutionException extends SidecarException
-{
-}
+class LambdaExecutionException extends SidecarException {}
