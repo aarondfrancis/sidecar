@@ -8,6 +8,7 @@ abstract class Runtime
 
     public const NODEJS_18 = 'nodejs18.x';
 
+    /** @deprecated */
     public const NODEJS_16 = 'nodejs16.x';
 
     /** @deprecated */
