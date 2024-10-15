@@ -5,6 +5,4 @@
 
 namespace Hammerstone\Sidecar\Exceptions;
 
-class ConfigurationException extends SidecarException
-{
-}
+class ConfigurationException extends SidecarException {}

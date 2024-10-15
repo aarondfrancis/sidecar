@@ -7,6 +7,4 @@ namespace Hammerstone\Sidecar\Clients;
 
 use Aws\CloudWatchLogs\CloudWatchLogsClient as BaseClient;
 
-class CloudWatchLogsClient extends BaseClient
-{
-}
+class CloudWatchLogsClient extends BaseClient {}

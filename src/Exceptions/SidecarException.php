@@ -7,6 +7,4 @@ namespace Hammerstone\Sidecar\Exceptions;
 
 use Exception;
 
-class SidecarException extends Exception
-{
-}
+class SidecarException extends Exception {}
