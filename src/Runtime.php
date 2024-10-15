@@ -22,6 +22,7 @@ abstract class Runtime
 
     public const PYTHON_39 = 'python3.9';
 
+    /** @deprecated */
     public const PYTHON_38 = 'python3.8';
 
     /** @deprecated */

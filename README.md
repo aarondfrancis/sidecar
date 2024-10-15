@@ -26,7 +26,6 @@ You can write functions in any of the following runtimes and execute them straig
 - Python 3.11
 - Python 3.10
 - Python 3.9
-- Python 3.8
 - Java 21
 - Java 17
 - Java 11
