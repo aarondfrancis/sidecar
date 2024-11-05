@@ -231,6 +231,26 @@ You likely won't need to change this, but if you do, *you must include the envir
     }
 ```
 
+### Description
+
+By default, Sidecar will generate a description for your Lambda function based on the deployment environment and the name of your app. 
+
+You likely won't need to customise it, however, you can if you want, although it has no direct impact.
+
+```php
+    class ExampleFunction extends LambdaFunction
+    {
+        public function description()
+        {
+            return sprintf('%s [%s]: Sidecar function `%s`.', ...[
+                config('sidecar.app_name'),
+                Sidecar::getEnvironment(),
+                static::class,
+            ]);
+        }
+    }
+```
+
 ## Tags
 
 A key-value array of strings of tags to be applied to your function, this can be used to organize your functions by owner, project or departement.
