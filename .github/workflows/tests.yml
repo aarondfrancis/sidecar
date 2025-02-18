@@ -4,20 +4,23 @@ on:
   push:
     branches:
       - main
-
   pull_request:
-    types: [ opened, synchronize, reopened ]
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.1', '8.2', '8.3' ]
-        laravel: [ '8.*', '9.*', '10.*', '11.*' ]
-        guzzle: [ '6.*', '7.*' ]
-        dependency-version: [ prefer-lowest, prefer-stable ]
+        php: ['8.1', '8.2', '8.3']
+        laravel: ['8.*', '9.*', '10.*', '11.*', '12.*']
+        guzzle: ['6.*', '7.*']
+        dependency-version: [prefer-lowest, prefer-stable]
         include:
           - laravel: 8.*
             testbench: 6.*
@@ -27,7 +30,8 @@ jobs:
             testbench: 8.*
           - laravel: 11.*
             testbench: 9.*
-
+          - laravel: 12.*
+            testbench: 10.*
         exclude:
           - laravel: 8.*
             php: 8.1
@@ -38,24 +42,22 @@ jobs:
           - laravel: 8.*
             php: 8.3
             dependency-version: prefer-lowest
-
           - laravel: 9.*
             php: 8.2
             dependency-version: prefer-lowest
           - laravel: 9.*
             php: 8.3
             dependency-version: prefer-lowest
-
           - laravel: 11.*
             php: 8.1
-
-          # Guzzle restrictions
           - laravel: 9.*
             guzzle: 6.*
           - laravel: 10.*
             guzzle: 6.*
           - laravel: 11.*
             guzzle: 6.*
+          - laravel: 12.*
+            php: '8.1'
 
     name: P${{ matrix.php }} / L${{ matrix.laravel }} / G${{ matrix.guzzle }} / ${{ matrix.dependency-version }}
 
