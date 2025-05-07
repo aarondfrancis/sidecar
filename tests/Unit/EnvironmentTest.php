@@ -10,8 +10,7 @@ use Hammerstone\Sidecar\Sidecar;
 
 class EnvironmentTest extends Base
 {
-    /** @test */
-    public function it_can_be_overridden()
+public function test_it_can_be_overridden()
     {
         $this->assertEquals('testing', Sidecar::getEnvironment());
 
@@ -23,9 +22,7 @@ class EnvironmentTest extends Base
 
         $this->assertEquals('testing', Sidecar::getEnvironment());
     }
-
-    /** @test */
-    public function precedence_is_correct()
+public function test_precedence_is_correct()
     {
         Sidecar::clearEnvironment();
 

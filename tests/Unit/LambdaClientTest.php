@@ -32,9 +32,7 @@ class LambdaClientTest extends Base
     {
         return json_decode(file_get_contents(__DIR__ . "/Support/Responses/$file.json"), JSON_OBJECT_AS_ARRAY);
     }
-
-    /** @test */
-    public function it_gets_the_latest_version()
+public function test_it_gets_the_latest_version()
     {
         $this->lambda->shouldReceive('getVersions')
             ->once()
@@ -42,9 +40,7 @@ class LambdaClientTest extends Base
 
         $this->assertSame('81', $this->lambda->getLatestVersion(new EmptyTestFunction));
     }
-
-    /** @test */
-    public function it_checks_latest_version_has_alias()
+public function test_it_checks_latest_version_has_alias()
     {
         $this->lambda->shouldReceive('getVersions')
             ->once()
@@ -55,9 +51,7 @@ class LambdaClientTest extends Base
 
         $this->assertTrue($this->lambda->latestVersionHasAlias(new EmptyTestFunction, 'active'));
     }
-
-    /** @test */
-    public function it_checks_latest_version_has_alias_different()
+public function test_it_checks_latest_version_has_alias_different()
     {
         $this->lambda->shouldReceive('getVersions')
             ->once()
@@ -68,9 +62,7 @@ class LambdaClientTest extends Base
 
         $this->assertFalse($this->lambda->latestVersionHasAlias(new EmptyTestFunction, 'nonexistent'));
     }
-
-    /** @test */
-    public function it_gets_all_versions()
+public function test_it_gets_all_versions()
     {
         $this->lambda->shouldReceive('listVersionsByFunction')
             ->andReturn(
@@ -82,9 +74,7 @@ class LambdaClientTest extends Base
 
         $this->assertCount(2, $versions);
     }
-
-    /** @test */
-    public function it_returns_false_for_missing_alias()
+public function test_it_returns_false_for_missing_alias()
     {
         $this->lambda->shouldReceive('getAlias')
             ->andThrow(
@@ -98,9 +88,7 @@ class LambdaClientTest extends Base
 
         $this->assertEquals(false, $alias);
     }
-
-    /** @test */
-    public function delete_function_version_passes_on_qualifier()
+public function test_delete_function_version_passes_on_qualifier()
     {
         $this->lambda->shouldReceive('deleteFunction')
             ->once()
@@ -111,9 +99,7 @@ class LambdaClientTest extends Base
 
         $this->lambda->deleteFunctionVersion(new EmptyTestFunction, '10');
     }
-
-    /** @test */
-    public function get_function_with_no_checksum()
+public function test_get_function_with_no_checksum()
     {
         $this->lambda->shouldReceive('getFunction')
             ->once()
@@ -123,9 +109,7 @@ class LambdaClientTest extends Base
 
         $this->assertEquals(true, $exists);
     }
-
-    /** @test */
-    public function get_function_with_same_checksum()
+public function test_get_function_with_same_checksum()
     {
         $this->lambda->shouldReceive('getFunction')
             ->once()
@@ -135,9 +119,7 @@ class LambdaClientTest extends Base
 
         $this->assertEquals(true, $exists);
     }
-
-    /** @test */
-    public function get_function_with_different_checksum()
+public function test_get_function_with_different_checksum()
     {
         $this->lambda->shouldReceive('getFunction')
             ->once()
@@ -147,9 +129,7 @@ class LambdaClientTest extends Base
 
         $this->assertEquals(false, $exists);
     }
-
-    /** @test */
-    public function get_non_existent_function()
+public function test_get_non_existent_function()
     {
         $this->lambda->shouldReceive('getFunction')
             ->once()
@@ -164,9 +144,7 @@ class LambdaClientTest extends Base
 
         $this->assertEquals(false, $exists);
     }
-
-    /** @test */
-    public function update_existing_function()
+public function test_update_existing_function()
     {
         $function = new DeploymentTestFunction;
 
@@ -211,9 +189,7 @@ class LambdaClientTest extends Base
 
         $this->lambda->updateExistingFunction($function);
     }
-
-    /** @test */
-    public function update_existing_image_function()
+public function test_update_existing_image_function()
     {
         $function = new DeploymentTestFunctionWithImage;
 
@@ -253,9 +229,7 @@ class LambdaClientTest extends Base
 
         $this->lambda->updateExistingFunction($function);
     }
-
-    /** @test */
-    public function existing_function_unchanged()
+public function test_existing_function_unchanged()
     {
         $function = new DeploymentTestFunction;
 
@@ -273,9 +247,7 @@ class LambdaClientTest extends Base
 
         $this->assertSame(LambdaClient::NOOP, $result);
     }
-
-    /** @test */
-    public function it_creates_an_alias_for_the_latest_version()
+public function test_it_creates_an_alias_for_the_latest_version()
     {
         $this->lambda->shouldReceive('getLatestVersion')->andReturn('82');
         $this->lambda->shouldReceive('getAliasWithoutException')->andReturn(false);
@@ -292,9 +264,7 @@ class LambdaClientTest extends Base
 
         $this->assertSame(LambdaClient::CREATED, $response);
     }
-
-    /** @test */
-    public function it_updates_an_alias()
+public function test_it_updates_an_alias()
     {
         $this->lambda->shouldReceive('getLatestVersion')->andReturn('82');
         $this->lambda->shouldReceive('getAliasWithoutException')
@@ -312,9 +282,7 @@ class LambdaClientTest extends Base
 
         $this->assertSame(LambdaClient::UPDATED, $response);
     }
-
-    /** @test */
-    public function you_can_specify_the_alias_version()
+public function test_you_can_specify_the_alias_version()
     {
         $this->lambda->shouldNotReceive('getLatestVersion');
         $this->lambda->shouldReceive('getAliasWithoutException')
@@ -332,9 +300,7 @@ class LambdaClientTest extends Base
 
         $this->assertSame(LambdaClient::UPDATED, $response);
     }
-
-    /** @test */
-    public function it_noops_an_alias()
+public function test_it_noops_an_alias()
     {
         $this->lambda->shouldReceive('getLatestVersion')->andReturn('81');
         $this->lambda->shouldReceive('getAliasWithoutException')

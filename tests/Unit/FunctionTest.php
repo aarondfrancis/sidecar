@@ -10,8 +10,7 @@ use Hammerstone\Sidecar\Tests\Unit\Support\EmptyTestFunction;
 
 class FunctionTest extends Base
 {
-    /** @test */
-    public function app_name_with_a_space_gets_dashed()
+public function test_app_name_with_a_space_gets_dashed()
     {
         config([
             'sidecar.app_name' => 'Amazing App'
@@ -22,9 +21,7 @@ class FunctionTest extends Base
             (new EmptyTestFunction)->nameWithPrefix()
         );
     }
-
-    /** @test */
-    public function function_names_over_64_get_limited_to_64()
+public function test_function_names_over_64_get_limited_to_64()
     {
         config([
             'sidecar.app_name' => 'Amazing App Amazing App Amazing App Amazing App Amazing App Amazing App'
@@ -37,9 +34,7 @@ class FunctionTest extends Base
         $this->assertEquals(64, strlen($name));
         $this->assertEquals('sc-amazing-app-amazing-app-a0528-7a7at-support-emptytestfunction', $name);
     }
-
-    /** @test */
-    public function short_prefix_means_longer_name()
+public function test_short_prefix_means_longer_name()
     {
         config([
             'sidecar.app_name' => 'A'
@@ -51,9 +46,7 @@ class FunctionTest extends Base
         $this->assertEquals(64, strlen($name));
         $this->assertEquals('sc-a-testing-7a7ane-sidecar-tests-unit-support-emptytestfunction', $name);
     }
-
-    /** @test */
-    public function a_pipe_in_the_app_name_is_ok()
+public function test_a_pipe_in_the_app_name_is_ok()
     {
         config([
             'sidecar.app_name' => 'Vriend van de Show | Local'
@@ -64,9 +57,7 @@ class FunctionTest extends Base
 
         $this->assertEquals('sc-vriend-van-de-show-local-55c0-7a7at-support-emptytestfunction', $name);
     }
-
-    /** @test */
-    public function changing_the_prefix_changes_the_prefix()
+public function test_changing_the_prefix_changes_the_prefix()
     {
         $function = (new EmptyTestFunction);
 
@@ -84,9 +75,7 @@ class FunctionTest extends Base
             $function->nameWithPrefix()
         );
     }
-
-    /** @test */
-    public function sidecar_app_name_ignores_laravel_app_name()
+public function test_sidecar_app_name_ignores_laravel_app_name()
     {
         config([
             'app.name' => 'Laravel',
@@ -106,9 +95,7 @@ class FunctionTest extends Base
             (new EmptyTestFunction)->nameWithPrefix()
         );
     }
-
-    /** @test */
-    public function memory_and_timeout_and_storage_get_cast_to_ints()
+public function test_memory_and_timeout_and_storage_get_cast_to_ints()
     {
         config([
             'sidecar.timeout' => '5',

@@ -156,9 +156,7 @@ class ConfigureTest extends Base
             ]),
         ];
     }
-
-    /** @test */
-    public function basic_happy_path()
+public function test_basic_happy_path()
     {
         $this->mockS3(function ($mock) {
             $this->mockHeadBucketNotFound($mock);

@@ -11,8 +11,7 @@ use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunction;
 
 class DeployTest extends DeploymentTest
 {
-    /** @test */
-    public function it_deploys_the_functions_in_the_config()
+public function test_it_deploys_the_functions_in_the_config()
     {
         $this->lambda->shouldReceive('functionExists')->andReturn(false);
         $this->lambda->shouldReceive('getVersions')->andReturn([]);
@@ -26,9 +25,7 @@ class DeployTest extends DeploymentTest
 
         $this->assertEvents($deployed = true, $activated = false);
     }
-
-    /** @test */
-    public function it_deploys_and_activates_the_functions_in_the_config()
+public function test_it_deploys_and_activates_the_functions_in_the_config()
     {
         $this->lambda->shouldReceive('functionExists')->andReturn(false);
         $this->lambda->shouldReceive('getVersions')->andReturn([]);
@@ -45,9 +42,7 @@ class DeployTest extends DeploymentTest
 
         $this->assertEvents($deployed = true, $activated = true);
     }
-
-    /** @test */
-    public function it_uses_a_fake_environment()
+public function test_it_uses_a_fake_environment()
     {
         $this->lambda->shouldReceive('functionExists')->andReturn(false);
         $this->lambda->shouldReceive('getVersions')->andReturn([]);
