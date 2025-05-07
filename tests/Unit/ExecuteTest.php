@@ -68,7 +68,8 @@ class ExecuteTest extends Base
             Event::assertNotDispatched(AfterFunctionExecuted::class);
         }
     }
-public function test_basic_execution_by_function()
+
+    public function test_basic_execution_by_function()
     {
         $this->mockInvoke();
 
@@ -76,7 +77,8 @@ public function test_basic_execution_by_function()
 
         $this->assertEvents();
     }
-public function test_basic_execution_by_facade()
+
+    public function test_basic_execution_by_facade()
     {
         $this->mockInvoke();
 
@@ -84,7 +86,8 @@ public function test_basic_execution_by_facade()
 
         $this->assertEvents();
     }
-public function test_basic_execution_by_facade_with_instantiated_class()
+
+    public function test_basic_execution_by_facade_with_instantiated_class()
     {
         $this->mockInvoke();
 
@@ -92,7 +95,8 @@ public function test_basic_execution_by_facade_with_instantiated_class()
 
         $this->assertEvents();
     }
-public function test_execution_with_payload_by_function()
+
+    public function test_execution_with_payload_by_function()
     {
         $this->mockInvoke([
             'Payload' => '{"foo":"bar"}'
@@ -104,7 +108,8 @@ public function test_execution_with_payload_by_function()
 
         $this->assertEvents();
     }
-public function test_execution_with_payload_by_facade()
+
+    public function test_execution_with_payload_by_facade()
     {
         $this->mockInvoke([
             'Payload' => '{"foo":"bar"}'
@@ -116,7 +121,8 @@ public function test_execution_with_payload_by_facade()
 
         $this->assertEvents();
     }
-public function test_execution_with_payload_by_facade_with_instantiated_class()
+
+    public function test_execution_with_payload_by_facade_with_instantiated_class()
     {
         $this->mockInvoke([
             'Payload' => '{"foo":"bar"}'
@@ -128,7 +134,8 @@ public function test_execution_with_payload_by_facade_with_instantiated_class()
 
         $this->assertEvents();
     }
-public function test_async_execution_by_function()
+
+    public function test_async_execution_by_function()
     {
         $this->mockInvokeAsync([
             'Payload' => '{"foo":"bar"}'
@@ -140,7 +147,8 @@ public function test_async_execution_by_function()
 
         $this->assertEvents();
     }
-public function test_async_execution_by_facade()
+
+    public function test_async_execution_by_facade()
     {
         $this->mockInvokeAsync([
             'Payload' => '{"foo":"bar"}'
@@ -152,7 +160,8 @@ public function test_async_execution_by_facade()
 
         $this->assertEvents();
     }
-public function test_async_execution_by_facade_directly()
+
+    public function test_async_execution_by_facade_directly()
     {
         $this->mockInvokeAsync([
             'Payload' => '{"foo":"bar"}'
@@ -164,7 +173,8 @@ public function test_async_execution_by_facade_directly()
 
         $this->assertEvents();
     }
-public function test_async_execution_by_facade_with_instantiated_class()
+
+    public function test_async_execution_by_facade_with_instantiated_class()
     {
         $this->mockInvokeAsync([
             'Payload' => '{"foo":"bar"}'
@@ -176,7 +186,8 @@ public function test_async_execution_by_facade_with_instantiated_class()
 
         $this->assertEvents();
     }
-public function test_event_invocation_execution_by_function()
+
+    public function test_event_invocation_execution_by_function()
     {
         $this->mockInvoke([
             'InvocationType' => 'Event',
@@ -189,7 +200,8 @@ public function test_event_invocation_execution_by_function()
 
         $this->assertEvents();
     }
-public function test_event_invocation_execution_by_function_with_event_helper()
+
+    public function test_event_invocation_execution_by_function_with_event_helper()
     {
         $this->mockInvoke([
             'InvocationType' => 'Event',
@@ -202,7 +214,8 @@ public function test_event_invocation_execution_by_function_with_event_helper()
 
         $this->assertEvents();
     }
-public function test_event_invocation_execution_by_facade()
+
+    public function test_event_invocation_execution_by_facade()
     {
         $this->mockInvoke([
             'InvocationType' => 'Event',
@@ -215,7 +228,8 @@ public function test_event_invocation_execution_by_facade()
 
         $this->assertEvents();
     }
-public function test_event_invocation_execution_by_facade_directly()
+
+    public function test_event_invocation_execution_by_facade_directly()
     {
         $this->mockInvoke([
             'InvocationType' => 'Event',
@@ -228,7 +242,8 @@ public function test_event_invocation_execution_by_facade_directly()
 
         $this->assertEvents();
     }
-public function test_event_invocation_execution_by_facade_with_instantiated_class()
+
+    public function test_event_invocation_execution_by_facade_with_instantiated_class()
     {
         $this->mockInvoke([
             'InvocationType' => 'Event',

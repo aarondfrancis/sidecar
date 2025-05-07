@@ -110,7 +110,8 @@ class DeploymentTest extends Base
             Event::assertNotDispatched(AfterFunctionsActivated::class);
         }
     }
-public function test_it_deploys_a_function_that_doesnt_exist()
+
+    public function test_it_deploys_a_function_that_doesnt_exist()
     {
         $this->lambda->shouldReceive('functionExists')->andReturn(false);
         $this->lambda->shouldReceive('getVersions')->andReturn([]);
@@ -120,7 +121,8 @@ public function test_it_deploys_a_function_that_doesnt_exist()
 
         $this->assertEvents($deployed = true, $activated = false);
     }
-public function test_it_deploys_a_function_that_doesnt_exist_from_the_deployment_class()
+
+    public function test_it_deploys_a_function_that_doesnt_exist_from_the_deployment_class()
     {
         $this->lambda->shouldReceive('functionExists')->andReturn(false);
         $this->lambda->shouldReceive('getVersions')->andReturn([]);
@@ -130,7 +132,8 @@ public function test_it_deploys_a_function_that_doesnt_exist_from_the_deployment
 
         $this->assertEvents($deployed = true, $activated = false);
     }
-public function test_it_deploys_an_array_of_functions()
+
+    public function test_it_deploys_an_array_of_functions()
     {
         $this->lambda->shouldReceive('functionExists')->andReturn(false);
         $this->lambda->shouldReceive('getVersions')->andReturn([]);
@@ -140,7 +143,8 @@ public function test_it_deploys_an_array_of_functions()
 
         $this->assertEvents($deployed = true, $activated = false);
     }
-public function test_it_deploys_the_functions_in_the_config()
+
+    public function test_it_deploys_the_functions_in_the_config()
     {
         $this->lambda->shouldReceive('functionExists')->andReturn(false);
         $this->lambda->shouldReceive('getVersions')->andReturn([]);
@@ -154,7 +158,8 @@ public function test_it_deploys_the_functions_in_the_config()
 
         $this->assertEvents($deployed = true, $activated = false);
     }
-public function test_it_deploys_and_activates_a_function_that_doesnt_exist()
+
+    public function test_it_deploys_and_activates_a_function_that_doesnt_exist()
     {
         $this->lambda->shouldReceive('functionExists')->andReturn(false);
         $this->lambda->shouldReceive('getVersions')->andReturn([]);
@@ -165,7 +170,8 @@ public function test_it_deploys_and_activates_a_function_that_doesnt_exist()
 
         $this->assertEvents($deployed = true, $activated = true);
     }
-public function test_it_updates_an_existing_function()
+
+    public function test_it_updates_an_existing_function()
     {
         $this->lambda->shouldReceive('functionExists')->andReturn(true);
         $this->lambda->shouldReceive('getVersions')->andReturn([]);
@@ -177,7 +183,8 @@ public function test_it_updates_an_existing_function()
 
         $this->assertEvents($deployed = true, $activated = false);
     }
-public function test_it_updates_and_activates_an_existing_function()
+
+    public function test_it_updates_and_activates_an_existing_function()
     {
         $this->lambda->shouldReceive('functionExists')->andReturn(true);
         $this->lambda->shouldReceive('getVersions')->andReturn([]);
@@ -190,7 +197,8 @@ public function test_it_updates_and_activates_an_existing_function()
 
         $this->assertEvents($deployed = true, $activated = true);
     }
-public function test_it_sets_environment_variables()
+
+    public function test_it_sets_environment_variables()
     {
         $this->lambda->shouldReceive('functionExists')->andReturn(true);
         $this->lambda->shouldReceive('getVersions')->andReturn([]);
@@ -229,7 +237,8 @@ public function test_it_sets_environment_variables()
 
         $this->assertEvents($deployed = true, $activated = true);
     }
-public function test_it_doesnt_change_variables_that_havent_changed()
+
+    public function test_it_doesnt_change_variables_that_havent_changed()
     {
         $this->lambda->shouldReceive('functionExists')->andReturn(true);
         $this->lambda->shouldReceive('getVersions')->andReturn([]);
@@ -253,7 +262,8 @@ public function test_it_doesnt_change_variables_that_havent_changed()
 
         $this->assertEvents($deployed = true, $activated = true);
     }
-public function test_it_sets_function_tags()
+
+    public function test_it_sets_function_tags()
     {
         $this->lambda->shouldReceive('functionExists')->andReturn(false);
         $this->lambda->shouldReceive('getVersions')->andReturn([]);
@@ -304,7 +314,8 @@ public function test_it_sets_function_tags()
 
         $this->assertEvents($deployed = true, $activated = true);
     }
-public function test_it_throws_an_exception_if_there_are_no_functions()
+
+    public function test_it_throws_an_exception_if_there_are_no_functions()
     {
         config()->set('sidecar.functions', [
 
