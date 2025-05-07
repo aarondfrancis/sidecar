@@ -33,6 +33,7 @@ jobs:
           - laravel: 12.*
             testbench: 10.*
         exclude:
+          # Laravel 8 exclusions
           - laravel: 8.*
             php: 8.1
             dependency-version: prefer-lowest
@@ -42,14 +43,24 @@ jobs:
           - laravel: 8.*
             php: 8.3
             dependency-version: prefer-lowest
+
+          # Laravel 9 exclusions
           - laravel: 9.*
             php: 8.2
             dependency-version: prefer-lowest
           - laravel: 9.*
             php: 8.3
             dependency-version: prefer-lowest
+
+          # Laravel 11 exclusions
           - laravel: 11.*
             php: 8.1
+
+          # Laravel 12 exclusions
+          - laravel: 12.*
+            php: 8.1
+
+          # Guzzle exclusions
           - laravel: 9.*
             guzzle: 6.*
           - laravel: 10.*
@@ -57,7 +68,7 @@ jobs:
           - laravel: 11.*
             guzzle: 6.*
           - laravel: 12.*
-            php: '8.1'
+            guzzle: 6.*
 
     name: P${{ matrix.php }} / L${{ matrix.laravel }} / G${{ matrix.guzzle }} / ${{ matrix.dependency-version }}
 
