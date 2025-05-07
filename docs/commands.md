@@ -13,18 +13,33 @@ php artisan sidecar:install
 
 ## Configure
 
-The configure command is an interactive command that walks you through setting up your AWS credentials. Dealing with AWS IAM can be a pain, so we wrote this command to do it for you. 
+The configure command is an interactive command that walks you through setting up your AWS credentials. Dealing with AWS IAM can be a pain, so we wrote this command to do it for you.
 
 ```text
 php artisan sidecar:configure
+```
+
+## Make
+
+The make command will create a new function class in your `app/Sidecar` directory.
+
+```text
+php artisan make:lambda-function MyFunction
+```
+
+You can also pass a `--runtime=` flag to specify the runtime you want to use. The default runtime for newly created functions is `nodejs20.x`.
+To see a list of available runtimes, see the [Runtime](functions/customization#runtime) section.
+
+```text
+php artisan make:lambda-function MyFunction --runtime=python3.10
 ```
 
 ## Deploy
 
 The deploy command deploys your functions to Lambda, and can optionally activate them.
 
-To deploy but not activate, run the command without any arguments. 
- 
+To deploy but not activate, run the command without any arguments.
+
 ```text
 php artisan sidecar:deploy
 ```
