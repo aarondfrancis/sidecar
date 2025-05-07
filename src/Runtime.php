@@ -8,6 +8,7 @@ abstract class Runtime
 
     public const NODEJS_18 = 'nodejs18.x';
 
+    /** @deprecated */
     public const NODEJS_16 = 'nodejs16.x';
 
     /** @deprecated */
@@ -21,6 +22,7 @@ abstract class Runtime
 
     public const PYTHON_39 = 'python3.9';
 
+    /** @deprecated */
     public const PYTHON_38 = 'python3.8';
 
     /** @deprecated */
@@ -39,6 +41,7 @@ abstract class Runtime
 
     public const DOT_NET_8 = 'dotnet8';
 
+    /** @deprecated */
     public const DOT_NET_7 = 'dotnet7';
 
     public const DOT_NET_6 = 'dotnet6';
