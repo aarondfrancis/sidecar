@@ -99,7 +99,7 @@ class SettledResult implements Responsable, ResultContract
      *
      * @throws Exception
      */
-    public function throw(?int $numberOfBacktraces)
+    public function throw(?int $numberOfBacktraces = null)
     {
         if (!$this->isError()) {
             return $this;
