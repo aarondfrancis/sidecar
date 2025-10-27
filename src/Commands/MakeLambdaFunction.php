@@ -18,7 +18,7 @@ class MakeLambdaFunction extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'make:lambda-function {name} {--runtime= : The runtime that will be used to create the lambda function}';
+    protected $signature = 'make:lambda-function {name} {--runtime=nodejs20.x : The runtime that will be used to create the lambda function}';
 
     /**
      * The console command description.
