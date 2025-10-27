@@ -22,25 +22,24 @@ You can write functions in any of the following runtimes and execute them straig
 
 - Node.js 20
 - Node.js 18
-- Node.js 16
 - Python 3.12
 - Python 3.11
 - Python 3.10
 - Python 3.9
-- Python 3.8
 - Java 21
 - Java 17
 - Java 11
 - Java 8
-- .NET 7
+- .NET 8
 - .NET 6
+- Ruby 3.3
 - Ruby 3.2
 - OS-only runtime (Amazon Linux 2023)
 - OS-only runtime (Amazon Linux 2)
 
 Any runtime that [Lambda supports](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html), you can use!
 
-Sidecar is maintained by [Aaron Francis](https://twitter.com/aarondfrancis), go follow me on Twitter! 
+Sidecar is maintained by [Aaron Francis](https://twitter.com/aarondfrancis), go follow me on Twitter!
 
 ### What It Looks Like
 

@@ -4,14 +4,19 @@ namespace Hammerstone\Sidecar;
 
 abstract class Runtime
 {
+    public const NODEJS_22 = 'nodejs22.x';
+
     public const NODEJS_20 = 'nodejs20.x';
 
     public const NODEJS_18 = 'nodejs18.x';
 
+    /** @deprecated */
     public const NODEJS_16 = 'nodejs16.x';
 
     /** @deprecated */
     public const NODEJS_14 = 'nodejs14.x';
+
+    public const PYTHON_313 = 'python3.13';
 
     public const PYTHON_312 = 'python3.12';
 
@@ -21,6 +26,7 @@ abstract class Runtime
 
     public const PYTHON_39 = 'python3.9';
 
+    /** @deprecated */
     public const PYTHON_38 = 'python3.8';
 
     /** @deprecated */
@@ -37,9 +43,16 @@ abstract class Runtime
     /** @deprecated */
     public const JAVA_8 = 'java8';
 
+    public const DOT_NET_8 = 'dotnet8';
+
+    /** @deprecated */
     public const DOT_NET_7 = 'dotnet7';
 
     public const DOT_NET_6 = 'dotnet6';
+
+    public const RUBY_34 = 'ruby3.4';
+
+    public const RUBY_33 = 'ruby3.3';
 
     public const RUBY_32 = 'ruby3.2';
 

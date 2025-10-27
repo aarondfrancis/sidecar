@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Aaron Francis <aaron@hammerstone.dev>
  */
@@ -66,8 +67,7 @@ class ActivateTest extends Base
         }
     }
 
-    /** @test */
-    public function it_should_activate_functions()
+    public function test_it_should_activate_functions()
     {
         $this->mockActivating();
 
@@ -87,8 +87,7 @@ class ActivateTest extends Base
         return $this->mockMethod('invokeAsync', $with, $return);
     }
 
-    /** @test */
-    public function it_should_pre_warm_functions_if_the_latest_version_is_different()
+    public function test_it_should_pre_warm_functions_if_the_latest_version_is_different()
     {
         // The latest version is not the active version.
         $this->lambda->shouldReceive('latestVersionHasAlias')
@@ -127,8 +126,7 @@ class ActivateTest extends Base
         $this->artisan('sidecar:activate --pre-warm');
     }
 
-    /** @test */
-    public function it_should_not_pre_warm_functions_if_the_latest_version_is_the_same()
+    public function test_it_should_not_pre_warm_functions_if_the_latest_version_is_the_same()
     {
         $this->lambda->shouldReceive('latestVersionHasAlias')
             ->andReturn(true);
@@ -151,8 +149,7 @@ class ActivateTest extends Base
         $this->artisan('sidecar:activate --pre-warm');
     }
 
-    /** @test */
-    public function it_should_activate_functions_with_env()
+    public function test_it_should_activate_functions_with_env()
     {
         $this->mockActivating();
 

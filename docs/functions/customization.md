@@ -9,18 +9,17 @@ Lambda supports multiple languages through the use of runtimes. You can choose a
 
 - Node.js 20: `nodejs20.x`
 - Node.js 18: `nodejs18.x`
-- Node.js 16: `nodejs16.x`
 - Python 3.12: `python3.12`
 - Python 3.11: `python3.11`
 - Python 3.10: `python3.10`
 - Python 3.9: `python3.9`
-- Python 3.8: `python3.8`
 - Java 21: `java21`
 - Java 17: `java17`
 - Java 11: `java11`
 - Java 8: `java8.al2`
-- .NET 7: `dotnet7`
+- .NET 8: `dotnet8`
 - .NET 6: `dotnet6`
+- Ruby 3.3: `ruby3.3`
 - Ruby 3.2: `ruby3.2`
 - OS-only runtime (Amazon Linux 2023): `provided.al2023`
 - OS-only runtime (Amazon Linux 2): `provided.al2`
@@ -225,6 +224,26 @@ You likely won't need to change this, but if you do, *you must include the envir
         {
             // Don't forget the environment!
             return 'My App ' . Sidecar::getEnvironment()
+        }
+    }
+```
+
+### Description
+
+By default, Sidecar will generate a description for your Lambda function based on the deployment environment and the name of your app. 
+
+You likely won't need to customise it, however, you can if you want, although it has no direct impact.
+
+```php
+    class ExampleFunction extends LambdaFunction
+    {
+        public function description()
+        {
+            return sprintf('%s [%s]: Sidecar function `%s`.', ...[
+                config('sidecar.app_name'),
+                Sidecar::getEnvironment(),
+                static::class,
+            ]);
         }
     }
 ```

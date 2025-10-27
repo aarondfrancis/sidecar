@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Aaron Francis <aaron@hammerstone.dev>
  */
@@ -44,8 +45,7 @@ class PackageTest extends Base
         return $package;
     }
 
-    /** @test */
-    public function an_exclamation_excludes()
+    public function test_an_exclamation_excludes()
     {
         $package = Package::make([
             'include',
@@ -59,8 +59,7 @@ class PackageTest extends Base
         $this->assertStringContainsString('exclude', $package->getExcludedPaths()[0]);
     }
 
-    /** @test */
-    public function it_includes_an_entire_directory()
+    public function test_it_includes_an_entire_directory()
     {
         $package = $this->makePackageClass();
 
@@ -87,8 +86,7 @@ class PackageTest extends Base
         ], $files);
     }
 
-    /** @test */
-    public function it_sets_the_base_path_correctly()
+    public function test_it_sets_the_base_path_correctly()
     {
         $package = $this->makePackageClass();
 
@@ -103,8 +101,7 @@ class PackageTest extends Base
         }
     }
 
-    /** @test */
-    public function start_includes_everything_in_base_path()
+    public function test_start_includes_everything_in_base_path()
     {
         $package = $this->makePackageClass();
 
@@ -114,8 +111,7 @@ class PackageTest extends Base
         $this->assertCount(3, $package->files());
     }
 
-    /** @test */
-    public function base_path_order()
+    public function test_base_path_order()
     {
         // base_path by default.
         $package = new Package;
@@ -133,8 +129,7 @@ class PackageTest extends Base
         $this->assertEquals(base_path('direct-set'), $package->getBasePath());
     }
 
-    /** @test */
-    public function it_excludes_files()
+    public function test_it_excludes_files()
     {
         $package = $this->makePackageClass();
 
@@ -155,8 +150,7 @@ class PackageTest extends Base
         }
     }
 
-    /** @test */
-    public function can_add_exact_files()
+    public function test_can_add_exact_files()
     {
         $package = $this->makePackageClass();
 
@@ -185,8 +179,7 @@ class PackageTest extends Base
         $this->assertEquals('2cc230879fbc316069d9dbcaf7614a49', md5($contents));
     }
 
-    /** @test */
-    public function an_exclamation_excludes_is_ignored()
+    public function test_an_exclamation_excludes_is_ignored()
     {
         $package = Package::make()
             ->include([
@@ -203,8 +196,7 @@ class PackageTest extends Base
         $this->assertStringContainsString('exclude', $package->getExcludedPaths()[0]);
     }
 
-    /** @test */
-    public function hashes_are_stable()
+    public function test_hashes_are_stable()
     {
         $package = $this->makePackageClass();
 
@@ -216,8 +208,7 @@ class PackageTest extends Base
         $this->assertEquals('2b46678c7e891927b2529672d349dfb7', $package->hash());
     }
 
-    /** @test */
-    public function exact_includes_affect_hashes()
+    public function test_exact_includes_affect_hashes()
     {
         $package = $this->makePackageClass();
 
@@ -240,8 +231,7 @@ class PackageTest extends Base
         $this->assertEquals('94bb83e2b082743c023985ceb56c80ad', $package->hash());
     }
 
-    /** @test */
-    public function string_includes_affect_hashes()
+    public function test_string_includes_affect_hashes()
     {
         /** @var Package $package */
         $package = $this->makePackageClass();
@@ -271,8 +261,7 @@ class PackageTest extends Base
         $this->assertEquals('8407e93a88691be2459f59fa9db3ec80', $package->hash());
     }
 
-    /** @test */
-    public function other_string_include_affects_hashes()
+    public function test_other_string_include_affects_hashes()
     {
         /** @var Package $package */
         $package = $this->makePackageClass();
@@ -288,8 +277,7 @@ class PackageTest extends Base
         $this->assertEquals('551e39e7471632f6fd195523f315acb3', $package->hash());
     }
 
-    /** @test */
-    public function hashes_change_based_on_file_content()
+    public function test_hashes_change_based_on_file_content()
     {
         $package = $this->makePackageClass();
 
@@ -310,8 +298,7 @@ class PackageTest extends Base
         $this->assertEquals('2b46678c7e891927b2529672d349dfb7', $package->hash());
     }
 
-    /** @test */
-    public function it_writes_to_the_s3_stream()
+    public function test_it_writes_to_the_s3_stream()
     {
         $package = $this->makePackageClass();
 
@@ -332,8 +319,7 @@ class PackageTest extends Base
         $this->assertEquals('a237efd491331d2f887f0996c20debfa', md5($contents));
     }
 
-    /** @test */
-    public function a_string_include_gets_included()
+    public function test_a_string_include_gets_included()
     {
         /** @var Package $package */
         $package = $this->makePackageClass();
@@ -355,8 +341,7 @@ class PackageTest extends Base
         $this->assertEquals('e5e891865cb728b1ea6e3290bc9b3a93', md5($contents));
     }
 
-    /** @test */
-    public function if_file_already_exists_it_doesnt_make_a_new_one()
+    public function test_if_file_already_exists_it_doesnt_make_a_new_one()
     {
         $package = $this->makePackageClass();
         $package->include([
@@ -375,8 +360,7 @@ class PackageTest extends Base
         $this->assertEquals('url_stat', FakeStreamWrapper::$calls[0][0]);
     }
 
-    /** @test */
-    public function it_creates_the_correct_deployment_configuration()
+    public function test_it_creates_the_correct_deployment_configuration()
     {
         $package = $this->makePackageClass();
 

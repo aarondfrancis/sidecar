@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Aaron Francis <aaron@hammerstone.dev>
  */
@@ -68,8 +69,7 @@ class ExecuteTest extends Base
         }
     }
 
-    /** @test */
-    public function basic_execution_by_function()
+    public function test_basic_execution_by_function()
     {
         $this->mockInvoke();
 
@@ -78,8 +78,7 @@ class ExecuteTest extends Base
         $this->assertEvents();
     }
 
-    /** @test */
-    public function basic_execution_by_facade()
+    public function test_basic_execution_by_facade()
     {
         $this->mockInvoke();
 
@@ -88,8 +87,7 @@ class ExecuteTest extends Base
         $this->assertEvents();
     }
 
-    /** @test */
-    public function basic_execution_by_facade_with_instantiated_class()
+    public function test_basic_execution_by_facade_with_instantiated_class()
     {
         $this->mockInvoke();
 
@@ -98,8 +96,7 @@ class ExecuteTest extends Base
         $this->assertEvents();
     }
 
-    /** @test */
-    public function execution_with_payload_by_function()
+    public function test_execution_with_payload_by_function()
     {
         $this->mockInvoke([
             'Payload' => '{"foo":"bar"}'
@@ -112,8 +109,7 @@ class ExecuteTest extends Base
         $this->assertEvents();
     }
 
-    /** @test */
-    public function execution_with_payload_by_facade()
+    public function test_execution_with_payload_by_facade()
     {
         $this->mockInvoke([
             'Payload' => '{"foo":"bar"}'
@@ -126,8 +122,7 @@ class ExecuteTest extends Base
         $this->assertEvents();
     }
 
-    /** @test */
-    public function execution_with_payload_by_facade_with_instantiated_class()
+    public function test_execution_with_payload_by_facade_with_instantiated_class()
     {
         $this->mockInvoke([
             'Payload' => '{"foo":"bar"}'
@@ -140,8 +135,7 @@ class ExecuteTest extends Base
         $this->assertEvents();
     }
 
-    /** @test */
-    public function async_execution_by_function()
+    public function test_async_execution_by_function()
     {
         $this->mockInvokeAsync([
             'Payload' => '{"foo":"bar"}'
@@ -154,8 +148,7 @@ class ExecuteTest extends Base
         $this->assertEvents();
     }
 
-    /** @test */
-    public function async_execution_by_facade()
+    public function test_async_execution_by_facade()
     {
         $this->mockInvokeAsync([
             'Payload' => '{"foo":"bar"}'
@@ -168,8 +161,7 @@ class ExecuteTest extends Base
         $this->assertEvents();
     }
 
-    /** @test */
-    public function async_execution_by_facade_directly()
+    public function test_async_execution_by_facade_directly()
     {
         $this->mockInvokeAsync([
             'Payload' => '{"foo":"bar"}'
@@ -182,8 +174,7 @@ class ExecuteTest extends Base
         $this->assertEvents();
     }
 
-    /** @test */
-    public function async_execution_by_facade_with_instantiated_class()
+    public function test_async_execution_by_facade_with_instantiated_class()
     {
         $this->mockInvokeAsync([
             'Payload' => '{"foo":"bar"}'
@@ -196,8 +187,7 @@ class ExecuteTest extends Base
         $this->assertEvents();
     }
 
-    /** @test */
-    public function event_invocation_execution_by_function()
+    public function test_event_invocation_execution_by_function()
     {
         $this->mockInvoke([
             'InvocationType' => 'Event',
@@ -211,8 +201,7 @@ class ExecuteTest extends Base
         $this->assertEvents();
     }
 
-    /** @test */
-    public function event_invocation_execution_by_function_with_event_helper()
+    public function test_event_invocation_execution_by_function_with_event_helper()
     {
         $this->mockInvoke([
             'InvocationType' => 'Event',
@@ -226,8 +215,7 @@ class ExecuteTest extends Base
         $this->assertEvents();
     }
 
-    /** @test */
-    public function event_invocation_execution_by_facade()
+    public function test_event_invocation_execution_by_facade()
     {
         $this->mockInvoke([
             'InvocationType' => 'Event',
@@ -241,8 +229,7 @@ class ExecuteTest extends Base
         $this->assertEvents();
     }
 
-    /** @test */
-    public function event_invocation_execution_by_facade_directly()
+    public function test_event_invocation_execution_by_facade_directly()
     {
         $this->mockInvoke([
             'InvocationType' => 'Event',
@@ -256,8 +243,7 @@ class ExecuteTest extends Base
         $this->assertEvents();
     }
 
-    /** @test */
-    public function event_invocation_execution_by_facade_with_instantiated_class()
+    public function test_event_invocation_execution_by_facade_with_instantiated_class()
     {
         $this->mockInvoke([
             'InvocationType' => 'Event',

@@ -19,8 +19,10 @@ You can write functions in any of the following runtimes and execute them straig
 - Java 17
 - Java 11
 - Java 8
+- .NET 8
 - .NET 7
 - .NET 6
+- Ruby 3.3
 - Ruby 3.2
 - OS-only runtime (Amazon Linux 2023)
 - OS-only runtime (Amazon Linux 2)

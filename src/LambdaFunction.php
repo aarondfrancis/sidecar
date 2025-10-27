@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Aaron Francis <aaron@hammerstone.dev|https://twitter.com/aarondfrancis>
  */
@@ -160,7 +161,7 @@ abstract class LambdaFunction
     {
         return sprintf('%s [%s]: Sidecar function `%s`.', ...[
             config('sidecar.app_name'),
-            config('app.env'),
+            Sidecar::getEnvironment(),
             static::class,
         ]);
     }
