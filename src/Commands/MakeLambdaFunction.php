@@ -85,15 +85,14 @@ class MakeLambdaFunction extends GeneratorCommand
     }
 
     /**
-     * Get the console command arguments.
+     * Get the console command options.
      *
      * @return array
      */
-    protected function getArguments()
+    protected function getOptions()
     {
         return [
-            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the lambda function already exists'],
-            ['runtime', null, InputOption::VALUE_OPTIONAL, 'The runtime that will be used to create the lambda function'],
+            ['runtime', null, InputOption::VALUE_OPTIONAL, 'The runtime that will be used to create the lambda function', 'nodejs20.x'],
         ];
     }
 }
