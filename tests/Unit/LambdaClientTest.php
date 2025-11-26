@@ -7,7 +7,6 @@
 namespace Hammerstone\Sidecar\Tests\Unit;
 
 use Aws\Lambda\Exception\LambdaException;
-use Hammerstone\Sidecar\Architecture;
 use Hammerstone\Sidecar\Clients\LambdaClient;
 use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunction;
 use Hammerstone\Sidecar\Tests\Unit\Support\DeploymentTestFunctionWithImage;
@@ -180,9 +179,7 @@ class LambdaClientTest extends Base
                 ],
                 'MemorySize' => 'test-MemorySize',
                 'Layers' => 'test-Layers',
-                'Architectures' => [
-                    Architecture::X86_64
-                ],
+                'Architectures' => ['x86_64'],
                 'Tags' => [],
             ]);
 
@@ -193,9 +190,7 @@ class LambdaClientTest extends Base
                 'S3Bucket' => 'test-bucket',
                 'S3Key' => 'test-key',
                 'Publish' => 'test-Publish',
-                'Architectures' => [
-                    Architecture::X86_64
-                ]
+                'Architectures' => ['x86_64']
             ]);
 
         $this->lambda->updateExistingFunction($function);
@@ -222,9 +217,7 @@ class LambdaClientTest extends Base
                 ],
                 'Layers' => [],
                 'PackageType' => 'Image',
-                'Architectures' => [
-                    Architecture::X86_64
-                ],
+                'Architectures' => ['x86_64'],
                 'Tags' => [],
             ]);
 
@@ -234,9 +227,7 @@ class LambdaClientTest extends Base
                 'FunctionName' => 'test-FunctionName',
                 'Publish' => 'test-Publish',
                 'ImageUri' => '123.dkr.ecr.us-west-2.amazonaws.com/image:latest',
-                'Architectures' => [
-                    Architecture::X86_64
-                ]
+                'Architectures' => ['x86_64']
             ]);
 
         $this->lambda->updateExistingFunction($function);
