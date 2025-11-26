@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aaron@hammerstone.dev|https://twitter.com/aarondfrancis>
  */
@@ -25,40 +27,20 @@ class Package
      * a handler function. Use this constant instead.
      *
      * @see https://hammerstone.dev/sidecar/docs/main/functions/handlers-and-packages
-     *
-     * @var string
      */
     public const CONTAINER_HANDLER = 'container';
 
-    /**
-     * @var array
-     */
-    protected $include = [];
+    protected array $include = [];
 
-    /**
-     * @var array
-     */
-    protected $exactIncludes = [];
+    protected array $exactIncludes = [];
 
-    /**
-     * @var array
-     */
-    protected $stringContents = [];
+    protected array $stringContents = [];
 
-    /**
-     * @var array
-     */
-    protected $exclude = [];
+    protected array $exclude = [];
 
-    /**
-     * @var Collection|null
-     */
-    protected $files;
+    protected ?Collection $files = null;
 
-    /**
-     * @var string
-     */
-    protected $basePath;
+    protected ?string $basePath = null;
 
     /**
      * @param  array  $paths

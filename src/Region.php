@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aarondfrancis@gmail.com|https://twitter.com/aarondfrancis>
  */
@@ -56,7 +58,7 @@ class Region
 
     const SA_EAST_1 = 'sa-east-1';             // South America (São Paulo)
 
-    public static function all()
+    public static function all(): array
     {
         return (new ReflectionClass(static::class))->getConstants();
     }

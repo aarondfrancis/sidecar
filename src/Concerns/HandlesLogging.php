@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aarondfrancis@gmail.com|https://twitter.com/aarondfrancis>
  */
@@ -11,15 +13,9 @@ use Illuminate\Console\Command;
 
 trait HandlesLogging
 {
-    /**
-     * @var array
-     */
-    protected $loggers = [];
+    protected array $loggers = [];
 
-    /**
-     * @var bool
-     */
-    protected $sublog = false;
+    protected bool $sublog = false;
 
     /**
      * @return $this

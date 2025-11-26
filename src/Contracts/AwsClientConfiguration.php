@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hammerstone\Sidecar\Contracts;
 
 interface AwsClientConfiguration
@@ -7,8 +9,6 @@ interface AwsClientConfiguration
     /**
      * Retrieve an array of configuration options for Lambda,
      * Cloudwatch and S3 AWS services.
-     *
-     * @return array
      */
-    public function getConfiguration();
+    public function getConfiguration(): array;
 }

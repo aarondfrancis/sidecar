@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aaron@hammerstone.dev|https://twitter.com/aarondfrancis>
  */
@@ -25,10 +27,7 @@ class Manager
 {
     use HandlesLogging, Macroable, ManagesEnvironments;
 
-    /**
-     * @var string
-     */
-    public $executionVersion = 'active';
+    public string $executionVersion = 'active';
 
     /**
      * @param  null  $callback

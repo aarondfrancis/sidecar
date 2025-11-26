@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aaron@hammerstone.dev|https://twitter.com/aarondfrancis>
  */
@@ -20,36 +22,16 @@ use Throwable;
 
 class SettledResult implements Responsable, ResultContract
 {
-    /**
-     * @var Result
-     */
-    protected $raw;
+    protected array $report = [];
 
-    /**
-     * @var LambdaFunction
-     */
-    protected $function;
+    protected ?string $requestId = null;
 
-    /**
-     * @var array
-     */
-    protected $report = [];
+    protected array $logs = [];
 
-    /**
-     * @var string
-     */
-    protected $requestId;
-
-    /**
-     * @var array
-     */
-    protected $logs = [];
-
-    public function __construct($raw, LambdaFunction $function)
-    {
-        $this->raw = $raw;
-        $this->function = $function;
-
+    public function __construct(
+        protected Result $raw,
+        protected LambdaFunction $function
+    ) {
         $this->logs = $this->parseLogs();
     }
 
@@ -73,10 +55,8 @@ class SettledResult implements Responsable, ResultContract
      * This is here as a little nicety for the developer, so that they
      * can call `settled` on either kind of result (PendingResult
      * or SettledResult) and get a SettledResult back.
-     *
-     * @return $this
      */
-    public function settled()
+    public function settled(): SettledResult
     {
         return $this;
     }
@@ -87,7 +67,7 @@ class SettledResult implements Responsable, ResultContract
      *
      * @throws Exception
      */
-    public function toResponse($request)
+    public function toResponse(mixed $request)
     {
         return $this->function->toResponse($request, $this);
     }
@@ -211,9 +191,14 @@ class SettledResult implements Responsable, ResultContract
         return $message;
     }
 
-    protected function parseLogs()
+    protected function parseLogs(): array
     {
-        $lines = base64_decode($this->raw->get('LogResult'));
+        $logResult = $this->raw->get('LogResult');
+        if ($logResult === null) {
+            return [];
+        }
+
+        $lines = base64_decode($logResult);
         $lines = explode("\n", $lines);
 
         $lines = array_map(function ($line) use (&$reportLineReached) {

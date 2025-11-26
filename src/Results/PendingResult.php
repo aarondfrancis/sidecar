@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aaron@hammerstone.dev|https://twitter.com/aarondfrancis>
  */
@@ -15,34 +17,14 @@ use Illuminate\Http\Response;
 
 class PendingResult implements Responsable, ResultContract
 {
-    /**
-     * @var SettledResult
-     */
-    protected $settled;
+    protected ?SettledResult $settled = null;
 
-    /**
-     * @var PromiseInterface
-     */
-    protected $raw;
+    public function __construct(
+        protected PromiseInterface $raw,
+        protected LambdaFunction $function
+    ) {}
 
-    /**
-     * @var LambdaFunction
-     */
-    protected $function;
-
-    /**
-     * @param  PromiseInterface  $raw
-     */
-    public function __construct($raw, LambdaFunction $function)
-    {
-        $this->raw = $raw;
-        $this->function = $function;
-    }
-
-    /**
-     * @return SettledResult
-     */
-    public function settled()
+    public function settled(): SettledResult
     {
         if ($this->settled) {
             return $this->settled;
@@ -51,10 +33,7 @@ class PendingResult implements Responsable, ResultContract
         return $this->settled = $this->function->toSettledResult($this->raw->wait());
     }
 
-    /**
-     * @return PromiseInterface
-     */
-    public function rawPromise()
+    public function rawPromise(): PromiseInterface
     {
         return $this->raw;
     }
@@ -67,7 +46,7 @@ class PendingResult implements Responsable, ResultContract
      *
      * @throws Exception
      */
-    public function toResponse($request)
+    public function toResponse(mixed $request)
     {
         return $this->settled()->toResponse($request);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aaron@hammerstone.dev|https://twitter.com/aarondfrancis>
  */
@@ -11,7 +13,7 @@ use Hammerstone\Sidecar\Sidecar;
 
 class FunctionNotFoundException extends SidecarException
 {
-    public static function make(LambdaFunction $function)
+    public static function make(LambdaFunction $function): static
     {
         $env = Sidecar::getEnvironment();
 

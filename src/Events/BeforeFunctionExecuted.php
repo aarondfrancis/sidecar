@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aarondfrancis@gmail.com|https://twitter.com/aarondfrancis>
  */
@@ -10,20 +12,8 @@ use Hammerstone\Sidecar\LambdaFunction;
 
 class BeforeFunctionExecuted
 {
-    /**
-     * @var LambdaFunction
-     */
-    public $function;
-
-    /**
-     * @var mixed
-     */
-    public $payload;
-
-    public function __construct($function, $payload)
-    {
-        $this->payload = $payload;
-
-        $this->function = $function;
-    }
+    public function __construct(
+        public LambdaFunction $function,
+        public mixed $payload
+    ) {}
 }

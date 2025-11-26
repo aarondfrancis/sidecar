@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aaron@hammerstone.dev|https://twitter.com/aarondfrancis>
  */
@@ -17,15 +19,9 @@ use Illuminate\Support\Str;
 
 class Deployment
 {
-    /**
-     * @var array
-     */
-    protected $functions;
+    protected array $functions;
 
-    /**
-     * @var LambdaClient
-     */
-    protected $lambda;
+    protected LambdaClient $lambda;
 
     /**
      * @return static

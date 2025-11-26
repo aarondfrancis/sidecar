@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aarondfrancis@gmail.com|https://twitter.com/aarondfrancis>
  */
@@ -12,27 +14,9 @@ use Hammerstone\Sidecar\Results\SettledResult;
 
 class AfterFunctionExecuted
 {
-    /**
-     * @var LambdaFunction
-     */
-    public $function;
-
-    /**
-     * @var mixed
-     */
-    public $payload;
-
-    /**
-     * @var PendingResult|SettledResult
-     */
-    public $result;
-
-    public function __construct($function, $payload, $result)
-    {
-        $this->payload = $payload;
-
-        $this->function = $function;
-
-        $this->result = $result;
-    }
+    public function __construct(
+        public LambdaFunction $function,
+        public mixed $payload,
+        public PendingResult|SettledResult $result
+    ) {}
 }

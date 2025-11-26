@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aarondfrancis@gmail.com|https://twitter.com/aarondfrancis>
  */
@@ -11,23 +13,23 @@ use Throwable;
 
 class DestroyAdminKeys extends BaseAction
 {
-    public $key;
+    public ?string $key = null;
 
-    public function setKey($key)
+    public function setKey(string $key): static
     {
         $this->key = $key;
 
         return $this;
     }
 
-    public function invoke()
+    public function invoke(): mixed
     {
         $client = $this->command->client(IamClient::class);
 
         try {
             $user = $client->getUser();
         } catch (Throwable $e) {
-            return;
+            return null;
         }
 
         $name = $user['User']['UserName'];
@@ -52,7 +54,7 @@ class DestroyAdminKeys extends BaseAction
         if (!$this->command->confirm($question, $default = $isSidecar)) {
             $this->progress('Not deleting keys');
 
-            return;
+            return null;
         }
 
         $this->progress('Deleting admin keys...');
@@ -67,5 +69,7 @@ class DestroyAdminKeys extends BaseAction
         }
 
         $this->progress('Admin keys deleted');
+
+        return null;
     }
 }

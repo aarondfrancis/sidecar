@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aaron@hammerstone.dev>
  */
@@ -17,39 +19,17 @@ use Throwable;
 
 class Configure extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'sidecar:configure';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Interactively configure your Sidecar AWS environment variables';
 
-    /**
-     * @var string
-     */
-    protected $key;
+    protected ?string $key = null;
 
-    /**
-     * @var string
-     */
-    protected $secret;
+    protected ?string $secret = null;
 
-    /**
-     * @var string
-     */
-    protected $region;
+    protected ?string $region = null;
 
-    /**
-     * @var int
-     */
-    protected $width = 75;
+    protected int $width = 75;
 
     /**
      * @throws Exception

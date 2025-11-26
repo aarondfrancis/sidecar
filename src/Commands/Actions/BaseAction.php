@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aarondfrancis@gmail.com|https://twitter.com/aarondfrancis>
  */
@@ -10,26 +12,14 @@ use Hammerstone\Sidecar\Commands\Configure;
 
 abstract class BaseAction
 {
-    /**
-     * @var Configure
-     */
-    public $command;
+    public function __construct(
+        public ?string $region,
+        public Configure $command
+    ) {}
 
-    /**
-     * @var string
-     */
-    public $region;
+    abstract public function invoke(): mixed;
 
-    public function __construct($region, Configure $command)
-    {
-        $this->region = $region;
-
-        $this->command = $command;
-    }
-
-    abstract public function invoke();
-
-    protected function progress($message)
+    protected function progress(string $message): void
     {
         $this->command->text("==> $message");
     }

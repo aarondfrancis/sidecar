@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aarondfrancis@gmail.com|https://twitter.com/aarondfrancis>
  */
@@ -22,7 +24,7 @@ abstract class EnvironmentAwareCommand extends Command
         $this->getDefinition()->addOptions(Parser::parse($environment)[2]);
     }
 
-    public function overrideEnvironment()
+    public function overrideEnvironment(): void
     {
         if ($environment = $this->option('env')) {
             Sidecar::overrideEnvironment($environment);
