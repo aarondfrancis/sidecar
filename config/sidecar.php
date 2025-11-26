@@ -46,7 +46,7 @@ return [
      * The default architecture your function runs on.
      * Available options are: x86_64, arm64
      */
-    'architecture' => env('SIDECAR_ARCH', Architecture::X86_64),
+    'architecture' => env('SIDECAR_ARCH', Architecture::X86_64->value),
 
     /*
      * The base path for your package files. If you e.g. keep

@@ -101,10 +101,10 @@ class Deployment
     protected function deploySingle(LambdaFunction $function)
     {
         Sidecar::log('Environment: ' . Sidecar::getEnvironment());
-        Sidecar::log('Architecture: ' . $function->architecture());
+        Sidecar::log('Architecture: ' . $function->architectureValue());
         Sidecar::log('Package Type: ' . $function->packageType());
         if ($function->packageType() === 'Zip') {
-            Sidecar::log('Runtime: ' . $function->runtime());
+            Sidecar::log('Runtime: ' . $function->runtimeValue());
         }
 
         $function->beforeDeployment();
