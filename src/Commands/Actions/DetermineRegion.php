@@ -8,16 +8,11 @@ declare(strict_types=1);
 
 namespace Hammerstone\Sidecar\Commands\Actions;
 
-use Aws\S3\S3Client;
 use Illuminate\Support\Facades\File;
 use Throwable;
 
 class DetermineRegion extends BaseAction
 {
-    protected S3Client $client;
-
-    protected bool $isVapor = false;
-
     public function invoke(): string
     {
         $region = config('sidecar.aws_region');
