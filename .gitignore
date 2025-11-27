@@ -1,3 +1,4 @@
+.claude/
 /vendor
 /storage/framework/testing
 .env

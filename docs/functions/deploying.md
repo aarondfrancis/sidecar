@@ -14,7 +14,7 @@ When you run that, you'll see an output log similar to the one below:
 ```text
 [Sidecar] Deploying App\Sidecar\OgImage to Lambda as `SC-Laravel-local-Sidecar-OgImage`.
           ↳ Environment: local
-          ↳ Runtime: nodejs12.x
+          ↳ Runtime: nodejs20.x
           ↳ Packaging function code.
           ↳ Creating a new zip file.
           ↳ Zip file created at s3://sidecar-us-east-2-XXX/sidecar/001-79a5915eaec296be04a0f4fb7cc80e40.zip
