@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hammerstone\Sidecar\Clients\Configurations;
 
 use Hammerstone\Sidecar\Contracts\AwsClientConfiguration as AwsClientConfigurationContract;
 
 class AwsClientConfiguration implements AwsClientConfigurationContract
 {
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         $config = [
             'version' => 'latest',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aaron@hammerstone.dev|https://twitter.com/aarondfrancis>
  */
@@ -230,22 +232,40 @@ abstract class LambdaFunction
      * The runtime environment for the Lambda function.
      *
      * @see https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
-     *
-     * @return string
      */
-    public function runtime()
+    public function runtime(): Runtime|string
     {
         return Runtime::NODEJS_20;
     }
 
     /**
-     * The architecture for the Lambda function.
-     *
-     * @return string
+     * Resolve the runtime to a string value.
      */
-    public function architecture()
+    public function runtimeValue(): string
     {
-        return config('sidecar.architecture', Architecture::X86_64);
+        $runtime = $this->runtime();
+
+        return $runtime instanceof Runtime ? $runtime->value : $runtime;
+    }
+
+    /**
+     * The architecture for the Lambda function.
+     */
+    public function architecture(): Architecture|string
+    {
+        $arch = config('sidecar.architecture', Architecture::X86_64->value);
+
+        return $arch instanceof Architecture ? $arch : $arch;
+    }
+
+    /**
+     * Resolve the architecture to a string value.
+     */
+    public function architectureValue(): string
+    {
+        $arch = $this->architecture();
+
+        return $arch instanceof Architecture ? $arch->value : $arch;
     }
 
     /**
@@ -426,7 +446,7 @@ abstract class LambdaFunction
     {
         $config = [
             'FunctionName' => $this->nameWithPrefix(),
-            'Runtime' => $this->runtime(),
+            'Runtime' => $this->runtimeValue(),
             'Role' => config('sidecar.execution_role'),
             'Handler' => $this->normalizedHandler(),
             'Code' => $this->packageType() === 'Zip'
@@ -441,7 +461,7 @@ abstract class LambdaFunction
             'Layers' => $this->layers(),
             'Publish' => true,
             'PackageType' => $this->packageType(),
-            'Architectures' => [$this->architecture()],
+            'Architectures' => [$this->architectureValue()],
             'Tags' => $this->tags(),
         ];
 

@@ -5,36 +5,51 @@ The only two things _required_ for a Sidecar function are the [package and the h
 
 ## Runtime
 
-Lambda supports multiple languages through the use of runtimes. You can choose any of the following runtimes by returning its corresponding identifier:
+Lambda supports multiple languages through the use of runtimes. Sidecar provides a `Runtime` enum with all supported runtimes, or you can return the runtime identifier as a string.
 
-- Node.js 20: `nodejs20.x`
-- Node.js 18: `nodejs18.x`
-- Python 3.12: `python3.12`
-- Python 3.11: `python3.11`
-- Python 3.10: `python3.10`
-- Python 3.9: `python3.9`
-- Java 21: `java21`
-- Java 17: `java17`
-- Java 11: `java11`
-- Java 8: `java8.al2`
-- .NET 8: `dotnet8`
-- .NET 6: `dotnet6`
-- Ruby 3.3: `ruby3.3`
-- Ruby 3.2: `ruby3.2`
-- OS-only runtime (Amazon Linux 2023): `provided.al2023`
-- OS-only runtime (Amazon Linux 2): `provided.al2`
+Available runtimes include:
 
-E.g. to use the Python 3.12 runtime, you would return `python3.12`:
+- Node.js 24: `Runtime::NODEJS_24` or `'nodejs24.x'`
+- Node.js 22: `Runtime::NODEJS_22` or `'nodejs22.x'`
+- Node.js 20: `Runtime::NODEJS_20` or `'nodejs20.x'`
+- Python 3.14: `Runtime::PYTHON_314` or `'python3.14'`
+- Python 3.13: `Runtime::PYTHON_313` or `'python3.13'`
+- Python 3.12: `Runtime::PYTHON_312` or `'python3.12'`
+- Python 3.11: `Runtime::PYTHON_311` or `'python3.11'`
+- Python 3.10: `Runtime::PYTHON_310` or `'python3.10'`
+- Python 3.9: `Runtime::PYTHON_39` or `'python3.9'`
+- Java 25: `Runtime::JAVA_25` or `'java25'`
+- Java 21: `Runtime::JAVA_21` or `'java21'`
+- Java 17: `Runtime::JAVA_17` or `'java17'`
+- Java 11: `Runtime::JAVA_11` or `'java11'`
+- Java 8: `Runtime::JAVA_8_LINUX2` or `'java8.al2'`
+- .NET 9: `Runtime::DOT_NET_9` or `'dotnet9'`
+- .NET 8: `Runtime::DOT_NET_8` or `'dotnet8'`
+- Ruby 3.4: `Runtime::RUBY_34` or `'ruby3.4'`
+- Ruby 3.3: `Runtime::RUBY_33` or `'ruby3.3'`
+- Ruby 3.2: `Runtime::RUBY_32` or `'ruby3.2'`
+- OS-only runtime (Amazon Linux 2023): `Runtime::PROVIDED_AL2023` or `'provided.al2023'`
+- OS-only runtime (Amazon Linux 2): `Runtime::PROVIDED_AL2` or `'provided.al2'`
+
+You can use either the enum or a string:
 
 ```php
+use Hammerstone\Sidecar\Runtime;
+
 class ExampleFunction extends LambdaFunction
 {
     public function runtime() // [tl! focus:3]
     {
+        // Using the enum (recommended)
+        return Runtime::PYTHON_312;
+
+        // Or using a string
         return 'python3.12';
     }
 }
 ```
+
+The default runtime is `Runtime::NODEJS_20`.
 
 Read more in the [AWS Documentation](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html).
 

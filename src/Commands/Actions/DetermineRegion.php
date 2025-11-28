@@ -1,30 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aarondfrancis@gmail.com|https://twitter.com/aarondfrancis>
  */
 
 namespace Hammerstone\Sidecar\Commands\Actions;
 
-use Aws\S3\S3Client;
 use Illuminate\Support\Facades\File;
+use Throwable;
 
 class DetermineRegion extends BaseAction
 {
-    /**
-     * @var S3Client
-     */
-    protected $client;
-
-    /**
-     * @var bool
-     */
-    protected $isVapor;
-
-    /**
-     * @return string
-     */
-    public function invoke()
+    public function invoke(): string
     {
         $region = config('sidecar.aws_region');
 

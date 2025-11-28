@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Spatie bvba info@spatie.be
  * @license MIT
@@ -17,14 +19,11 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 class Finder
 {
-    /** @var Collection */
-    protected $includeFilesAndDirectories;
+    protected Collection $includeFilesAndDirectories;
 
-    /** @var Collection */
-    protected $excludeFilesAndDirectories;
+    protected Collection $excludeFilesAndDirectories;
 
-    /** @var bool */
-    protected $shouldFollowLinks = false;
+    protected bool $shouldFollowLinks = false;
 
     /**
      * @param  array  $include
@@ -100,7 +99,7 @@ class Finder
         $finder->in($this->includedDirectories());
 
         foreach ($finder->getIterator() as $file) {
-            if ($this->shouldExclude($file)) {
+            if ($this->shouldExclude($file->getPathname())) {
                 continue;
             }
 

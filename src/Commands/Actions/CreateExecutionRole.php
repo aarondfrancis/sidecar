@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aarondfrancis@gmail.com|https://twitter.com/aarondfrancis>
  */
@@ -12,12 +14,9 @@ use Throwable;
 
 class CreateExecutionRole extends BaseAction
 {
-    /**
-     * @var IamClient
-     */
-    protected $client;
+    protected IamClient $client;
 
-    public function invoke()
+    public function invoke(): string
     {
         $this->progress('Creating an execution role for your functions...');
 

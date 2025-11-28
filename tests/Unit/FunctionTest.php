@@ -1,12 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aaron@hammerstone.dev>
  */
 
 namespace Hammerstone\Sidecar\Tests\Unit;
 
+use Hammerstone\Sidecar\Architecture;
+use Hammerstone\Sidecar\Runtime;
 use Hammerstone\Sidecar\Tests\Unit\Support\EmptyTestFunction;
+use Hammerstone\Sidecar\Tests\Unit\Support\EnumRuntimeTestFunction;
+use Hammerstone\Sidecar\Tests\Unit\Support\StringRuntimeTestFunction;
 
 class FunctionTest extends Base
 {
@@ -114,5 +120,74 @@ class FunctionTest extends Base
         $this->assertSame(5, $array['Timeout']);
         $this->assertSame(500, $array['MemorySize']);
         $this->assertSame(1024, $array['EphemeralStorage']['Size']);
+    }
+
+    public function test_default_runtime_returns_enum()
+    {
+        $function = new EmptyTestFunction;
+
+        $this->assertInstanceOf(Runtime::class, $function->runtime());
+        $this->assertEquals(Runtime::NODEJS_20, $function->runtime());
+    }
+
+    public function test_runtime_value_resolves_enum_to_string()
+    {
+        $function = new EnumRuntimeTestFunction;
+
+        $this->assertInstanceOf(Runtime::class, $function->runtime());
+        $this->assertEquals('python3.12', $function->runtimeValue());
+    }
+
+    public function test_runtime_value_passes_through_string()
+    {
+        $function = new StringRuntimeTestFunction;
+
+        $this->assertIsString($function->runtime());
+        $this->assertEquals('custom-runtime', $function->runtimeValue());
+    }
+
+    public function test_default_architecture_from_config()
+    {
+        config(['sidecar.architecture' => 'arm64']);
+
+        $function = new EmptyTestFunction;
+
+        $this->assertEquals('arm64', $function->architectureValue());
+    }
+
+    public function test_architecture_value_resolves_enum_to_string()
+    {
+        config(['sidecar.architecture' => Architecture::ARM_64]);
+
+        $function = new EmptyTestFunction;
+
+        $this->assertEquals('arm64', $function->architectureValue());
+    }
+
+    public function test_architecture_value_passes_through_string()
+    {
+        config(['sidecar.architecture' => 'x86_64']);
+
+        $function = new EmptyTestFunction;
+
+        $this->assertEquals('x86_64', $function->architectureValue());
+    }
+
+    public function test_deployment_array_contains_architecture()
+    {
+        config(['sidecar.architecture' => 'arm64']);
+
+        $function = new EmptyTestFunction;
+        $array = $function->toDeploymentArray();
+
+        $this->assertEquals(['arm64'], $array['Architectures']);
+    }
+
+    public function test_deployment_array_contains_runtime()
+    {
+        $function = new EmptyTestFunction;
+        $array = $function->toDeploymentArray();
+
+        $this->assertEquals('nodejs20.x', $array['Runtime']);
     }
 }

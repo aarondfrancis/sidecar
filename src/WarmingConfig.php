@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aarondfrancis@gmail.com|https://twitter.com/aarondfrancis>
  */
@@ -8,13 +10,13 @@ namespace Hammerstone\Sidecar;
 
 class WarmingConfig
 {
-    public $instances = 0;
+    public int $instances = 0;
 
-    public $payload = [
+    public array $payload = [
         'warming' => true
     ];
 
-    public function __construct($instances = 0)
+    public function __construct(int $instances = 0)
     {
         $this->instances = $instances;
     }

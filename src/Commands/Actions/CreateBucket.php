@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aarondfrancis@gmail.com|https://twitter.com/aarondfrancis>
  */
@@ -7,25 +9,17 @@
 namespace Hammerstone\Sidecar\Commands\Actions;
 
 use Aws\S3\S3Client;
+use Exception;
 use Illuminate\Support\Str;
 use Throwable;
 
 class CreateBucket extends BaseAction
 {
-    /**
-     * @var S3Client
-     */
-    protected $client;
+    protected S3Client $client;
 
-    /**
-     * @var string
-     */
-    protected $bucket;
+    protected string $bucket;
 
-    /**
-     * @return string
-     */
-    public function invoke()
+    public function invoke(): string
     {
         $this->client = $this->command->client(S3Client::class);
 

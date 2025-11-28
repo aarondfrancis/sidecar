@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aarondfrancis@gmail.com|https://twitter.com/aarondfrancis>
  */
@@ -12,15 +14,9 @@ use Throwable;
 
 class CreateDeploymentUser extends BaseAction
 {
-    /**
-     * @var IamClient
-     */
-    protected $client;
+    protected IamClient $client;
 
-    /**
-     * @return array
-     */
-    public function invoke()
+    public function invoke(): array
     {
         $this->client = $this->command->client(IamClient::class);
 

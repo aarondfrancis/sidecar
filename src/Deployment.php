@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aaron@hammerstone.dev|https://twitter.com/aarondfrancis>
  */
@@ -17,15 +19,9 @@ use Illuminate\Support\Str;
 
 class Deployment
 {
-    /**
-     * @var array
-     */
-    protected $functions;
+    protected array $functions;
 
-    /**
-     * @var LambdaClient
-     */
-    protected $lambda;
+    protected LambdaClient $lambda;
 
     /**
      * @return static
@@ -105,10 +101,10 @@ class Deployment
     protected function deploySingle(LambdaFunction $function)
     {
         Sidecar::log('Environment: ' . Sidecar::getEnvironment());
-        Sidecar::log('Architecture: ' . $function->architecture());
+        Sidecar::log('Architecture: ' . $function->architectureValue());
         Sidecar::log('Package Type: ' . $function->packageType());
         if ($function->packageType() === 'Zip') {
-            Sidecar::log('Runtime: ' . $function->runtime());
+            Sidecar::log('Runtime: ' . $function->runtimeValue());
         }
 
         $function->beforeDeployment();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aarondfrancis@gmail.com|https://twitter.com/aarondfrancis>
  */
@@ -8,32 +10,20 @@ namespace Hammerstone\Sidecar\Concerns;
 
 trait ManagesEnvironments
 {
-    /**
-     * @var string
-     */
-    protected $environment;
+    protected ?string $environment = null;
 
-    /**
-     * @param  string  $environment
-     */
-    public function overrideEnvironment($environment)
+    public function overrideEnvironment(string $environment): void
     {
         $this->environment = $environment;
     }
 
-    /**
-     * Clear the environment override.
-     */
-    public function clearEnvironment()
+    public function clearEnvironment(): void
     {
         $this->environment = null;
     }
 
-    /**
-     * @return string
-     */
-    public function getEnvironment()
+    public function getEnvironment(): string
     {
-        return $this->environment ?? config('sidecar.env') ?? config('app.env');
+        return $this->environment ?? config('sidecar.env') ?? config('app.env', 'production');
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Aaron Francis <aaron@hammerstone.dev>
  */
@@ -21,7 +23,7 @@ use Illuminate\Support\ServiceProvider;
 
 class SidecarServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->app->singleton(Manager::class);
 
@@ -42,12 +44,12 @@ class SidecarServiceProvider extends ServiceProvider
         });
     }
 
-    protected function getAwsClientConfiguration()
+    protected function getAwsClientConfiguration(): array
     {
         return $this->app->make(AwsClientConfigurationContract::class)->getConfiguration();
     }
 
-    public function boot()
+    public function boot(): void
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
