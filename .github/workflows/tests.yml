@@ -22,11 +22,11 @@ jobs:
         dependency-version: [prefer-lowest, prefer-stable]
         include:
           - laravel: 10.*
-            testbench: 8.*
+            testbench: ^8.23
           - laravel: 11.*
-            testbench: 9.*
+            testbench: ^9.1
           - laravel: 12.*
-            testbench: 10.*
+            testbench: ^10
         exclude:
           # Laravel 11 requires PHP 8.2+
           - laravel: 11.*
