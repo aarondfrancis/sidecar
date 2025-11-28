@@ -85,7 +85,7 @@ The package fires Laravel events you can hook into:
 
 ## Things to Know
 
-- This package supports Laravel 8 through 12 and PHP 8.1+
+- This package supports Laravel 10, 11, and 12 with PHP 8.1+
 - All source files use `declare(strict_types=1)`
 - The codebase uses constructor property promotion and typed properties throughout
 - Tests use Mockery for mocking AWS clients - check existing tests for patterns
