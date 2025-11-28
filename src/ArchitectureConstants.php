@@ -10,8 +10,8 @@ namespace Hammerstone\Sidecar;
 abstract class ArchitectureConstants
 {
     /** @deprecated Use Architecture::X86_64 instead */
-    public const X86_64 = Architecture::X86_64->value;
+    public const X86_64 = 'x86_64';
 
     /** @deprecated Use Architecture::ARM_64 instead */
-    public const ARM_64 = Architecture::ARM_64->value;
+    public const ARM_64 = 'arm64';
 }
