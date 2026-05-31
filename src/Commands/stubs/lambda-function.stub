@@ -1,0 +1,31 @@
+<?php
+
+namespace {{ namespace }};
+
+use Hammerstone\Sidecar\LambdaFunction;
+
+class {{ class }} extends LambdaFunction
+{
+    /**
+     * The function within your code that Lambda calls to begin execution.
+     * @inheritDoc
+     *
+     * @return string
+     */
+    public function handler()
+    {
+        return 'sidecar/function.handler';
+    }
+
+    /**
+     * The runtime environment for the Lambda function.
+     *
+     * @see https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+     *
+     * @return string
+     */
+    public function runtime()
+    {
+        return '{{ runtime }}';
+    }
+}
