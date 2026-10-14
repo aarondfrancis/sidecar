@@ -1,6 +1,9 @@
 # Changelog
 ## Unreleased 
 
+### Added
+- Support Guzzle 8
+
 ## v0.6.0
 
 ### Changed
