@@ -1,18 +1,125 @@
 # Changelog
-## Unreleased 
 
-### Added
-- Support Guzzle 8
+All notable changes to this project will be documented in this file.
 
-## v0.6.0
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-### Changed
-- [BREAKING] The default runtime for functions has been changed from Node 14 to Node 20. If you haven't explicitly declared the runtime in your function, this will change it to Node 20!
+## [Unreleased](https://github.com/aarondfrancis/sidecar/compare/v0.8.0...HEAD)
 
-## v0.4.0
+<!-- New Release notes will be placed here automatically -->
+## [v0.8.0](https://github.com/aarondfrancis/sidecar/compare/v0.7.1...v0.8.0) - 2026-05-31
 
-### Changed
-- [BREAKING] Function naming algorithm was changed to support long prefixes, long function names, and previously invalid characters. This is a breaking change because the names of your current functions _might_ change with using the new naming scheme.  
+### What's Changed
+
+* Laravel 13.x Compatibility by @laravel-shift in https://github.com/aarondfrancis/sidecar/pull/167
+* Update Runtime and add deprecations by @stefanzweifel in https://github.com/aarondfrancis/sidecar/pull/170
+
+## [v0.7.1](https://github.com/aarondfrancis/sidecar/compare/v0.7.0...v0.7.1) - 2025-08-22
+
+### What's Changed
+
+* SettledResult isError fix by @livingos in https://github.com/aarondfrancis/sidecar/pull/162
+* Add new runtime environments by @owenvoke in https://github.com/aarondfrancis/sidecar/pull/160
+* Add default value for `$numberOfBacktraces` in `SettledResult::throw` by @inxilpro in https://github.com/aarondfrancis/sidecar/pull/149
+
+### New Contributors
+
+* @livingos made their first contribution in https://github.com/aarondfrancis/sidecar/pull/162
+* @owenvoke made their first contribution in https://github.com/aarondfrancis/sidecar/pull/160
+
+## [v0.7.0](https://github.com/aarondfrancis/sidecar/compare/v0.6.1...v0.7.0) - 2025-05-07
+
+### What's Changed
+
+* Laravel 12.x Compatibility by @laravel-shift in https://github.com/aarondfrancis/sidecar/pull/156
+* Make the description dependent on the deployment environment by @Akecel in https://github.com/aarondfrancis/sidecar/pull/153
+* Deprecate .NET 7, Node.js 16 and Python 3.8 runtime options by @wilsenhc in https://github.com/aarondfrancis/sidecar/pull/146
+
+### New Contributors
+
+* @laravel-shift made their first contribution in https://github.com/aarondfrancis/sidecar/pull/156
+* @Akecel made their first contribution in https://github.com/aarondfrancis/sidecar/pull/153
+
+## [v0.6.1](https://github.com/aarondfrancis/sidecar/compare/v0.6.0...v0.6.1) - 2024-05-15
+
+### What's Changed
+
+* Add .NET 8 and Ruby 3.3 runtime options by @wilsenhc in https://github.com/hammerstonedev/sidecar/pull/145
+
+## [v0.6.0](https://github.com/aarondfrancis/sidecar/compare/v0.5.0...v0.6.0) - 2024-05-15
+
+### 🚨 Breaking change!
+
+The default runtime for functions has been changed from Node 14 to Node 20. If you haven't explicitly declared the runtime in your function, this will change it to Node 20!
+
+### What's Changed
+
+* Update for Laravel 11, PHP8 and ZipStream 3.1 by @drjdr in https://github.com/hammerstonedev/sidecar/pull/139
+* Config steps update - "Documentation" by @bookwyrm in https://github.com/hammerstonedev/sidecar/pull/137
+* Added option to configure number of backtraces in error message by @Froelund in https://github.com/hammerstonedev/sidecar/pull/131
+
+### New Contributors
+
+* @drjdr made their first contribution in https://github.com/hammerstonedev/sidecar/pull/139
+* @bookwyrm made their first contribution in https://github.com/hammerstonedev/sidecar/pull/137
+* @Froelund made their first contribution in https://github.com/hammerstonedev/sidecar/pull/131
+
+## [v0.5.0](https://github.com/aarondfrancis/sidecar/compare/v0.4.2...v0.5.0) - 2024-03-20
+
+### What's Changed
+
+* Add Support for Laravel 11 by @stefanzweifel in https://github.com/hammerstonedev/sidecar/pull/141
+* Dropped tests for Laravel 8
+
+## [v0.4.2](https://github.com/aarondfrancis/sidecar/compare/v0.4.1...v0.4.2) - 2024-01-10
+
+### What's Changed
+
+* Update supported Runtimes by @wilsenhc in https://github.com/hammerstonedev/sidecar/pull/123
+
+## [v0.4.1](https://github.com/aarondfrancis/sidecar/compare/v0.4.0...v0.4.1) - 2023-04-29
+
+### What's Changed
+
+* Documents command options by @joedixon in https://github.com/hammerstonedev/sidecar/pull/106
+* AWS New users experience update by @tominal in https://github.com/hammerstonedev/sidecar/pull/100
+* Make warming actually work by @aarondfrancis in https://github.com/hammerstonedev/sidecar/pull/110
+
+### New Contributors
+
+* @joedixon made their first contribution in https://github.com/hammerstonedev/sidecar/pull/106
+* @tominal made their first contribution in https://github.com/hammerstonedev/sidecar/pull/100
+
+## [v0.4.0](https://github.com/aarondfrancis/sidecar/compare/v0.3.12...v0.4.0) - 2023-02-28
+
+### 🚨 This is a breaking release
+
+🚨 Function naming algorithm was changed to support long prefixes, long function names, and previously invalid characters. This is a breaking change because the names of your current functions _might_ change with using the new naming scheme. After upgrading to Sidecar 0.4.0, it _might_ deploy a new version of your function even if nothing has changed, because of the new naming scheme. See more in [#30](https://github.com/hammerstonedev/sidecar/pull/30) and [#60](https://github.com/hammerstonedev/sidecar/pull/60).
+
+🚨 Support for Laravel 7 and PHP 7.2 have been dropped.
+
+🚨 Unsupported Lambda runtimes have been removed. See [#90](https://github.com/hammerstonedev/sidecar/pull/90) for more.
+
+### Full list of what's Changed
+
+* Update test matrices by @aarondfrancis in https://github.com/hammerstonedev/sidecar/pull/77
+* Add Node.js 16.x runtime to all docs by @wilsenhc in https://github.com/hammerstonedev/sidecar/pull/82
+* Improve LambdaFunction naming and prefix convention by @maurocasas in https://github.com/hammerstonedev/sidecar/pull/30
+* Adding Laracasts reference by @binaryk in https://github.com/hammerstonedev/sidecar/pull/80
+* Add `sidecar.app_name` config variable by @wilsenhc in https://github.com/hammerstonedev/sidecar/pull/83
+* Timeout is specified in seconds by @wilsenhc in https://github.com/hammerstonedev/sidecar/pull/81
+* Add Support for Laravel 10 by @stefanzweifel in https://github.com/hammerstonedev/sidecar/pull/101
+* Add support for PHP 8.2 by @wilsenhc in https://github.com/hammerstonedev/sidecar/pull/98
+* BREAKING CHANGE: Removing unsupported runtimes by @nexxai in https://github.com/hammerstonedev/sidecar/pull/90
+* Allow tagging functions by @wilsenhc in https://github.com/hammerstonedev/sidecar/pull/86
+
+### New Contributors
+
+* @maurocasas made their first contribution in https://github.com/hammerstonedev/sidecar/pull/30
+* @binaryk made their first contribution in https://github.com/hammerstonedev/sidecar/pull/80
+* @stefanzweifel made their first contribution in https://github.com/hammerstonedev/sidecar/pull/101
+* @nexxai made their first contribution in https://github.com/hammerstonedev/sidecar/pull/90
 
 ## 0.3.12 - 2022-05-22
 
