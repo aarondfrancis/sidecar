@@ -48,7 +48,13 @@ Every Sidecar Function requires two things:
 - A PHP Class
 - Files that you want deployed to Lambda
 
-For example, if we were wanting to use Node on Lambda to generate an og:image for all of our blog posts, we would first set up a simple class in PHP called `OgImage`.
+For example, if we were wanting to use Node on Lambda to generate an `og:image` for all of our blog posts, we would first set up a simple class in PHP called `OgImage`.
+To do this we can run the command:
+
+```bash
+php artisan make:lambda-function OgImage
+```
+
 
 `App\Sidecar\OgImage.php`
 
